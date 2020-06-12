@@ -15,6 +15,7 @@ import {
 } from 'reactstrap'
 
 import _ from 'lodash'
+import { Link } from 'react-router-dom';
 
 class NodeDetail extends Component {
     constructor(props) {
@@ -43,14 +44,16 @@ class NodeDetail extends Component {
         _.forEach(this.props.node.devices, (device, key) => {
             devices.push(
                 <Col xs='4' key={key}>
-                    <Card>
-                        <CardBody>
-                            <div className="text-center">
-                                <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
-                            </div>
-                            <CardTitle className="text-center"><h2>{device.name}</h2></CardTitle>
-                        </CardBody>
-                    </Card>
+                    <Link to={"/devices/" + device.id }>
+                        <Card>
+                            <CardBody>
+                                <div className="text-center">
+                                    <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
+                                </div>
+                                <CardTitle className="text-center"><h2>{device.name}</h2></CardTitle>
+                            </CardBody>
+                        </Card>
+                    </Link>
                 </Col>
             )
         })

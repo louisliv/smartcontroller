@@ -60,7 +60,8 @@ class Node extends Component {
                             <FontAwesomeIcon id={'icon'+key} icon={icon}/>
                         </DropdownToggle>
                         <DropdownMenu >
-                        <DropdownItem onClick={() => this.handlePowerOn(device)}>Power On</DropdownItem>
+                            <DropdownItem><Link to={"/devices/" + device.id }>Details</Link></DropdownItem>
+                            <DropdownItem onClick={() => this.handlePowerOn(device)}>Power On</DropdownItem>
                             <DropdownItem onClick={() => this.handlePowerOff(device)}>Power Off</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
