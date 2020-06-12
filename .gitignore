@@ -4,5 +4,6 @@ server/media/*
 server/static/*
 server/*/static/*
 client/node_modules/*
+client/build/*
 .vscode/*
 base/*

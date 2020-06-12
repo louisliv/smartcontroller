@@ -139,9 +139,7 @@ STATIC_ROOT = BASE_DIR + STATIC_URL
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR + MEDIA_URL
 
-STATICFILES_DIRS = [
-    os.path.join(CLIENT_DIR, 'build', 'static'),
-]
+STATICFILES_DIRS = []
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -156,10 +154,12 @@ ALLOWED_HOSTS = ['10.0.0.216', '127.0.0.1', 'localhost']
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'http://localhost:8000',
     'http://localhost',
 )
 
 CSRF_TRUSTED_ORIGINS = (
     'http://localhost:3000',
+    'http://localhost:8000',
     'http://localhost',
 )
