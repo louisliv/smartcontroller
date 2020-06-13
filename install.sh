@@ -22,6 +22,9 @@ SCRIPTPATH=$(realpath $0)
 ########################
 echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 rm -rf $SC
+sudo rm /var/www/smartcontroller
+sudo rm /etc/systemd/system/gunicorn.service
+sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
 
 #############################
 ##Packages and Dependencies##
@@ -104,10 +107,10 @@ python3 manage.py collectstatic
 
 echo -e "\n ${LRED}-${NC}${WHITE} Start server...${NC}\n"
 cd $SC
-ln -s $SC /var/www
-ln -s gunicorn.service /etc/systemd/system/
-ln -s smartcontroller_nginx.conf /etc/nginx/sites-enabled/
+sudo ln -s $SC /var/www
+sudo ln -s gunicorn.service /etc/systemd/system/
+sudo ln -s smartcontroller_nginx.conf /etc/nginx/sites-enabled/
 
-systemctl start gunicorn.service
-systemctl enable gunicorn.service
-systemctl restart nginx.service
+sudo systemctl start gunicorn.service
+sudo systemctl enable gunicorn.service
+sudo systemctl restart nginx.service
