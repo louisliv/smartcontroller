@@ -108,8 +108,8 @@ python3 manage.py collectstatic
 echo -e "\n ${LRED}-${NC}${WHITE} Start server...${NC}\n"
 cd $SC
 sudo ln -s $SC /var/www
-sudo ln -s gunicorn.service /etc/systemd/system/
-sudo ln -s smartcontroller_nginx.conf /etc/nginx/sites-enabled/
+sudo ln -s $SC/gunicorn.service /etc/systemd/system/
+sudo ln -s $SC/smartcontroller_nginx.conf /etc/nginx/sites-enabled/
 
 sudo systemctl start gunicorn.service
 sudo systemctl enable gunicorn.service
