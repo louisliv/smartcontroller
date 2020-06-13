@@ -75,7 +75,7 @@ wget -N -q https://github.com/louisliv/smartcontroller/files/4773663/smartcontro
 unzip smartcontroller.zip
 rm smartcontroller.zip
 
-python3 -m pip install -r requirements.txt
+sudo python3 -m pip install -r requirements.txt
 
 ##########################
 ## Migrate the Database ##
@@ -104,7 +104,7 @@ python3 manage.py collectstatic
 
 echo -e "\n ${LRED}-${NC}${WHITE} Start server...${NC}\n"
 cd $SC
-ln -s $SC /var/www/html
+ln -s $SC /var/www
 ln -s gunicorn.service /etc/systemd/system/
 ln -s smartcontroller_nginx.conf /etc/nginx/sites-enabled/
 
