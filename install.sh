@@ -38,25 +38,48 @@ sleep 1
 packages=("python3-dev" "python3-pip" "unzip" "nginx")
 
 for package in "${packages[@]}"; do
-	if dpkg -s $package >/dev/null 2>&1; then
-		echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LGREEN}Installed${NC}"
-	else
-		echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LRED}Not Installed${NC}"
-		installpackages+=("$package")
-	fi
+    if dpkg -s $package >/dev/null 2>&1; then
+        echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LGREEN}Installed${NC}"
+    else
+        echo -e " ${LRED}--${NC}${WHITE} $package : ${NC}${LRED}Not Installed${NC}"
+        installpackages+=("$package")
+    fi
 done
 
 if [ ${#installpackages[@]} -gt 0 ]; then
-	
-	echo -e " ${LRED}---${NC}${WHITE} Installing missing packages and dependencies...${NC}${ORANGE}\n"
-	sleep 1
-	
-	sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
+    
+    echo -e " ${LRED}---${NC}${WHITE} Installing missing packages and dependencies...${NC}${ORANGE}\n"
+    sleep 1
+    
+    sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
 
 fi
 
 echo -e "\n ${NC}${LRED}--${NC}${GREEN} All packages and dependencies are installed.${NC}\n"
 
+sleep 1
+
+#############################
+## Install NodeJS ##
+#############################
+echo -e "\n ${LRED}[${NC} ${LGREEN}Installing NodeJS${NC} ${LRED}]${NC}"
+sleep 1
+                                 
+if ! type node > /dev/null; then
+    wget -N https://nodejs.org/dist/v12.18.0/node-v12.18.0-linux-armv7l.tar.xz
+    tar -xvf node-v12.18.0-linux-armv7l.tar.xz
+    cd node-v12.18.0-linux-armv7l
+    sudo cp -R * /usr/local/
+fi
+
+sleep 1
+
+#############################
+## Install TPLink Smarthome API ##
+#############################
+echo -e "\n ${LRED}[${NC} ${LGREEN}Installing TPLink Smarthome API${NC} ${LRED}]${NC}"
+sleep 1
+npm install -g tplink-smarthome-api
 sleep 1
 
 #############################

@@ -3,7 +3,11 @@ import request from 'axios'
 
 let originBaseUrl;
 
-originBaseUrl = 'http://127.0.0.1:8000';
+if (process.env.NODE_ENV !== 'production') {
+    originBaseUrl = 'http://localhost';
+} else {
+    originBaseUrl = 'http://smartcontroller.local:8000';
+}
 
 
 class Api {

@@ -5,6 +5,7 @@ After=network.target
 [Service]
 User=root
 Group=www-data
+Environment=NODE_ENV=production
 WorkingDirectory=/var/www/smartcontroller/server
 ExecStart=/usr/local/bin/gunicorn -b :8001 server.wsgi
 
