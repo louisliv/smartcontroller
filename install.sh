@@ -52,8 +52,6 @@ if [ ${#installpackages[@]} -gt 0 ]; then
 
 fi
 
-python3 -m pip install -r requirements.txt
-
 echo -e "\n ${NC}${LRED}--${NC}${GREEN} All packages and dependencies are installed.${NC}\n"
 
 sleep 1
@@ -76,6 +74,8 @@ cd $SC
 wget -N -q https://github.com/louisliv/smartcontroller/files/4773663/smartcontroller.zip
 unzip smartcontroller.zip
 rm smartcontroller.zip
+
+python3 -m pip install -r requirements.txt
 
 ##########################
 ## Migrate the Database ##
