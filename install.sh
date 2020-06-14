@@ -17,16 +17,6 @@ SC="$HOME/smartcontroller"
 
 SCRIPTPATH=$(realpath $0)
 
-#####################
-##  Download Repo  ##
-#####################
-
-echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
-sleep 1
-
-cd $HOME
-git clone https://github.com/louisliv/smartcontroller.git
-
 ########################
 ##  Remove Old Files  ##
 ########################
@@ -35,6 +25,19 @@ rm -rf $SC
 sudo rm /var/www/smartcontroller
 sudo rm /etc/systemd/system/gunicorn.service
 sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
+
+#####################
+##  Download Repo  ##
+#####################
+
+echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
+sleep 1
+
+sudo apt-get update
+sudo apt-get install -y git
+
+cd $HOME
+git clone https://github.com/louisliv/smartcontroller.git
 
 ###############################
 ## Packages and Dependencies ##
@@ -61,8 +64,7 @@ if [ ${#installpackages[@]} -gt 0 ]; then
     
     echo -e " ${LRED}---${NC}${WHITE} Installing missing packages and dependencies...${NC}${ORANGE}\n"
     sleep 1
-    
-    sudo apt-get update; sudo apt-get install -y ${installpackages[@]}
+    sudo apt-get install -y ${installpackages[@]}
 
 fi
 
