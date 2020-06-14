@@ -26,16 +26,16 @@ sudo rm /var/www/smartcontroller
 sudo rm /etc/systemd/system/gunicorn.service
 sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
 
-#############################
-##Packages and Dependencies##
-#############################
+###############################
+## Packages and Dependencies ##
+###############################
 echo -e "\n ${LRED}[${NC} ${LGREEN}Packages and Dependencies Installation${NC} ${LRED}]${NC}"
 sleep 1
 
 echo -e " ${LRED}-${NC}${WHITE} Checking packages and dependencies...${NC}"
 sleep 1
 
-packages=("python3-dev" "python3-pip" "unzip" "nginx")
+packages=("python3-dev" "python3-pip" "unzip" "nginx" "git")
 
 for package in "${packages[@]}"; do
     if dpkg -s $package >/dev/null 2>&1; then
@@ -59,9 +59,9 @@ echo -e "\n ${NC}${LRED}--${NC}${GREEN} All packages and dependencies are instal
 
 sleep 1
 
-#############################
+####################
 ## Install NodeJS ##
-#############################
+####################
 echo -e "\n ${LRED}[${NC} ${LGREEN}Installing NodeJS${NC} ${LRED}]${NC}"
 sleep 1
                                  
@@ -74,12 +74,12 @@ fi
 
 sleep 1
 
-#############################
+##################################
 ## Install TPLink Smarthome API ##
-#############################
+##################################
 echo -e "\n ${LRED}[${NC} ${LGREEN}Installing TPLink Smarthome API${NC} ${LRED}]${NC}"
 sleep 1
-npm install -g tplink-smarthome-api
+sudo npm install -g tplink-smarthome-api
 sleep 1
 
 #############################
@@ -89,19 +89,17 @@ sleep 1
 echo -e " ${LRED}[${NC}${LGREEN} Installing SmartController ${NC}${LRED}]${NC}"
 sleep 1
 
-echo -e " ${LRED}-${NC}${WHITE} Creating folders...${NC}"
-sleep 1
-mkdir -p -m 0777 $SC
-
 echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
 sleep 1
 
+cd $HOME
+git clone https://github.com/louisliv/smartcontroller.git
+
+echo -e " ${LRED}--${NC}${WHITE} Installing python requirements...${NC}${ORANGE}\n"
 cd $SC
-wget -N -q https://github.com/louisliv/smartcontroller/files/4773663/smartcontroller.zip
-unzip smartcontroller.zip
-rm smartcontroller.zip
 
 sudo python3 -m pip install -r requirements.txt
+sleep 1
 
 ##########################
 ## Migrate the Database ##
@@ -110,19 +108,42 @@ echo -e "\n ${LRED}-${NC}${WHITE} Setting up the database...${NC}\n"
 cd $SC/server
 python3 manage.py migrate
 
-##########################
-## Create Admin User    ##
-##########################
+#######################
+## Create Admin User ##
+#######################
 echo -e "\n ${LRED}-${NC}${WHITE} Creating admin users...${NC}\n"
 cd $SC/server
 python3 manage.py create_superuser --username=admin --email=admin@example.com --password=admin
 
-##########################
+#######################
 ## Get Static Set Up ##
-##########################
+#######################
 echo -e "\n ${LRED}-${NC}${WHITE} Setting up the static files...${NC}\n"
 cd $SC/server
 python3 manage.py collectstatic
+
+####################
+## Build Frontend ##
+####################
+cd $SC/client
+
+echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
+npm install
+
+echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
+npm build
+
+echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
+npm build
+
+##############################
+## Update/Uninstall Scripts ##
+##############################
+cd $SC
+
+echo -e "\n ${LRED}-${NC}${WHITE} Making the scripts executable...${NC}\n"
+chmod +x uninstall.sh
+chmod +x update.sh
 
 ##################
 ## Start Server ##
