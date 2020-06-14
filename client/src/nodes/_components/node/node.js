@@ -53,9 +53,9 @@ class Node extends Component {
         DeviceApi.powerOn(device.id);
     }
 
-    handleNodePowerOff(event, node) {
+    handleNodePower(event, node) {
         event.preventDefault()
-        NodeApi.powerOff(node.id);
+        NodeApi.togglePower(node.id);
     }
 
     loadDeviceIcons() {
@@ -95,7 +95,7 @@ class Node extends Component {
                     <CardBody>
                         <div className="text-center">
                             <FontAwesomeIcon 
-                                onClick={(event) => this.handleNodePowerOff(event, this.props.node)} 
+                                onClick={(event) => this.handleNodePower(event, this.props.node)} 
                                 className="node-icon" 
                                 icon={faPowerOff} 
                                 size="3x"

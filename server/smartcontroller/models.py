@@ -26,7 +26,7 @@ class NodePowerOffThread(Thread):
         for device in devices:
             device.set_power_state('false')
             if device.device_type in [device.PI]:
-                time.sleep(30)
+                time.sleep(20)
 
 class Node(models.Model):
     name = models.CharField(max_length=144)
@@ -41,7 +41,7 @@ class Node(models.Model):
     def toggle_power(self):
         plug = self.devices.filter(device_type=Device.PLUG)[0]
         
-        if plug.get_power_state():
+        if not plug.get_power_state():
             plug.set_power_state('true')
         else:
             self.power_off_all()
