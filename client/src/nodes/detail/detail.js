@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPowerOff, faPlug } from '@fortawesome/free-solid-svg-icons'
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import DeviceApi from 'api/models/devices'
 
 import { NodeSelectors, NodeActions } from 'store/nodes';
@@ -12,6 +12,7 @@ import {
     CardBody,
     CardTitle,
     Col,
+    Row,
 } from 'reactstrap'
 
 import _ from 'lodash'
@@ -63,10 +64,10 @@ class NodeDetail extends Component {
 
     render() {
         return (
-            <div>
+            <Row>
                 {this.props.nodeId}
                 {this.loadDevices()}
-            </div>
+            </Row>
         )
     }
 }
