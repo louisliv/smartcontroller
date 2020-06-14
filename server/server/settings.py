@@ -26,7 +26,7 @@ SECRET_KEY = '30sc%@!7b&yb)td&-f*5z_bix7na1byl=jnx*)=w56hr%eml$m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smartcontroller.local']
 
 
 # Application definition
