@@ -60,9 +60,9 @@ echo -e "\n ${NC}${LRED}--${NC}${GREEN} All packages and dependencies are instal
 
 sleep 1
 
-#############################
+#################################
 ## Install New SmartController ##
-#############################
+#################################
 
 echo -e " ${LRED}[${NC}${LGREEN} Installing Updated SmartController ${NC}${LRED}]${NC}"
 sleep 1
@@ -110,9 +110,9 @@ echo -e "\n ${LRED}-${NC}${WHITE} Making the scripts executable...${NC}\n"
 chmod +x uninstall.sh
 chmod +x update.sh
 
-##################
+####################
 ## Restart Server ##
-##################
+####################
 
 echo -e "\n ${LRED}-${NC}${WHITE} Restart server...${NC}\n"
 

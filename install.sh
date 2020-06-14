@@ -142,15 +142,6 @@ npm run-script build
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
 rm -rf $SC/client/node_modules
 
-##############################
-## Update/Uninstall Scripts ##
-##############################
-cd $SC
-
-echo -e "\n ${LRED}-${NC}${WHITE} Making the scripts executable...${NC}\n"
-chmod +x uninstall.sh
-chmod +x update.sh
-
 ##################
 ## Start Server ##
 ##################
