@@ -11,13 +11,9 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="home">
-                <Container fluid className="home-container">
-                    <Row>
-                        <NodeList />
-                    </Row>
-                </Container>
-            </div>
+            <Row>
+                <NodeList />
+            </Row>
         );
     }
 }

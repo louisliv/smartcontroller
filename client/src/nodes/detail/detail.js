@@ -45,16 +45,16 @@ class NodeDetail extends Component {
         _.forEach(this.props.node.devices, (device, key) => {
             devices.push(
                 <Col xs='4' key={key}>
-                    <Link to={"/devices/" + device.id }>
-                        <Card>
+                        <Card className="controller-card">
                             <CardBody>
                                 <div className="text-center">
                                     <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
                                 </div>
-                                <CardTitle className="text-center"><h2>{device.name}</h2></CardTitle>
+                                <Link to={"/devices/" + device.id }>
+                                    <CardTitle className="text-center"><h2>{device.name}</h2></CardTitle>
+                                </Link>
                             </CardBody>
                         </Card>
-                    </Link>
                 </Col>
             )
         })

@@ -14,7 +14,8 @@ import {
     DropdownMenu,
     DropdownToggle,
     Dropdown,
-    DropdownItem
+    DropdownItem,
+    Button
 } from 'reactstrap'
 
 import _ from 'lodash'
@@ -91,19 +92,18 @@ class Node extends Component {
     render() {
         return (
             
-                <Card>
+                <Card className="controller-card">
                     <CardBody>
                         <div className="text-center">
-                            <FontAwesomeIcon 
-                                onClick={(event) => this.handleNodePower(event, this.props.node)} 
-                                className="node-icon" 
-                                icon={faPowerOff} 
-                                size="3x"
-                                color="#007bff"
-                                style={{'cursor':'pointer'}}/>
+                            <Button className="node-icon" >
+                                <FontAwesomeIcon 
+                                    onClick={(event) => this.handleNodePower(event, this.props.node)} 
+                                    icon={faPowerOff} 
+                                    size="3x"/>
+                            </Button>
                         </div>
                         <Link to={"/nodes/"+ this.props.node.id}>
-                            <CardTitle className="text-center"><h2>{this.props.node.name}</h2></CardTitle>
+                            <CardTitle className="text-center text-white"><h2>{this.props.node.name}</h2></CardTitle>
                         </Link>
                         <div className="flex justify-content-end">
                             {this.loadDeviceIcons()}

@@ -14,10 +14,10 @@ class SiteNavbar extends Component {
 
     render() {
         return (
-            <Navbar expand="md" className="home-navbar">
+            <Navbar color="dark" dark expand="md" className="home-navbar">
                 <NavbarBrand className="mr-auto">SmartController</NavbarBrand>
                 <Nav navbar>
-                    <Link to="/"><FontAwesomeIcon icon={faHome} size="2x"/></Link>
+                    <Link to="/" className="text-white"><FontAwesomeIcon icon={faHome} size="2x"/></Link>
                 </Nav>
             </Navbar>
         );

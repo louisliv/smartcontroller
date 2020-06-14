@@ -2,6 +2,21 @@
     margin-bottom: 20px;
 }
 
+.node-title {
+    &:hover {
+        .a {
+            text-decoration: none;
+            color:rgba(255, 255, 255, 0.5) !important;
+        }
+    }
+
+    &:active {
+        .a {
+            color:rgba(255, 255, 255, 0.5) !important;
+        }
+    }
+}
+
 .device-button {
     margin-right: 5px;
 }
