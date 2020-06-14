@@ -86,7 +86,7 @@ python3 manage.py migrate
 #######################
 echo -e "\n ${LRED}-${NC}${WHITE} Setting up the static files...${NC}\n"
 cd $SC/server
-python3 manage.py collectstatic
+python3 manage.py collectstatic --noinput
 
 ####################
 ## Build Frontend ##
