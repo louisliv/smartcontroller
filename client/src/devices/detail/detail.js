@@ -12,7 +12,8 @@ import {
     CardBody,
     CardTitle,
     Col,
-    CardText
+    CardText,
+    Row
 } from 'reactstrap'
 
 class DeviceDetail extends Component {
@@ -39,18 +40,20 @@ class DeviceDetail extends Component {
 
     render() {
         return (
-            <Col xs='12'>
-                <Card>
-                    <CardBody>
-                        <div className="text-center">
-                            <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
-                        </div>
-                        <CardTitle className="text-center"><h2>{this.props.device.name}</h2></CardTitle>
-                        <CardText>IP: {this.props.device.ip}</CardText>
-                        <CardText>Type: {this.props.device.device_type_display}</CardText>
-                    </CardBody>
-                </Card>
-            </Col>
+            <Row>
+                <Col xs='12'>
+                    <Card className="controller-card">
+                        <CardBody>
+                            <div className="text-center text-white">
+                                <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
+                            </div>
+                            <CardTitle className="text-center"><h2>{this.props.device.name}</h2></CardTitle>
+                            <CardText>IP: {this.props.device.ip}</CardText>
+                            <CardText>Type: {this.props.device.device_type_display}</CardText>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         )
     }
 }

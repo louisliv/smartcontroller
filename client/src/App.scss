@@ -1,0 +1,48 @@
+.home-container {
+    background-color: $primary-color;
+    height: calc(100vh - 56px);
+    color: white;
+}
+
+.controller-card{
+    background-color: #6c757d !important;
+
+    .card-title {
+        color: #fff !important;
+    }
+
+    a {
+        color: #fff !important;
+        &:hover {
+            text-decoration: none;
+    
+            .text-white {
+                color:rgba(255, 255, 255, 0.5) !important;
+            }
+        }
+
+        &:active {
+            .text-white {
+                color:rgba(255, 255, 255, 0.5) !important;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        background-color: #6c757d !important;
+        color: #fff;
+
+        .dropdown-item {
+            color: #fff !important;
+
+            &:hover {
+                background-color: #5a6268 !important;
+            }
+        }
+    }
+}
+
+
+.row {
+    padding-top: 15px;
+}
