@@ -26,9 +26,6 @@ SECRET_KEY = '30sc%@!7b&yb)td&-f*5z_bix7na1byl=jnx*)=w56hr%eml$m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['smartcontroller.local']
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -150,7 +147,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-ALLOWED_HOSTS = ['10.0.0.216', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['10.0.0.216', '127.0.0.1', 'localhost', 'smartcontroller.local']
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
