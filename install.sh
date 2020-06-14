@@ -17,6 +17,16 @@ SC="$HOME/smartcontroller"
 
 SCRIPTPATH=$(realpath $0)
 
+#####################
+##  Download Repo  ##
+#####################
+
+echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
+sleep 1
+
+cd $HOME
+git clone https://github.com/louisliv/smartcontroller.git
+
 ########################
 ##  Remove Old Files  ##
 ########################
@@ -35,7 +45,8 @@ sleep 1
 echo -e " ${LRED}-${NC}${WHITE} Checking packages and dependencies...${NC}"
 sleep 1
 
-packages=("python3-dev" "python3-pip" "unzip" "nginx" "git")
+cd $SC
+mapfile -t packages < file.txt
 
 for package in "${packages[@]}"; do
     if dpkg -s $package >/dev/null 2>&1; then
@@ -64,7 +75,8 @@ sleep 1
 ####################
 echo -e "\n ${LRED}[${NC} ${LGREEN}Installing NodeJS${NC} ${LRED}]${NC}"
 sleep 1
-                                 
+
+cd $HOME                          
 if ! type node > /dev/null; then
     wget -N https://nodejs.org/dist/v12.18.0/node-v12.18.0-linux-armv7l.tar.xz
     tar -xvf node-v12.18.0-linux-armv7l.tar.xz
@@ -88,12 +100,6 @@ sleep 1
 
 echo -e " ${LRED}[${NC}${LGREEN} Installing SmartController ${NC}${LRED}]${NC}"
 sleep 1
-
-echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
-sleep 1
-
-cd $HOME
-git clone https://github.com/louisliv/smartcontroller.git
 
 echo -e " ${LRED}--${NC}${WHITE} Installing python requirements...${NC}${ORANGE}\n"
 cd $SC
@@ -131,10 +137,10 @@ echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
 npm install
 
 echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm build
+npm run-script build
 
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
-npm build
+rm -rf $SC/client/node_modules
 
 ##############################
 ## Update/Uninstall Scripts ##
