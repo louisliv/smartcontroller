@@ -46,7 +46,7 @@ echo -e " ${LRED}-${NC}${WHITE} Checking packages and dependencies...${NC}"
 sleep 1
 
 cd $SC
-mapfile -t packages < file.txt
+mapfile -t packages < packages.txt
 
 for package in "${packages[@]}"; do
     if dpkg -s $package >/dev/null 2>&1; then
