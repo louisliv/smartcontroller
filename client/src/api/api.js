@@ -4,9 +4,9 @@ import request from 'axios'
 let originBaseUrl;
 
 if (process.env.NODE_ENV !== 'production') {
-    originBaseUrl = 'http://localhost';
+    originBaseUrl = 'http://localhost:8000';
 } else {
-    originBaseUrl = 'http://smartcontroller.local:8000';
+    originBaseUrl = 'http://localhost:8000';
 }
 
 

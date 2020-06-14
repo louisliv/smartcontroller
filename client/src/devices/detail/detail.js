@@ -15,8 +15,6 @@ import {
     CardText
 } from 'reactstrap'
 
-import _ from 'lodash'
-
 class DeviceDetail extends Component {
     constructor(props) {
         super(props);

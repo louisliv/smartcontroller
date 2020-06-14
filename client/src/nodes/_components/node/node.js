@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPowerOff, faPlug } from '@fortawesome/free-solid-svg-icons'
 import { faRaspberryPi } from '@fortawesome/free-brands-svg-icons'
 import DeviceApi from 'api/models/devices'
+import NodeApi from 'api/models/nodes'
 import { Link } from "react-router-dom";
 
 import {
@@ -24,15 +25,24 @@ class Node extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            popoverOpen: false,
+            dropdowns: {},
         };
     }
 
-    toggle(event) {
+    toggle(event, device) {
         event.preventDefault();
-        this.setState({
-            popoverOpen: !this.state.popoverOpen
-        });
+        let newState = _.clone(this.state)
+        newState.dropdowns[device.id].open = ! newState.dropdowns[device.id].open 
+        this.setState(newState);
+    }
+
+    componentWillMount(device){
+        let newState = _.clone(this.state)
+        _.forEach(this.props.node.devices, (device, key) => {
+            newState.dropdowns[device.id] = {open: false}
+        })
+
+        this.setState(newState);
     }
 
     handlePowerOff(device) {
@@ -43,20 +53,26 @@ class Node extends Component {
         DeviceApi.powerOn(device.id);
     }
 
+    handleNodePower(event, node) {
+        event.preventDefault()
+        NodeApi.togglePower(node.id);
+    }
+
     loadDeviceIcons() {
         let deviceIcons = [];
         let icon;
 
         _.forEach(this.props.node.devices, (device, key) => {
-            if (device.device_type === 'Raspberry Pi') {
+            if (device.device_type === 'PI') {
                 icon = faRaspberryPi
             } else {
                 icon = faPlug
             }
+
             deviceIcons.push(
                 <div key={key} >
-                    <Dropdown isOpen={this.state.popoverOpen} target={'icon'+key} toggle={this.toggle}>
-                        <DropdownToggle>
+                    <Dropdown isOpen={this.state.dropdowns[device.id].open} target={'icon'+key} toggle={(event) => this.toggle(event, device)}>
+                        <DropdownToggle className="device-button">
                             <FontAwesomeIcon id={'icon'+key} icon={icon}/>
                         </DropdownToggle>
                         <DropdownMenu >
@@ -74,19 +90,26 @@ class Node extends Component {
 
     render() {
         return (
-            <Link to={"/nodes/"+ this.props.node.id}>
+            
                 <Card>
                     <CardBody>
                         <div className="text-center">
-                            <FontAwesomeIcon className="node-icon" icon={faPowerOff} size="3x"/>
+                            <FontAwesomeIcon 
+                                onClick={(event) => this.handleNodePower(event, this.props.node)} 
+                                className="node-icon" 
+                                icon={faPowerOff} 
+                                size="3x"
+                                color="#007bff"
+                                style={{'cursor':'pointer'}}/>
                         </div>
-                        <CardTitle className="text-center"><h2>{this.props.node.name}</h2></CardTitle>
-                        <div className="text-right">
+                        <Link to={"/nodes/"+ this.props.node.id}>
+                            <CardTitle className="text-center"><h2>{this.props.node.name}</h2></CardTitle>
+                        </Link>
+                        <div className="flex justify-content-end">
                             {this.loadDeviceIcons()}
                         </div>
                     </CardBody>
                 </Card>
-            </Link>
         )
     }
 }
