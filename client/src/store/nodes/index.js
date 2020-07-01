@@ -11,6 +11,9 @@ const ACTION_CONSTANTS = {
 
     NODES_GET_SUCCESS: 'NODES_GET_SUCCESS',
     NODES_GET_FAIL: 'NODES_GET_FAIL',
+
+    NODES_ADD_SUCCESS: 'NODES_ADD_SUCCESS',
+    NODES_ADD_FAIL: 'NODES_ADD_FAIL',
 }
 
 let NodeActions = {
@@ -60,6 +63,20 @@ let NodeActions = {
                 })
             })
     },
+    create: (data) => {
+        return NodeApi.post(data)
+            .then((response) => {
+                return store.dispatch({
+                    type: ACTION_CONSTANTS.NODES_ADD_SUCCESS,
+                    payload: response
+                })
+            })
+            .catch(() => {
+                return store.dispatch({
+                    type: ACTION_CONSTANTS.NODES_ADD_FAIL
+                })
+            })
+    },
 }
 
 var initialState = {
@@ -82,6 +99,15 @@ function nodeReducer(state = initialState, action) {
                 return state
             }
 
+            newById = _.clone(state.byId);
+            newById[action.payload.id] = action.payload;
+
+            return Object.assign({}, state, {
+                raw: [...state.raw, action.payload],
+                byId: newById,
+                listHasFetched: state.listHasFetched,
+            })
+        case ACTION_CONSTANTS.NODES_ADD_SUCCESS:
             newById = _.clone(state.byId);
             newById[action.payload.id] = action.payload;
 

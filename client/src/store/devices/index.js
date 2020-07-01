@@ -11,6 +11,9 @@ const ACTION_CONSTANTS = {
 
     DEVICES_GET_SUCCESS: 'DEVICES_GET_SUCCESS',
     DEVICES_GET_FAIL: 'DEVICES_GET_FAIL',
+
+    DEVICES_ADD_SUCCESS: 'DEVICES_ADD_SUCCESS',
+    DEVICES_ADD_FAIL: 'DEVICES_ADD_FAIL',
 }
 
 let DeviceActions = {
@@ -60,6 +63,20 @@ let DeviceActions = {
                 })
             })
     },
+    create: (data) => {
+        return DeviceApi.post(data)
+            .then((response) => {
+                return store.dispatch({
+                    type: ACTION_CONSTANTS.DEVICES_ADD_SUCCESS,
+                    payload: response
+                })
+            })
+            .catch(() => {
+                return store.dispatch({
+                    type: ACTION_CONSTANTS.DEVICES_ADD_FAIL
+                })
+            })
+    },
 }
 
 var initialState = {
@@ -82,6 +99,15 @@ function deviceReducer(state = initialState, action) {
                 return state
             }
 
+            newById = _.clone(state.byId);
+            newById[action.payload.id] = action.payload;
+
+            return Object.assign({}, state, {
+                raw: [...state.raw, action.payload],
+                byId: newById,
+                listHasFetched: state.listHasFetched,
+            })
+        case ACTION_CONSTANTS.DEVICES_ADD_SUCCESS:
             newById = _.clone(state.byId);
             newById[action.payload.id] = action.payload;
 

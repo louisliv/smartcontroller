@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { NodeList } from 'nodes'
 
 import {
-    Container, 
     Row
 } from 'reactstrap';
 

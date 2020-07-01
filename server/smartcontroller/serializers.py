@@ -18,8 +18,10 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class NodeSerializer(serializers.ModelSerializer):
-    devices = DeviceSerializer(many=True)
+    devices = DeviceSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
         model = Node
         fields = ['id', 'name', 'devices']
+        extra_kwargs = {'devices': {'required': False}}
+        validators = []

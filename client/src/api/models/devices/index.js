@@ -10,4 +10,8 @@ Devices.powerOff = (deviceId) => {
     Devices.getAll({}, deviceId + '/power_off')
 }
 
+Devices.discover = () => {
+    return Devices.getAll({}, 'discover')
+}
+
 export default Devices;

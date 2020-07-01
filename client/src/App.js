@@ -3,7 +3,9 @@ import './App.css';
 import './custom.scss';
 import Home from './home';
 import NodeDetail from './nodes/detail';
-import DeviceDetail from './devices/detail'
+import DeviceDetail from './devices/detail';
+import AddKasaDevice from './devices/add-kasa';
+import AddDevice from './devices/add-device';
 
 import { Route, Switch } from "react-router-dom";
 import {
@@ -21,6 +23,9 @@ function App() {
                   <Route exact path="/"><Home/></Route>
                   <Route path="/nodes/:nodeId" component={NodeDetail}/>
                   <Route path="/devices/:deviceId" component={DeviceDetail}/>
+                  <Route path="/add-pi" component={DeviceDetail}/>
+                  <Route path="/add-kasa" component={AddKasaDevice}/>
+                  <Route path="/add-device" component={AddDevice}/>
                 </Switch>
             </Container>
         </div>

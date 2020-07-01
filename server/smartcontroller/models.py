@@ -6,11 +6,13 @@ from django.core.exceptions import ValidationError
 from .utils import reform_cmd_string
 
 from paramiko import SSHClient, AutoAddPolicy
+import asyncio
 
 # Create your models here.
 
 from threading import Thread
 import time
+from kasa import SmartPlug, SmartBulb
 
 class NodePowerOffThread(Thread):
     def __init__(self, node):
@@ -77,17 +79,21 @@ class Device(models.Model):
 
     def set_power_state(self, power):
         if self.device_type in [self.PLUG, self.BULB]:
-            process = subprocess.Popen(
-                ["tplink-smarthome-api", "setPowerState", self.ip, power], 
-                stdout=subprocess.PIPE
-            )
-            output = process.communicate()[0]
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            
+            if power:
+                asyncio.run(device.turn_on()) 
+            else:
+                asyncio.run(device.turn_off())
+
+            asyncio.run(device.update())
 
         elif self.device_type in [self.PI]:
             stdin = b''
             stdout = b''
             stderr = b''
-            if power in ['false']:
+            if not power:
                 client = SSHClient()
                 client.set_missing_host_key_policy(AutoAddPolicy())
                 client.connect(
@@ -110,16 +116,26 @@ class Device(models.Model):
 
         return (None, None, None)
 
+    def get_device(self):
+        if self.device_type in [self.PLUG, self.BULB]:
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            asyncio.run(device.update())
+            
+            return device
+
+        else:
+            return self
+
     def get_power_state(self):
-        process = subprocess.Popen(
-            ["tplink-smarthome-api", "getSysInfo", self.ip], 
-            stdout=subprocess.PIPE
-        )
-        output = process.communicate()[0]
-        response_dict = reform_cmd_string(output)
-        state = int(response_dict['relay_state'])
-        if state:
-            return True
+        if self.device_type in [self.PLUG, self.BULB]:
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            
+            asyncio.run(device.update())
+            
+            return device.is_on
+
         return False
 
     def clean(self):
