@@ -49,6 +49,14 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
         return Response({}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'])
+    def change_color(self, request, pk=None):
+        device = self.get_object()
+
+        device.change_color(request.data.get('color', None))
+
+        return Response({}, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['get'])
     def discover(self, request):
         all_devices = Device.objects.filter(

@@ -3,10 +3,11 @@ from django.db import models
 import subprocess
 
 from django.core.exceptions import ValidationError
-from .utils import reform_cmd_string
+from .utils import rgb_to_hsv
 
 from paramiko import SSHClient, AutoAddPolicy
 import asyncio
+import colorsys
 
 # Create your models here.
 
@@ -29,6 +30,11 @@ class NodePowerOffThread(Thread):
             device.set_power_state('false')
             if device.device_type in [device.PI]:
                 time.sleep(20)
+
+def hex_to_rgb(hex):
+    hex = hex.lstrip('#')
+    hlen = len(hex)
+    return tuple(int(hex[i:i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
 
 class Node(models.Model):
     name = models.CharField(max_length=144)
@@ -126,6 +132,17 @@ class Device(models.Model):
 
         else:
             return self
+
+    def change_color(self, color):
+        if not self.device_type in [self.BULB]:
+            return
+
+        device = self.get_device()
+
+        rgb = hex_to_rgb(color)
+        hsv = rgb_to_hsv(*rgb)
+
+        asyncio.run(device.set_hsv(*hsv))
 
     def get_power_state(self):
         if self.device_type in [self.PLUG, self.BULB]:

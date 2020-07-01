@@ -14,4 +14,8 @@ Devices.discover = () => {
     return Devices.getAll({}, 'discover')
 }
 
+Devices.changeColor = (deviceId, color) => {
+    Devices.post({color:color}, deviceId + '/change_color')
+}
+
 export default Devices;

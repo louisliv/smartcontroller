@@ -13,8 +13,14 @@ import {
     CardTitle,
     Col,
     CardText,
-    Row
+    Row,
+    Form,
+    FormGroup,
+    Label,
+    Input
 } from 'reactstrap'
+
+import { CirclePicker, SwatchesPicker } from 'react-color';
 
 class DeviceDetail extends Component {
     constructor(props) {
@@ -23,6 +29,8 @@ class DeviceDetail extends Component {
         this.state = {
             popoverOpen: false,
         };
+
+        this.handleColorChange = this.handleColorChange.bind(this);
     }
 
     componentWillMount() {
@@ -38,7 +46,17 @@ class DeviceDetail extends Component {
         DeviceApi.powerOn(device.id);
     }
 
+    handleColorChange(color, event) {
+        DeviceApi.changeColor(this.props.device.id, color.hex);
+    }
+
     render() {
+        let colorPicker;
+        if (this.props.device && this.props.device.device_type == 'BULB'){
+            colorPicker = (
+                <SwatchesPicker width={600} height={300} onChange={this.handleColorChange}/>
+            )
+        }
         return (
             <Row>
                 <Col xs='12'>
@@ -50,6 +68,7 @@ class DeviceDetail extends Component {
                             <CardTitle className="text-center"><h2>{this.props.device.name}</h2></CardTitle>
                             <CardText>IP: {this.props.device.ip}</CardText>
                             <CardText>Type: {this.props.device.device_type_display}</CardText>
+                            {colorPicker}
                         </CardBody>
                     </Card>
                 </Col>
