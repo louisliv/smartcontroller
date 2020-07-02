@@ -144,6 +144,14 @@ class Device(models.Model):
 
         asyncio.run(device.set_hsv(*hsv))
 
+    def change_brightness(self, brightness):
+        if not self.device_type in [self.BULB]:
+            return
+
+        device = self.get_device()
+
+        asyncio.run(device.set_brightness(int(brightness)))
+
     def get_power_state(self):
         if self.device_type in [self.PLUG, self.BULB]:
             device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]

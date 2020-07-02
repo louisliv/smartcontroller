@@ -18,4 +18,8 @@ Devices.changeColor = (deviceId, color) => {
     Devices.post({color:color}, deviceId + '/change_color')
 }
 
+Devices.changeBrightness = (deviceId, brightness) => {
+    Devices.post({brightness:brightness}, deviceId + '/change_brightness')
+}
+
 export default Devices;

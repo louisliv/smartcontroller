@@ -14,13 +14,12 @@ import {
     Col,
     CardText,
     Row,
-    Form,
-    FormGroup,
-    Label,
     Input
 } from 'reactstrap'
 
-import { CirclePicker, SwatchesPicker } from 'react-color';
+import Slider from 'react-rangeslider';
+
+import { SwatchesPicker } from 'react-color';
 
 class DeviceDetail extends Component {
     constructor(props) {
@@ -28,13 +27,14 @@ class DeviceDetail extends Component {
 
         this.state = {
             popoverOpen: false,
+            brightness: 9
         };
 
         this.handleColorChange = this.handleColorChange.bind(this);
+        // this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
     }
 
     componentWillMount() {
-        console.log(this.props.match)
         DeviceActions.get(this.props.match.params.deviceId);
     }
 
@@ -50,15 +50,30 @@ class DeviceDetail extends Component {
         DeviceApi.changeColor(this.props.device.id, color.hex);
     }
 
+    handleBrightnessChange = (event) => {
+        let level = event.target.value
+
+        this.setState({
+            brightness: level
+        })
+    }
+
+    handleBrightSub = (event) => {
+        DeviceApi.changeBrightness(
+            this.props.device.id,
+            event.target.value
+        )
+    }
+
     render() {
         let colorPicker;
-        if (this.props.device && this.props.device.device_type == 'BULB'){
+        if (this.props.device && this.props.device.device_type === 'BULB'){
             colorPicker = (
-                <SwatchesPicker width={600} height={300} onChange={this.handleColorChange}/>
+                <SwatchesPicker width="100%" height={300} onChange={this.handleColorChange}/>
             )
         }
         return (
-            <Row>
+            <Row className="main-row">
                 <Col xs='12'>
                     <Card className="controller-card">
                         <CardBody>
@@ -69,6 +84,11 @@ class DeviceDetail extends Component {
                             <CardText>IP: {this.props.device.ip}</CardText>
                             <CardText>Type: {this.props.device.device_type_display}</CardText>
                             {colorPicker}
+                            <Input type='range' 
+                                name='range'
+                                value={this.state.brightness}
+                                onChange={this.handleBrightnessChange}
+                                onMouseUp={this.handleBrightSub} />
                         </CardBody>
                     </Card>
                 </Col>

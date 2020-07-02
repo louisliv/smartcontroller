@@ -45,17 +45,22 @@ class AddKasaDevice extends Component {
                     </ListGroupItem>
                 )
             })
-            return (
-                <ListGroup>
-                    {devices}
-                </ListGroup>
-            );
+
+            if (devices.length) {
+                return (
+                    <ListGroup>
+                        {devices}
+                    </ListGroup>
+                );
+            } else {
+                return (<div>No new smart devices found.</div>)
+            }
         } else {
             return (
                 <div className="text-center">
                     <FontAwesomeIcon icon={faSpinner} spin size="8x"></FontAwesomeIcon>
                 </div>
-                )
+            )
         }
         
     }

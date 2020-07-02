@@ -57,6 +57,14 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
         return Response({}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'])
+    def change_brightness(self, request, pk=None):
+        device = self.get_object()
+
+        device.change_brightness(request.data.get('brightness', None))
+
+        return Response({}, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['get'])
     def discover(self, request):
         all_devices = Device.objects.filter(
