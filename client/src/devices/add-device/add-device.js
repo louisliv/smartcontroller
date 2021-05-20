@@ -36,7 +36,9 @@ class AddDevice extends Component {
         this.state = {
             device: {},
             node: {},
-            modalOpen: false
+            modalOpen: false,
+            types: [],
+            type: null
         };
 
         this.toggle = this.toggle.bind(this);
@@ -46,6 +48,10 @@ class AddDevice extends Component {
 
     componentWillMount() {
         NodeActions.getAll();
+        DeviceApi.getDeviceTypes().then((response) => {
+            console.log(response)
+            this.setState({'types':response})
+        });
         if (this.props.location.state.kasaDevice) {
             this.setState({
                 device: this.props.location.state.kasaDevice
@@ -78,6 +84,15 @@ class AddDevice extends Component {
         })
     }
 
+    handleTypeChange(event, index) {
+        console.log(event)
+        let value = event.value
+            
+        this.setState({
+            type: value
+        })
+    }
+
     onNodeSubmit(event) {
         event.preventDefault();
         NodeActions.create(this.state.node).then((response) => {
@@ -89,8 +104,9 @@ class AddDevice extends Component {
         event.preventDefault();
         let device = {
             ip: this.state.device.ip,
-            device_type: this.state.device.device_type,
-            node: this.state.device.node.id
+            device_type: this.state.type,
+            node: this.state.device.node.id,
+            mac: this.state.device.mac
         }
         console.log(device)
         DeviceActions.create(device);
@@ -102,6 +118,14 @@ class AddDevice extends Component {
 
     getOptionLabel(option) {
         return option.name
+    }
+
+    getDeviceOptionValue(option) {
+        return option.value
+    }
+
+    getDeviceOptionLabel(option) {
+        return option.display
     }
 
     toggle(){
@@ -135,6 +159,18 @@ class AddDevice extends Component {
                                         <FontAwesomeIcon icon={faPlus}/>
                                     </Button>
                                     </InputGroupAddon>
+                            </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Device Type</Label>
+                            <InputGroup>
+                                <Select type="select" 
+                                    name='type-select'
+                                    options={this.state.types}
+                                    className='text-dark node-select'
+                                    onChange={(option) => this.handleTypeChange(option, 'node')}
+                                    getOptionValue={this.getDeviceOptionValue}
+                                    getOptionLabel={this.getDeviceOptionLabel}/>
                             </InputGroup>
                         </FormGroup>
                         <FormGroup>

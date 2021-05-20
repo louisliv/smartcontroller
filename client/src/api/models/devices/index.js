@@ -22,4 +22,8 @@ Devices.changeBrightness = (deviceId, brightness) => {
     Devices.post({brightness:brightness}, deviceId + '/change_brightness')
 }
 
+Devices.getDeviceTypes = () => {
+    return Devices.getAll({}, 'types')
+}
+
 export default Devices;

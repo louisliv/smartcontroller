@@ -17,8 +17,6 @@ import {
     Input
 } from 'reactstrap'
 
-import Slider from 'react-rangeslider';
-
 import { SwatchesPicker } from 'react-color';
 
 class DeviceDetail extends Component {
@@ -31,7 +29,7 @@ class DeviceDetail extends Component {
         };
 
         this.handleColorChange = this.handleColorChange.bind(this);
-        // this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
+        this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
     }
 
     componentWillMount() {
@@ -67,9 +65,17 @@ class DeviceDetail extends Component {
 
     render() {
         let colorPicker;
+        let brightnessLevel;
         if (this.props.device && this.props.device.device_type === 'BULB'){
             colorPicker = (
                 <SwatchesPicker width="100%" height={300} onChange={this.handleColorChange}/>
+            )
+            brightnessLevel = (
+                <Input type='range' 
+                    name='range'
+                    value={this.state.brightness}
+                    onChange={this.handleBrightnessChange}
+                    onMouseUp={this.handleBrightSub} />
             )
         }
         return (
@@ -84,11 +90,7 @@ class DeviceDetail extends Component {
                             <CardText>IP: {this.props.device.ip}</CardText>
                             <CardText>Type: {this.props.device.device_type_display}</CardText>
                             {colorPicker}
-                            <Input type='range' 
-                                name='range'
-                                value={this.state.brightness}
-                                onChange={this.handleBrightnessChange}
-                                onMouseUp={this.handleBrightSub} />
+                            {brightnessLevel}
                         </CardBody>
                     </Card>
                 </Col>

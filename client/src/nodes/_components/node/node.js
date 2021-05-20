@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPowerOff, faPlug, faLightbulb } from '@fortawesome/free-solid-svg-icons'
-import { faRaspberryPi } from '@fortawesome/free-brands-svg-icons'
+import { faPowerOff, faPlug, faLightbulb, faTv } from '@fortawesome/free-solid-svg-icons'
+import { faRaspberryPi, faLinux } from '@fortawesome/free-brands-svg-icons'
 import DeviceApi from 'api/models/devices'
 import NodeApi from 'api/models/nodes'
 import { Link } from "react-router-dom";
@@ -68,6 +68,10 @@ class Node extends Component {
                 icon = faRaspberryPi
             } else if (device.device_type === 'PLUG') {
                 icon = faPlug
+            } else if (device.device_type === 'LINUX') {
+                icon = faLinux
+            } else if (device.device_type === 'ROKU') {
+                icon = faTv
             } else {
                 icon =faLightbulb
             }

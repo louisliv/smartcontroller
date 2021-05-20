@@ -7,6 +7,13 @@ from rest_framework.response import Response
 from kasa import Discover
 import asyncio
 import json
+import nmap
+import socket
+
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 
 # Create your views here.
 class NodeViewSet(viewsets.ModelViewSet):
@@ -32,6 +39,12 @@ class NodeViewSet(viewsets.ModelViewSet):
 class DeviceViewSet(viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
+
+    @action(detail=False, methods=['get'])
+    def types(self, request):
+        device_types = [{'value': key, 'display': value} for (key, value) in Device.TYPE_CHOICES]
+
+        return Response(device_types, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['get'])
     def power_off(self, request, pk=None):
@@ -67,29 +80,40 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def discover(self, request):
-        all_devices = Device.objects.filter(
-            device_type__in=[Device.BULB, Device.PLUG])
-        found_devices = asyncio.run(Discover.discover())
+        nm = nmap.PortScanner()
+        all_devices = Device.objects.all()
 
-        for addr, dev in found_devices.items():
-            asyncio.run(dev.update())
+        ip = get_ip_address()
 
-        devices = list(found_devices.values())
+        ip_nums = ip.split('.')
+        ip_nums[-1] = '0'
+
+        print(ip_nums)
+
+        search_ip = '.'.join(ip_nums) + '/24'
+
+        found_devices = nm.scan(search_ip, arguments="-sn")
 
         device_objs = []
 
-        for device in devices:
-            check_for_existing = all_devices.filter(ip=device.host)
+        for device in nm.all_hosts():
+            mac = nm[device]['addresses'].get('mac', None)
+            
+            check_for_existing = all_devices.filter(mac=mac)
+
             if not check_for_existing:
-                dev_type = Device.PLUG
-
-                if device.is_bulb:
-                    dev_type = Device.BULB
-
                 device_objs.append({
-                    "name": device.alias,
-                    "ip": device.host,
-                    "device_type": dev_type
+                    "hostname": nm[device].hostname(),
+                    "ip": device,
+                    "mac": mac
+                })
+            else:
+                dev = check_for_existing[0]
+                device_objs.append({
+                    "id": dev.pk,
+                    "hostname": nm[device].hostname(),
+                    "ip": device,
+                    "mac": mac
                 })
 
         return Response(device_objs, status=status.HTTP_200_OK)

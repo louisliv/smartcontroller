@@ -40,7 +40,7 @@ class AddKasaDevice extends Component {
                                     kasaDevice: device
                                 }
                             }}>
-                            {device.name}
+                            {device.ip}
                         </Link>
                     </ListGroupItem>
                 )
@@ -53,7 +53,7 @@ class AddKasaDevice extends Component {
                     </ListGroup>
                 );
             } else {
-                return (<div>No new smart devices found.</div>)
+                return (<div>No smart devices found.</div>)
             }
         } else {
             return (

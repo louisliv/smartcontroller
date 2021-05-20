@@ -23,9 +23,8 @@ function App() {
                   <Route exact path="/"><Home/></Route>
                   <Route path="/nodes/:nodeId" component={NodeDetail}/>
                   <Route path="/devices/:deviceId" component={DeviceDetail}/>
-                  <Route path="/add-pi" component={DeviceDetail}/>
-                  <Route path="/add-kasa" component={AddKasaDevice}/>
                   <Route path="/add-device" component={AddDevice}/>
+                  <Route path="/add-kasa" component={AddKasaDevice}/>
                 </Switch>
             </Container>
         </div>

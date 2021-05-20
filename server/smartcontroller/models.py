@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from .utils import rgb_to_hsv
 
 from paramiko import SSHClient, AutoAddPolicy
+import paramiko, getpass, re, time
 import asyncio
 import colorsys
 
@@ -14,6 +15,7 @@ import colorsys
 from threading import Thread
 import time
 from kasa import SmartPlug, SmartBulb
+from roku import Roku
 
 class NodePowerOffThread(Thread):
     def __init__(self, node):
@@ -58,16 +60,26 @@ class Device(models.Model):
     PI = 'PI'
     PLUG = 'PLUG'
     BULB = 'BULB'
+    LINUX = 'LINUX'
+    PC = 'PC'
+    ROKU = 'ROKU'
     TYPE_CHOICES = [
         (PI, 'Raspberry Pi'),
         (PLUG, 'Smart Plug'),
-        (BULB, 'Smart Bulb')
+        (BULB, 'Smart Bulb'),
+        (LINUX, 'Linux'),
+        (PC, 'PC'),
+        (ROKU, 'Roku')
     ]
 
     device_type=models.CharField(
-        max_length=4,
+        max_length=5,
         choices=TYPE_CHOICES,
         default=PLUG,
+    )
+    mac = models.CharField(
+        max_length=100,
+        blank=True
     )
     node = models.ForeignKey(Node, on_delete=models.CASCADE, related_name='devices')
     ip = models.GenericIPAddressField()
@@ -95,7 +107,7 @@ class Device(models.Model):
 
             asyncio.run(device.update())
 
-        elif self.device_type in [self.PI]:
+        elif self.device_type in [self.PI, self.LINUX]:
             stdin = b''
             stdout = b''
             stderr = b''
@@ -108,7 +120,11 @@ class Device(models.Model):
                     username=self.username, 
                     password=self.password
                 )
-                stdin_model, stdout_model, stderr_model = client.exec_command('sudo shutdown -h now')
+                stdin_model, stdout_model, stderr_model = client.exec_command('sudo -S shutdown -h now')
+                stdin_model.write('%s\n' % self.password)
+                stderr_model.flush()
+                # print the results
+
                 if stdin_model.readable():
                     stdin = stdin_model.read()
                 if stdout_model.readable():
@@ -120,6 +136,9 @@ class Device(models.Model):
 
                 return (stdin, stdout, stderr)
 
+        elif self.device_type in [self.ROKU]:
+            roku = Roku(self.ip)
+            roku.select()
         return (None, None, None)
 
     def get_device(self):

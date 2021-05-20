@@ -36,20 +36,12 @@ class SiteNavbar extends Component {
             <Navbar color="dark" dark expand="md" className="home-navbar">
                 <NavbarBrand className="mr-auto">SmartController</NavbarBrand>
                 <Nav navbar>
-                    <Dropdown isOpen={this.state.dropdown} 
-                        target={'add-icon'} 
-                        toggle={this.toggle}>
-                        <DropdownToggle tag="div" className="text-white">
-                            <FontAwesomeIcon id="add-icon" 
-                                icon={faPlus} 
-                                size="2x"
-                                style={{marginRight:'10px', cursor:'pointer'}}/>
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                            <DropdownItem><Link to={"/add-pi"}>Raspberry Pi</Link></DropdownItem>
-                            <DropdownItem><Link to={"/add-kasa"}>Kasa Smart Device</Link></DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    <Link to={"/add-kasa"} className="text-white">
+                        <FontAwesomeIcon id="add-icon" 
+                            icon={faPlus} 
+                            size="2x"
+                            style={{marginRight:'10px', cursor:'pointer'}}/>
+                    </Link>
                     <Link to="/" className="text-white"><FontAwesomeIcon icon={faHome} size="2x"/></Link>
                 </Nav>
             </Navbar>
