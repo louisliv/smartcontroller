@@ -7,4 +7,4 @@ class DeviceForm(ModelForm):
         widgets = {
             'password': PasswordInput(),
         }
-        fields = ['device_type', 'node', 'ip', 'username', 'password']
+        fields = ['device_type', 'node', 'ip', 'username', 'password', 'mac']

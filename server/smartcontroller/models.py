@@ -3,14 +3,19 @@ from django.db import models
 import subprocess
 
 from django.core.exceptions import ValidationError
-from .utils import reform_cmd_string
+from .utils import rgb_to_hsv
 
 from paramiko import SSHClient, AutoAddPolicy
+import paramiko, getpass, re, time
+import asyncio
+import colorsys
 
 # Create your models here.
 
 from threading import Thread
 import time
+from kasa import SmartPlug, SmartBulb
+from roku import Roku
 
 class NodePowerOffThread(Thread):
     def __init__(self, node):
@@ -27,6 +32,11 @@ class NodePowerOffThread(Thread):
             device.set_power_state('false')
             if device.device_type in [device.PI]:
                 time.sleep(20)
+
+def hex_to_rgb(hex):
+    hex = hex.lstrip('#')
+    hlen = len(hex)
+    return tuple(int(hex[i:i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
 
 class Node(models.Model):
     name = models.CharField(max_length=144)
@@ -50,16 +60,26 @@ class Device(models.Model):
     PI = 'PI'
     PLUG = 'PLUG'
     BULB = 'BULB'
+    LINUX = 'LINUX'
+    PC = 'PC'
+    ROKU = 'ROKU'
     TYPE_CHOICES = [
         (PI, 'Raspberry Pi'),
         (PLUG, 'Smart Plug'),
-        (BULB, 'Smart Bulb')
+        (BULB, 'Smart Bulb'),
+        (LINUX, 'Linux'),
+        (PC, 'PC'),
+        (ROKU, 'Roku')
     ]
 
     device_type=models.CharField(
-        max_length=4,
+        max_length=5,
         choices=TYPE_CHOICES,
         default=PLUG,
+    )
+    mac = models.CharField(
+        max_length=100,
+        blank=True
     )
     node = models.ForeignKey(Node, on_delete=models.CASCADE, related_name='devices')
     ip = models.GenericIPAddressField()
@@ -77,17 +97,21 @@ class Device(models.Model):
 
     def set_power_state(self, power):
         if self.device_type in [self.PLUG, self.BULB]:
-            process = subprocess.Popen(
-                ["tplink-smarthome-api", "setPowerState", self.ip, power], 
-                stdout=subprocess.PIPE
-            )
-            output = process.communicate()[0]
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            
+            if power:
+                asyncio.run(device.turn_on()) 
+            else:
+                asyncio.run(device.turn_off())
 
-        elif self.device_type in [self.PI]:
+            asyncio.run(device.update())
+
+        elif self.device_type in [self.PI, self.LINUX]:
             stdin = b''
             stdout = b''
             stderr = b''
-            if power in ['false']:
+            if not power:
                 client = SSHClient()
                 client.set_missing_host_key_policy(AutoAddPolicy())
                 client.connect(
@@ -96,7 +120,11 @@ class Device(models.Model):
                     username=self.username, 
                     password=self.password
                 )
-                stdin_model, stdout_model, stderr_model = client.exec_command('sudo shutdown -h now')
+                stdin_model, stdout_model, stderr_model = client.exec_command('sudo -S shutdown -h now')
+                stdin_model.write('%s\n' % self.password)
+                stderr_model.flush()
+                # print the results
+
                 if stdin_model.readable():
                     stdin = stdin_model.read()
                 if stdout_model.readable():
@@ -108,18 +136,50 @@ class Device(models.Model):
 
                 return (stdin, stdout, stderr)
 
+        elif self.device_type in [self.ROKU]:
+            roku = Roku(self.ip)
+            roku.select()
         return (None, None, None)
 
+    def get_device(self):
+        if self.device_type in [self.PLUG, self.BULB]:
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            asyncio.run(device.update())
+            
+            return device
+
+        else:
+            return self
+
+    def change_color(self, color):
+        if not self.device_type in [self.BULB]:
+            return
+
+        device = self.get_device()
+
+        rgb = hex_to_rgb(color)
+        hsv = rgb_to_hsv(*rgb)
+
+        asyncio.run(device.set_hsv(*hsv))
+
+    def change_brightness(self, brightness):
+        if not self.device_type in [self.BULB]:
+            return
+
+        device = self.get_device()
+
+        asyncio.run(device.set_brightness(int(brightness)))
+
     def get_power_state(self):
-        process = subprocess.Popen(
-            ["tplink-smarthome-api", "getSysInfo", self.ip], 
-            stdout=subprocess.PIPE
-        )
-        output = process.communicate()[0]
-        response_dict = reform_cmd_string(output)
-        state = int(response_dict['relay_state'])
-        if state:
-            return True
+        if self.device_type in [self.PLUG, self.BULB]:
+            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip))
+            
+            asyncio.run(device.update())
+            
+            return device.is_on
+
         return False
 
     def clean(self):

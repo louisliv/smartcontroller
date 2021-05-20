@@ -2,11 +2,13 @@
 @import './utils/scss/variables.scss';
 
 @import './App.scss';
+@import './devices/add-device/add-device.scss';
 @import './home/home.scss';
 @import './nodes/_components/node/node.scss';
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
+@import '~react-rangeslider/lib/index.css';
 
 
 .flex {

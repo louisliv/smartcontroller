@@ -13,8 +13,11 @@ import {
     CardTitle,
     Col,
     CardText,
-    Row
+    Row,
+    Input
 } from 'reactstrap'
+
+import { SwatchesPicker } from 'react-color';
 
 class DeviceDetail extends Component {
     constructor(props) {
@@ -22,11 +25,14 @@ class DeviceDetail extends Component {
 
         this.state = {
             popoverOpen: false,
+            brightness: 9
         };
+
+        this.handleColorChange = this.handleColorChange.bind(this);
+        this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
     }
 
     componentWillMount() {
-        console.log(this.props.match)
         DeviceActions.get(this.props.match.params.deviceId);
     }
 
@@ -38,9 +44,42 @@ class DeviceDetail extends Component {
         DeviceApi.powerOn(device.id);
     }
 
+    handleColorChange(color, event) {
+        DeviceApi.changeColor(this.props.device.id, color.hex);
+    }
+
+    handleBrightnessChange = (event) => {
+        let level = event.target.value
+
+        this.setState({
+            brightness: level
+        })
+    }
+
+    handleBrightSub = (event) => {
+        DeviceApi.changeBrightness(
+            this.props.device.id,
+            event.target.value
+        )
+    }
+
     render() {
+        let colorPicker;
+        let brightnessLevel;
+        if (this.props.device && this.props.device.device_type === 'BULB'){
+            colorPicker = (
+                <SwatchesPicker width="100%" height={300} onChange={this.handleColorChange}/>
+            )
+            brightnessLevel = (
+                <Input type='range' 
+                    name='range'
+                    value={this.state.brightness}
+                    onChange={this.handleBrightnessChange}
+                    onMouseUp={this.handleBrightSub} />
+            )
+        }
         return (
-            <Row>
+            <Row className="main-row">
                 <Col xs='12'>
                     <Card className="controller-card">
                         <CardBody>
@@ -50,6 +89,8 @@ class DeviceDetail extends Component {
                             <CardTitle className="text-center"><h2>{this.props.device.name}</h2></CardTitle>
                             <CardText>IP: {this.props.device.ip}</CardText>
                             <CardText>Type: {this.props.device.device_type_display}</CardText>
+                            {colorPicker}
+                            {brightnessLevel}
                         </CardBody>
                     </Card>
                 </Col>
