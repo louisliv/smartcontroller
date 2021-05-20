@@ -3,8 +3,8 @@
 server/media/*
 server/static/*
 server/*/static/*
-client/node_modules/*
-client/build/*
+ui/node_modules/*
+ui/build/*
 .vscode/*
 base/*
 *.code-workspace
