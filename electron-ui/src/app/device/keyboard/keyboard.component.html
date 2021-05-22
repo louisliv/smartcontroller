@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-12 text-center">
+        <h1>{{device.name}}</h1>
+    </div>
+
+    <div class="col-12 text-center">
+        <a class="btn btn-secondary media-btn"
+            (click)="sendButtonClick(button.command)" 
+            *ngFor="let button of mediaButtons">
+            <fa-icon [icon]="button.icon"></fa-icon>
+            <fa-icon class="secondary-media-icon" 
+                [icon]="button.secondaryIcon" 
+                *ngIf="button.secondaryIcon">
+            </fa-icon> 
+        </a>
+    </div>
+
+    <div class="col-12 text-center">
+        <div class="simple-keyboard"></div>
+    </div>
+</div>

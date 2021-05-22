@@ -1,0 +1,23 @@
+<div class="row" *ngIf="!isLoaded && !loadError">
+    <div class="col-12 text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
+    </div>
+</div>
+
+<div class="row" *ngIf="!isLoaded && loadError">
+    <div class="col-12 text-center">
+        {{loadError}}
+    </div>
+</div>
+
+<div class="row" *ngIf="isLoaded">
+    <div class="col-12 text-center"><h1>{{node.name}}</h1></div>
+    <div class="col-12 col-md-4" *ngFor="let device of node.devices">
+        <div class="btn btn-primary card text-center" [routerLink]="['/devices', device.id]">
+            <div class="card-body">
+                <fa-icon [icon]="getIcon(device)" size="3x"></fa-icon>
+                <div class="card-title">{{device.name}}</div>
+            </div>
+        </div>
+    </div>
+</div>

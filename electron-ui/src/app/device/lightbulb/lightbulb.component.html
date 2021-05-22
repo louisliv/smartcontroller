@@ -1,0 +1,13 @@
+<div class="col-8 offset-2 text-center">
+    <a class="btn btn-primary w-100" (click)="powerDevice()">
+        <fa-icon [icon]="faPower"></fa-icon>
+    </a>
+</div>
+
+<div class="col-8 offset-2">
+    <color-swatches height="100%" width="100%" (onChangeComplete)="changeBulbColor($event)"></color-swatches>
+</div>
+
+<div class="col-8 offset-2">
+    <input class="form-control" type="range" (change)="changeBulbBrightness($event)"/>
+</div>

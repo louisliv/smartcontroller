@@ -63,6 +63,14 @@ class DeviceViewSet(viewsets.ModelViewSet):
         return Response({}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])
+    def power(self, request, pk=None):
+        device = self.get_object()
+       
+        device.toggle_power_state()
+
+        return Response({}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
     def change_color(self, request, pk=None):
         device = self.get_object()
 

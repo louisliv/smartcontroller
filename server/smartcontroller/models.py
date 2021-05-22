@@ -182,6 +182,11 @@ class Device(models.Model):
 
         return False
 
+    def toggle_power_state(self):
+        state = self.get_power_state()
+
+        return self.set_power_state(not state)
+
     def clean(self):
         if self.device_type in [self.PLUG]:
             plugs = self.node.devices.filter(device_type=self.PLUG)
