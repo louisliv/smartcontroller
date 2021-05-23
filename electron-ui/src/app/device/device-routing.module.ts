@@ -5,6 +5,7 @@ import { DeviceComponent } from './device.component';
 import { KeyboardComponent } from "./keyboard/keyboard.component";
 import { OverviewComponent } from "./overview/overview.component";
 import { DiscoverComponent } from "./discover/discover.component";
+import { AddComponent } from "./add/add.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'discover-devices',
     component: DiscoverComponent
+  },
+  {
+    path: 'add-device',
+    component: AddComponent
   }
 ];
 

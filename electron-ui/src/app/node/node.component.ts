@@ -6,7 +6,7 @@ import {
   faPlug, 
   faKeyboard,
   faDesktop,
-  
+  faHdd
 } from '@fortawesome/free-solid-svg-icons';
 import { faRaspberryPi } from "@fortawesome/free-brands-svg-icons";
 import { NodeApi } from "./../api/api.node";
@@ -25,7 +25,8 @@ export class NodeComponent implements OnInit {
   faPlug = faPlug;
   faKeyboard = faKeyboard;
   faDesktop = faDesktop;
-  faPi = faRaspberryPi
+  faPi = faRaspberryPi;
+  faHdd = faHdd;
   isLoaded = false;
   loadError: any;
 
@@ -54,8 +55,10 @@ export class NodeComponent implements OnInit {
   getIcon(device: Device) {
     if (device.device_type === "BULB") {
       return this.faLightbulb;
-    } else if (["PC", "LINUX", "ROKU"].includes(device.device_type)) {
+    } else if (["PC", "LINUX"].includes(device.device_type)) {
       return this.faDesktop;
+    } else if (device.device_type === "ROKU") {
+      return this.faHdd;
     } else if (device.device_type === "PI") {
       return this.faPi;
     }

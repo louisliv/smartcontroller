@@ -52,4 +52,26 @@ export class DeviceApi {
     getDeviceTypes() : Observable<[]>{
         return this.http.get<[]>(`${AppConfig.apiUrl}/devices/types`)
     }
+
+    post(device: Device) : Observable<Device> {
+        let url;
+
+        if (device.id) {
+            url = `${AppConfig.apiUrl}/devices/${device.id}/`;
+            return this.http.put<Device>(url, device);
+        } else {
+            url = `${AppConfig.apiUrl}/devices/`;
+            return this.http.post<Device>(url, device);
+        }
+    }
+
+    roku(id: number, command: string, argument: string = null) : Observable<{}> {
+        return this.http.post<{}>(
+            `${AppConfig.apiUrl}/devices/${id}/roku/`, 
+            { 
+                command: command,
+                argument: argument
+            }
+        )
+    }
 }

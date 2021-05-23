@@ -1,0 +1,104 @@
+<div class="col-6 text-center">
+    <div class="row">
+        <div class="col-12">
+            <app-roku-button 
+                [button]="rokuButtons.power"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+    </div>
+    <div class="row margin-top">
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.replay"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.search"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.info"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+    </div>
+    <div class="row margin-top">
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.reverse"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.play"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+        <div class="col-4">
+            <app-roku-button 
+                [button]="rokuButtons.forward"
+                [device]="device"
+                class="w-100">
+            </app-roku-button>
+        </div>
+    </div>
+</div>
+
+<div class="col-6">
+    <div class="col-12 d-flex">
+        <app-roku-button 
+            [button]="rokuButtons.back"
+            [device]="device"
+            class="media-btn flex-fill">
+        </app-roku-button>
+        <app-roku-button 
+            [button]="rokuButtons.home"
+            [device]="device"
+            class="flex-fill">
+        </app-roku-button>
+    </div>
+    <div class="col-12 text-center margin-top">
+        <app-roku-button 
+            [button]="rokuButtons.up"
+            [device]="device">
+        </app-roku-button>
+    </div>
+    <div class="col-12 text-center margin-top-sm">
+        <app-roku-button 
+            [button]="rokuButtons.left"
+            [device]="device"
+            class="sm-space-right">
+        </app-roku-button>
+        <app-roku-button 
+            [button]="rokuButtons.select"
+            [device]="device"
+            class="sm-space-right">
+        </app-roku-button>
+        <app-roku-button 
+            [button]="rokuButtons.right"
+            [device]="device">
+        </app-roku-button>
+    </div>
+    <div class="col-12 text-center margin-top-sm">
+        <app-roku-button 
+            [button]="rokuButtons.down"
+            [device]="device">
+        </app-roku-button>
+    </div>
+</div>
+
+<div class="col-12 text-center margin-bottom">
+    <div class="simple-keyboard"></div>
+</div>

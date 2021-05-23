@@ -1,0 +1,7 @@
+<a class="btn btn-{{btnClass}}" (click)="onClick()">
+    <fa-icon [icon]="button.icon"></fa-icon>
+    <fa-icon class="secondary-media-icon" 
+        [icon]="button.secondaryIcon"
+        *ngIf="button.secondaryIcon">
+    </fa-icon>
+</a>

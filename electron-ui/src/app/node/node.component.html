@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="isLoaded">
+<div class="row margin-bottom" *ngIf="isLoaded">
     <div class="col-12 text-center"><h1>{{node.name}}</h1></div>
     <div class="col-12 col-md-4" *ngFor="let device of node.devices">
         <div class="btn btn-primary card text-center" [routerLink]="['/devices', device.id]">

@@ -13,25 +13,22 @@
 <div class="row" *ngIf="isLoaded">
     <div class="col-12 text-center"><h1>Choose Device To Add</h1></div>
     <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Hostname</th>
-                            <th>IP</th>
-                            <th>MAC</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let device of devices">
-                            <td>{{device.hostname}}</td>
-                            <td>{{device.ip}}</td>
-                            <td>{{device.mac}}</td>
-                        </tr>
-                    <tbody>
-                </table>
-            </div>
-        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Vendor</th>
+                    <th>IP</th>
+                    <th>MAC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let device of devices"
+                    [routerLink]="['/add-device']" [state]="device">
+                    <td>{{device.vendor}}</td>
+                    <td>{{device.ip}}</td>
+                    <td>{{device.mac}}</td>
+                </tr>
+            <tbody>
+        </table>
     </div>
 </div>

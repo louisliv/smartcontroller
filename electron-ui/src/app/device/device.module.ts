@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { DeviceRoutingModule } from './device-routing.module';
 
@@ -14,15 +15,19 @@ import { OverviewComponent } from './overview/overview.component';
 
 import { ColorSwatchesModule } from 'ngx-color/swatches';
 import { DiscoverComponent } from './discover/discover.component';
+import { AddComponent } from './add/add.component';
+import { RokuComponent } from './roku/roku.component';
+import { RokuButtonComponent } from './roku/roku-button/roku-button.component';
 
 @NgModule({
-  declarations: [DeviceComponent, KeyboardComponent, PlugComponent, LightbulbComponent, ComputerComponent, OverviewComponent, DiscoverComponent],
+  declarations: [DeviceComponent, KeyboardComponent, PlugComponent, LightbulbComponent, ComputerComponent, OverviewComponent, DiscoverComponent, AddComponent, RokuComponent, RokuButtonComponent],
   imports: [
     CommonModule, 
     SharedModule, 
     DeviceRoutingModule,
     FontAwesomeModule,
-    ColorSwatchesModule
+    ColorSwatchesModule,
+    FormsModule
   ]
 })
 export class DeviceModule {}

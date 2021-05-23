@@ -20,21 +20,21 @@ body {
   color: white;
   margin-top: 15px;
 
-  .table {
-    color: white;
-  }
-
-  .table-hover tbody tr:hover {
-    color: white;
-    cursor: pointer;
-    background-color: #444;
-  }
-
   .card-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.table {
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  color: white;
+  cursor: pointer;
+  background-color: #444;
 }
 
 .swatches-picker {
@@ -75,9 +75,14 @@ body {
   background-color: #444;
   border-color: #444;
 
-  &:active, &:hover, &:focus {
-    background-color: #363636 !important;
-    border-color: #333333 !important;
+  &:active, &:focus {
+    filter: brightness(70%) !important;
+  }
+
+  &:hover {
+    background-color: #444 !important;
+    border-color: #444 !important;
+    color: white !important;
   }
 }
 
@@ -85,19 +90,48 @@ body {
   background-color: #00bc8c;
   border-color: #00bc8c;
 
-  &:active, &:hover, &:focus {
+  &:active, &:focus {
     background-color: #00a077 !important;
     border-color: #009670 !important;
+  }
+
+  &:hover {
+    background-color: #00bc8c !important;
+    border-color: #00bc8c !important;
+    color: white !important;
   }
 }
 
 .btn-primary {
   background-color: #375a7f;
   border-color: #375a7f;
+  color: white;
 
-  &:active, &:hover, &:focus {
+  &:active, &:focus {
     background-color: #2f4d6c !important;
     border-color: #2c4866 !important;
+    color: white !important;
+  }
+
+  &:hover {
+    background-color: #375a7f !important;
+    border-color: #375a7f !important;
+    color: white !important;
+  }
+}
+
+.btn-roku {
+  background-color: #683c92;
+  border-color: #683c92;
+  color: white;
+
+  &:active, &:focus {
+    filter: brightness(70%) !important;
+  }
+
+  &:hover {
+    background-color: #683c92 !important;
+    border-color: #683c92 !important;
     color: white !important;
   }
 }
@@ -108,12 +142,45 @@ body {
 
 .media-btn {
   margin-right: 10px;
+}
 
-  .secondary-media-icon {
-    margin-left: 2px;
-  }
+.secondary-media-icon {
+  margin-left: 2px;
 }
 
 .margin-top {
   margin-top: 15px;
+}
+
+.margin-top-sm {
+  margin-top: 5px;
+}
+
+.simple-keyboard.dark-keyboard-purple {
+  background-color: #303030;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.simple-keyboard.dark-keyboard-purple .hg-button {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #683c92;
+  color: white;
+  border-bottom: none;
+}
+
+.simple-keyboard.dark-keyboard-purple .hg-button:active {
+  filter: brightness(70%) !important;
+  color: white;
+}
+
+.margin-bottom {
+  margin-bottom: 15px;
+}
+
+.sm-space-right {
+  margin-right: 5px;
 }

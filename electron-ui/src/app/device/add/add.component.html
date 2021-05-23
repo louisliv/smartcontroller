@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form (ngSubmit)="submit()" #DeviceForm="ngForm" validate>
+                    <div class="form-group">
+                        <label>IP</label>
+                        <input required 
+                            [(ngModel)]="device.ip" 
+                            name="label" 
+                            #ipField="ngModel"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Device Type*</label>
+                        <select [(ngModel)]="device.device_type" 
+                            class="form-control"
+                            name="device_type" 
+                            #valueType="ngModel"
+                            required>
+                            <option *ngFor="let type of deviceTypes" [ngValue]="type.value">{{type.display}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Node*</label>
+                        <select [(ngModel)]="device.node" 
+                            class="form-control"
+                            name="node" 
+                            #valueType="ngModel"
+                            required>
+                            <option *ngFor="let node of nodes" [ngValue]="node.id">{{node.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" [disabled]="!DeviceForm.form.valid">Submit</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
