@@ -74,4 +74,14 @@ export class DeviceApi {
             }
         )
     }
+
+    firetv(id: number, command: string, argument: string = null) : Observable<{}> {
+        return this.http.post<{}>(
+            `${AppConfig.apiUrl}/devices/${id}/firetv/`, 
+            { 
+                command: command,
+                argument: argument
+            }
+        )
+    }
 }

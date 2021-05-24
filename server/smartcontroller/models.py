@@ -63,13 +63,15 @@ class Device(models.Model):
     LINUX = 'LINUX'
     PC = 'PC'
     ROKU = 'ROKU'
+    AMZN = 'AMZN'
     TYPE_CHOICES = [
         (PI, 'Raspberry Pi'),
         (PLUG, 'Smart Plug'),
         (BULB, 'Smart Bulb'),
         (LINUX, 'Linux'),
         (PC, 'PC'),
-        (ROKU, 'Roku')
+        (ROKU, 'Roku'),
+        (AMZN, 'Amazon FireTv')
     ]
 
     device_type=models.CharField(

@@ -136,6 +136,22 @@ body {
   }
 }
 
+.btn-fire-tv {
+  background-color: #FF9900;
+  border-color: #FF9900;
+  color: white;
+
+  &:active, &:focus {
+    filter: brightness(70%) !important;
+  }
+
+  &:hover {
+    background-color: #FF9900 !important;
+    border-color: #FF9900 !important;
+    color: white !important;
+  }
+}
+
 .btn:hover {
   color: #2c4866;
 }
@@ -173,6 +189,27 @@ body {
 }
 
 .simple-keyboard.dark-keyboard-purple .hg-button:active {
+  filter: brightness(70%) !important;
+  color: white;
+}
+
+.simple-keyboard.dark-keyboard-orange {
+  background-color: #303030;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.simple-keyboard.dark-keyboard-orange .hg-button {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FF9900;
+  color: white;
+  border-bottom: none;
+}
+
+.simple-keyboard.dark-keyboard-orange .hg-button:active {
   filter: brightness(70%) !important;
   color: white;
 }

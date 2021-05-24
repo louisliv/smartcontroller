@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from .models import Node, Device
 from .serializers import NodeSerializer, DeviceSerializer
+from smartcontroller.firetv import firetv
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from kasa import Discover
@@ -10,6 +11,9 @@ import asyncio
 import json
 import nmap
 import socket
+import os
+
+firetvs = {}
 
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -97,6 +101,40 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
         if command:
             method_to_call = getattr(roku, command)
+
+            if argument:
+                method_to_call(argument)
+            else:
+                method_to_call()
+        
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                { 'message': 'Please submit a command' },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    @action(detail=True, methods=['post'])
+    def firetv(self, request, pk=None):
+        device = self.get_object()
+        ftv = firetvs.get(device.ip, None)
+
+        if not ftv:
+            ftv = firetv.FireTV(
+                f"{device.ip}:5555", 
+                adbkey='/home/louis/.android/adbkey'
+            )
+
+            firetvs[device.ip] = ftv
+        
+        command = request.data.get('command', None)
+        argument = request.data.get('argument', None)
+
+        if command:
+            if not ftv.screen_on:
+                ftv.turn_on()
+
+            method_to_call = getattr(ftv, command)
 
             if argument:
                 method_to_call(argument)

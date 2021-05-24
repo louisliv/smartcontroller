@@ -8,7 +8,7 @@ import {
   faDesktop,
   faHdd
 } from '@fortawesome/free-solid-svg-icons';
-import { faRaspberryPi } from "@fortawesome/free-brands-svg-icons";
+import { faRaspberryPi, faAmazon } from "@fortawesome/free-brands-svg-icons";
 import { NodeApi } from "./../api/api.node";
 import { Node } from "./../models/node";
 import { Device } from "./../models/device"
@@ -27,6 +27,7 @@ export class NodeComponent implements OnInit {
   faDesktop = faDesktop;
   faPi = faRaspberryPi;
   faHdd = faHdd;
+  faAmazon = faAmazon;
   isLoaded = false;
   loadError: any;
 
@@ -59,6 +60,8 @@ export class NodeComponent implements OnInit {
       return this.faDesktop;
     } else if (device.device_type === "ROKU") {
       return this.faHdd;
+    } else if (device.device_type === "AMZN") {
+      return this.faAmazon;
     } else if (device.device_type === "PI") {
       return this.faPi;
     }

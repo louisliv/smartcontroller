@@ -26,8 +26,13 @@ export class RokuButtonComponent implements OnInit {
   }
 
   onClick(): void {
-    this.deviceApi.roku(this.device.id, this.button.command)
-      .subscribe();
+    if (this.device.device_type === 'ROKU') {
+      this.deviceApi.roku(this.device.id, this.button.command)
+        .subscribe();
+    } else {
+      this.deviceApi.firetv(this.device.id, this.button.command)
+        .subscribe();
+    }
   }
 
 }
