@@ -13,4 +13,9 @@ export class KeyboardApi {
         let url = `http://${device.ip}:3000/btn-click`
         return this.http.post<{}>(url, {'button': command})
     }
+
+    keyboard(device: Device, literal: string) : Observable<{}>{
+        let url = `http://${device.ip}:3000/keyboard`
+        return this.http.post<{}>(url, {'literal': literal})
+    }
 }

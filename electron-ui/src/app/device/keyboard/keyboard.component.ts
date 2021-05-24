@@ -5,6 +5,7 @@ import { KeyboardApi } from '../../api/api.keyboard';
 import { Device } from '../../models/device';
 import Keyboard from "simple-keyboard";
 import { MediaButtons } from "./keyboard.globals";
+import { computerKeyboard } from "../device.globals";
 
 @Component({
   selector: 'app-keyboard',
@@ -51,7 +52,18 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
     /**
      * If you want to handle the shift and caps lock buttons
      */
-    if (button === "{shift}" || button === "{lock}") this.handleShift();
+    if (button === "{shift}" || button === "{lock}") {
+      this.handleShift()
+    } else {
+      var literal = button;
+      let currentLayout = this.keyboard.options.layoutName;
+
+      if (currentLayout === "shift") {
+        literal = `shift+${literal}`;
+      };
+
+      computerKeyboard(this.keyboardApi, literal, this.device);
+    };
   };
 
   handleShift = () => {

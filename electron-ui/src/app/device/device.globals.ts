@@ -28,6 +28,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { DeviceApi } from "../api/api.device";
+import { KeyboardApi } from '../api/api.keyboard';
 import { Device } from '../models/device';
 
 export const RokuButtons = {
@@ -318,6 +319,40 @@ export const firetvKeyboard = (
             device.id,
             'keyboard',
             value
+        ).subscribe();
+    }
+}
+
+export const computerKeyboard = (
+    api: KeyboardApi, 
+    literal: string, 
+    device: Device
+) => {
+    let value: string;
+    if (literal.includes("{enter}")) {
+        value = 'enter'
+    } else if (literal.includes("{space}")) {
+        value = 'space';
+    } else if (literal.includes("{tab}")) {
+        value = 'tab'
+    } else if (literal === "+" || literal === "shift++") {
+        value = '+'
+    } else if (literal === "`") {
+        value="`"
+    } else if (literal === "\\") {
+        value = "\\"
+    } else if (literal === "@") {
+        value = "shift+@"
+    } else if (literal.includes("{bksp}")) {
+        value = 'backspace'
+    } else {
+        value = literal;
+    };
+
+    if (value) {
+        api.keyboard(
+            device,
+            value,
         ).subscribe();
     }
 }
