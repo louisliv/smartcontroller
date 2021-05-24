@@ -1,0 +1,34 @@
+<div class="row" *ngIf="!isLoaded && !loadError">
+    <div class="col-12 text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
+    </div>
+</div>
+
+<div class="row" *ngIf="!isLoaded && loadError">
+    <div class="col-12 text-center">
+        {{loadError}}
+    </div>
+</div>
+
+<div class="row" *ngIf="isLoaded">
+    <div class="col-12 text-center"><h1>Choose Device To Add</h1></div>
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Vendor</th>
+                    <th>IP</th>
+                    <th>MAC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let device of devices"
+                    [routerLink]="['/add-device']" [state]="device">
+                    <td>{{device.vendor}}</td>
+                    <td>{{device.ip}}</td>
+                    <td>{{device.mac}}</td>
+                </tr>
+            <tbody>
+        </table>
+    </div>
+</div>

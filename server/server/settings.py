@@ -152,11 +152,13 @@ ALLOWED_HOSTS = ['10.0.0.216', '127.0.0.1', 'localhost', 'smartcontroller.local'
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost:8000',
+    'http://localhost:4200',
     'http://localhost',
 )
 
 CSRF_TRUSTED_ORIGINS = (
     'http://localhost:3000',
     'http://localhost:8000',
+    'http://localhost:4200',
     'http://localhost',
 )

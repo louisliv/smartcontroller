@@ -3,9 +3,11 @@
 server/media/*
 server/static/*
 server/*/static/*
-client/node_modules/*
-client/build/*
+node_modules
+build
+dist
 .vscode/*
 base/*
 *.code-workspace
 node/*
+__pycache__

@@ -1,0 +1,23 @@
+<div class="row" *ngIf="!isLoaded && !loadError">
+    <div class="col-12 text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
+    </div>
+</div>
+
+<div class="row" *ngIf="!isLoaded && loadError">
+    <div class="col-12 text-center">
+        {{loadError}}
+    </div>
+</div>
+
+
+<div *ngIf="isLoaded">
+    <div class="row">
+        <div class="col-12 text-center"><h1>{{device.name}}</h1></div>
+    </div>
+    <app-computer class="row" *ngIf="isComputer" [device]="device"></app-computer>
+    <app-plug class="row" *ngIf="device.device_type === 'PLUG'" [device]="device"></app-plug>
+    <app-lightbulb class="row" *ngIf="device.device_type === 'BULB'" [device]="device"></app-lightbulb>
+    <app-roku class="row" *ngIf="device.device_type === 'ROKU'" [device]="device"></app-roku>
+    <app-roku class="row" *ngIf="device.device_type === 'AMZN'" [device]="device"></app-roku>
+</div>
