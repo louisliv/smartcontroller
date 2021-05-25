@@ -5,9 +5,7 @@ BUTTONS = {
     'next': 'next track',
     'previous': 'previous track',
     'stop': 'stop media',
-    'playpause': 'play/pause media',
-    'left': 'left',
-    'right': 'right'
+    'playpause': 'play/pause media'
 }
 
 BUTTON_LINUX = {
@@ -17,7 +15,5 @@ BUTTON_LINUX = {
     'next': 163,
     'previous': 165,
     'stop': 166,
-    'playpause': 164,
-    'left': 'left',
-    'right': 'right'
+    'playpause': 164
 }

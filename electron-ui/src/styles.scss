@@ -63,6 +63,11 @@ body {
   background: #375a7f;
   color: white;
   border-bottom: none;
+
+  &.active {
+    filter: brightness(70%) !important;
+    color: white;  
+  }
 }
 
 .simple-keyboard.dark-keyboard .hg-button:active {
@@ -214,8 +219,17 @@ body {
   color: white;
 }
 
+.keyboard-small-btn {
+  flex-grow: 0 !important;
+  padding: 15px !important;
+}
+
 .margin-bottom {
   margin-bottom: 15px;
+}
+
+.margin-bottom-sm {
+  margin-bottom: 5px;
 }
 
 .sm-space-right {

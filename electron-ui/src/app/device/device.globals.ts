@@ -326,15 +326,16 @@ export const firetvKeyboard = (
 export const computerKeyboard = (
     api: KeyboardApi, 
     literal: string, 
-    device: Device
+    device: Device,
+    onSuccess
 ) => {
     let value: string;
     if (literal.includes("{enter}")) {
-        value = 'enter'
+        value = literal.replace("{enter}", "enter");
     } else if (literal.includes("{space}")) {
-        value = 'space';
+        value = literal.replace("{space}", "space");
     } else if (literal.includes("{tab}")) {
-        value = 'tab'
+        value = literal.replace("{tab}", "tab");
     } else if (literal === "+" || literal === "shift++") {
         value = '+'
     } else if (literal === "`") {
@@ -344,7 +345,11 @@ export const computerKeyboard = (
     } else if (literal === "@") {
         value = "shift+@"
     } else if (literal.includes("{bksp}")) {
-        value = 'backspace'
+        value = literal.replace("{bksp}", "backspace");
+    } else if (literal.includes("{esc}")) {
+        value = literal.replace("{esc}", "esc");
+    } else if (literal.includes("{f")) {
+        value = literal.replace("{f", "F").replace("}", "");
     } else {
         value = literal;
     };
@@ -353,6 +358,10 @@ export const computerKeyboard = (
         api.keyboard(
             device,
             value,
-        ).subscribe();
+        ).subscribe({
+            next: data => {
+                onSuccess()
+            }
+        });
     }
 }

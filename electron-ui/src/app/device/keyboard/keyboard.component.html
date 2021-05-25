@@ -1,20 +1,59 @@
 <div class="row margin-bottom">
-    <div class="col-12 text-center">
+    <div class="col-12 text-center" *ngIf="device">
         <h1>{{device.name}}</h1>
     </div>
 
-    <div class="col-12 text-center">
-        <a class="btn btn-secondary media-btn"
-            (click)="sendButtonClick(button.command)" 
-            *ngFor="let button of mediaButtons">
-            <fa-icon [icon]="button.icon"></fa-icon>
-            <fa-icon class="secondary-media-icon" 
-                [icon]="button.secondaryIcon" 
-                *ngIf="button.secondaryIcon">
-            </fa-icon> 
-        </a>
+    <div class="col-9">
+        <div class="row">
+            <div class="col-12 text-center d-flex margin-bottom-sm">
+                <a class="btn btn-secondary media-btn flex-fill"
+                    (click)="sendButtonClick(button.command)"
+                    *ngFor="let button of mediaButtons">
+                    <fa-icon [icon]="button.icon"></fa-icon>
+                    <fa-icon class="secondary-media-icon" 
+                        [icon]="button.secondaryIcon" 
+                        *ngIf="button.secondaryIcon">
+                    </fa-icon> 
+                </a>
+            </div>
+
+            <div class="col-12 text-center d-flex">
+                <a class="btn btn-secondary media-btn flex-fill"
+                    (click)="onKeyPress(button.command)"
+                    *ngFor="let button of extraButtons">
+                    {{button.text}}
+                </a>
+            </div>
+        </div>
     </div>
 
+    <div class="col-3 text-center">
+        <div class="row">
+            <div class="col-12 text-center margin-bottom-sm">
+                <a class="btn btn-primary"
+                    (click)="sendButtonClick(dButtons.up.command)">
+                    <fa-icon [icon]="dButtons.up.icon"></fa-icon>
+                </a>
+            </div>
+            <div class="col-12 text-center">
+                <a class="btn btn-primary media-btn"
+                    (click)="sendButtonClick(dButtons.left.command)">
+                    <fa-icon [icon]="dButtons.left.icon"></fa-icon>
+                </a>
+                <a class="btn btn-primary media-btn"
+                    (click)="sendButtonClick(dButtons.down.command)">
+                    <fa-icon [icon]="dButtons.down.icon"></fa-icon>
+                </a>
+                <a class="btn btn-primary"
+                    (click)="sendButtonClick(dButtons.right.command)">
+                    <fa-icon [icon]="dButtons.right.icon"></fa-icon>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row margin-bottom">
     <div class="col-12 text-center">
         <div class="simple-keyboard"></div>
     </div>

@@ -8,18 +8,17 @@ BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
 
 app = Flask(__name__)
 
-@app.route("/btn-click", methods = ['POST'])
-@cross_origin(origin='http://localhost:4200')
-def btn_click():
-    data = request.json.get('button')
-    keyboard.send(BTNS[data])
-    return jsonify("Btn Accepted")
-
 @app.route("/keyboard", methods = ['POST'])
 @cross_origin(origin='http://localhost:4200')
 def computer_keyboard():
     data = request.json.get('literal')
-    keyboard.send(data)
+    media_btn = BTNS.get(data, None)
+    
+    if media_btn:
+        keyboard.send(media_btn)
+    else:
+        keyboard.send(data)
+        
     return jsonify("Btn Accepted")
 
 if __name__ == "__main__":

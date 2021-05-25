@@ -54,7 +54,8 @@
     "bootstrap": "^4.5.0",
     "lodash": "^4.17.21",
     "ngx-color": "^7.0.0",
-    "simple-keyboard": "^3.1.10"
+    "simple-keyboard": "^3.1.10",
+    "simple-keyboard-layouts": "^3.0.84"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "11.1.1",
