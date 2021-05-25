@@ -11,7 +11,6 @@
 </div>
 
 <div class="row margin-bottom" *ngIf="isLoaded">
-    <div class="col-12 text-center"><h1>{{node.name}}</h1></div>
     <div class="col-12 col-md-4" *ngFor="let device of node.devices">
         <div class="btn btn-primary card text-center" [routerLink]="['/devices', device.id]">
             <div class="card-body">
@@ -20,4 +19,11 @@
             </div>
         </div>
     </div>
+    <div class="col-12">
+		<a class="btn btn-success w-100 margin-top margin-bottom" 
+            [routerLink]="['/discover-devices']"
+            [queryParams]="{ nodeId: node.id, nodeName: node.name }">
+			<fa-icon [icon]="faPlus"></fa-icon> Add Device
+		</a>
+	</div>
 </div>

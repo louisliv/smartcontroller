@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NodeApi } from "./../api/api.node";
 import { Node } from "./../models/node";
 import { faSpinner, faServer, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { NavbarService } from "../navbar/navbar.service";
 
 @Component({
   selector: 'app-home',
@@ -17,9 +18,14 @@ export class HomeComponent implements OnInit {
   isLoaded = false;
   loadError: any;
 
-  constructor(private router: Router, private nodeApi: NodeApi) { }
+  constructor(
+    private router: Router, 
+    private nodeApi: NodeApi,
+    private navbarService: NavbarService
+  ) { }
 
   ngOnInit(): void { 
+    this.navbarService.set([], 'SmartController')
     this.nodeApi.getAll().subscribe({
       next: data => {
         this.nodes = data;

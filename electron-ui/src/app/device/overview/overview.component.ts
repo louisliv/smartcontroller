@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { DeviceApi } from '../../api/api.device';
 import { Device } from '../../models/device';
+import { NavbarService } from '../../navbar/navbar.service';
 
 @Component({
   selector: 'app-overview',
@@ -18,7 +19,8 @@ export class OverviewComponent implements OnInit {
   
   constructor(
     private route: ActivatedRoute, 
-    private deviceApi: DeviceApi
+    private deviceApi: DeviceApi,
+    private navbar: NavbarService
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +33,7 @@ export class OverviewComponent implements OnInit {
           this.isComputer = ["PC", "LINUX", "PI"].includes(
             this.device.device_type
           );
+          this.navbar.set(['/nodes', this.device.node.toString()], this.device.name)
         },
         error: err => {
           this.isLoaded = false;

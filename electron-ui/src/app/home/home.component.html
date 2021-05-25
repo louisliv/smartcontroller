@@ -11,9 +11,6 @@
 </div>
 
 <div class="row margin-bottom" *ngIf="isLoaded">
-	<div class="col-12 text-center">
-		<h1>SmartController</h1>
-	</div>
   	<div class="col-12 col-md-4" *ngFor="let node of nodes">
     	<div class="btn btn-primary card" [routerLink]="['/nodes', node.id]">
 			<div class="card-body">
@@ -22,9 +19,4 @@
 			</div>
 		</div>
   	</div>
-	<div class="col-12">
-		<a class="btn btn-success w-100 margin-top margin-bottom" [routerLink]="['/discover-devices']">
-			<fa-icon [icon]="faPlus"></fa-icon> Add Device
-		</a>
-	</div>
 </div>
