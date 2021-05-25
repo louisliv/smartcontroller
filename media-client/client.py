@@ -4,6 +4,7 @@ from buttons import BUTTONS, BUTTON_LINUX
 import keyboard
 import os
 import platform
+import pythoncom
 import win32com.client
 
 BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
@@ -16,9 +17,6 @@ def computer_keyboard():
     data = request.json.get('literal')
     media_btn = BTNS.get(data, None)
     
-    if data == "ctrl+alt+delete" and platform.system() == "Windows":
-        shell = win32com.client.Dispatch("WScript.Shell")
-        shell.SendKeys("^(%{DELETE})")
     if media_btn:
         keyboard.send(media_btn)
     else:
