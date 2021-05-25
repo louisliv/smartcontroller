@@ -113,8 +113,7 @@ body {
   color: white;
 
   &:active, &:focus {
-    background-color: #2f4d6c !important;
-    border-color: #2c4866 !important;
+    filter: brightness(70%) !important;
     color: white !important;
   }
 

@@ -51,7 +51,7 @@ export const ExtraButtons = [
         text: "Ins"
     },
     {
-        command: "del",
+        command: "delete",
         text: 'Del'
     },
     {
@@ -59,11 +59,11 @@ export const ExtraButtons = [
         text: 'Home'
     },
     {
-        command: "pgup",
+        command: "page up",
         text: 'Pg Up',
     },
     {
-        command: "pgdn",
+        command: "page down",
         text: 'Pg Dn'
     },
     {
