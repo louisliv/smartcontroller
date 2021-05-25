@@ -4,6 +4,7 @@ from buttons import BUTTONS, BUTTON_LINUX
 import keyboard
 import os
 import platform
+import win32com.client
 
 BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
 
@@ -16,7 +17,8 @@ def computer_keyboard():
     media_btn = BTNS.get(data, None)
     
     if data == "ctrl+alt+delete" and platform.system() == "Windows":
-        os.system("vncdotool key ctrl-alt-del")
+        shell = win32com.client.Dispatch("WScript.Shell")
+        shell.SendKeys("^(%{DELETE})")
     if media_btn:
         keyboard.send(media_btn)
     else:
