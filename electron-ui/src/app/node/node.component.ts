@@ -12,6 +12,7 @@ import { faRaspberryPi, faAmazon } from "@fortawesome/free-brands-svg-icons";
 import { NodeApi } from "./../api/api.node";
 import { Node } from "./../models/node";
 import { Device } from "./../models/device"
+import { NavbarService } from '../navbar/navbar.service';
 
 @Component({
   selector: 'app-node',
@@ -34,7 +35,8 @@ export class NodeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private nodeApi: NodeApi,
-    private router: Router
+    private router: Router,
+    private navbar: NavbarService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +46,7 @@ export class NodeComponent implements OnInit {
           this.node = data;
           this.isLoaded = true;
           this.loadError = null;
+          this.navbar.set(['/home'], this.node.name)
         },
         error: err => {
           this.isLoaded = false;

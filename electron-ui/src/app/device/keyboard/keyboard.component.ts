@@ -11,6 +11,7 @@ import {
   DButtons
 } from "./keyboard.globals";
 import { computerKeyboard} from "../device.globals";
+import { NavbarService } from '../../navbar/navbar.service';
 
 @Component({
   selector: 'app-keyboard',
@@ -29,7 +30,8 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
   constructor(
     private keyboardApi: KeyboardApi,
     private deviceApi: DeviceApi,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navbar: NavbarService
   ) { }
 
   ngAfterViewInit() {
@@ -46,6 +48,7 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
           this.device = data;
           this.isLoaded = true;
           this.loadError = null;
+          this.navbar.set(['/devices', this.device.id.toString()], this.device.name)
         },
         error: err => {
           this.isLoaded = false;

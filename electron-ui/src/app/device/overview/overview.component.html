@@ -12,9 +12,6 @@
 
 
 <div *ngIf="isLoaded">
-    <div class="row">
-        <div class="col-12 text-center"><h1>{{device.name}}</h1></div>
-    </div>
     <app-computer class="row" *ngIf="isComputer" [device]="device"></app-computer>
     <app-plug class="row" *ngIf="device.device_type === 'PLUG'" [device]="device"></app-plug>
     <app-lightbulb class="row" *ngIf="device.device_type === 'BULB'" [device]="device"></app-lightbulb>
