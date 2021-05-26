@@ -91,16 +91,16 @@ python3 manage.py collectstatic --noinput
 ####################
 ## Build Frontend ##
 ####################
-cd $SC/client
+cd $SC/electron-ui
 
 echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
 npm install
 
 echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm run-script build
+npm run electron:build
 
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
-rm -rf $SC/client/node_modules
+rm -rf $SC/electron-ui/node_modules
 
 ##############################
 ## Update/Uninstall Scripts ##

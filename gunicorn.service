@@ -7,7 +7,7 @@ User=root
 Group=www-data
 Environment=NODE_ENV=production
 WorkingDirectory=/var/www/smartcontroller/server
-ExecStart=/usr/local/bin/gunicorn -b :8001 server.wsgi
+ExecStart=/usr/local/bin/gunicorn -b 0.0.0.0:8000 server.wsgi
 StandardOutput=append:/var/log/smartcontroller.log
 StandardError=append:/var/log/smartcontroller.error.log
 
