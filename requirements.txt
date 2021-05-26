@@ -9,4 +9,4 @@ paramiko>=2.7.1
 adb>=1.3.0
 adb-shell>=0.3.3
 PyYAML>=3.12
---pre python-kasa
+python-kasa>=0.4.0.dev2
