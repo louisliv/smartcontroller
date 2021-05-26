@@ -11,3 +11,4 @@ base/*
 *.code-workspace
 node/*
 __pycache__
+release

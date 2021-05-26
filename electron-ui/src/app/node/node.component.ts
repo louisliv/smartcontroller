@@ -6,7 +6,8 @@ import {
   faPlug, 
   faKeyboard,
   faDesktop,
-  faHdd
+  faHdd,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { faRaspberryPi, faAmazon } from "@fortawesome/free-brands-svg-icons";
 import { NodeApi } from "./../api/api.node";
@@ -29,6 +30,7 @@ export class NodeComponent implements OnInit {
   faPi = faRaspberryPi;
   faHdd = faHdd;
   faAmazon = faAmazon;
+  faPlus = faPlus;
   isLoaded = false;
   loadError: any;
 

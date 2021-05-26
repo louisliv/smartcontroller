@@ -5,6 +5,7 @@ import { NodeApi } from "../../api/api.node";
 import { Device } from '../../models/device';
 import { DiscoverDevice } from '../../models/discover-device';
 import { Node } from "../../models/node";
+import { DeviceType } from "../../models/device-type";
 import { NavbarService } from '../../navbar/navbar.service';
 
 @Component({
@@ -15,7 +16,7 @@ import { NavbarService } from '../../navbar/navbar.service';
 export class AddComponent implements OnInit {
   discoveredDevice: DiscoverDevice;
   device: Device = new Device();
-  deviceTypes: string[];
+  deviceTypes: DeviceType[];
   nodes: Node[];
 
   constructor(
