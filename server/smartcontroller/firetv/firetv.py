@@ -7,33 +7,13 @@ ADB Debugging must be enabled.
 """
 
 import logging
+import traceback
 import re
 from socket import error as socket_error
 import sys
 import threading
-from adb import sign_m2crypto
+from ppadb.client import Client as AdbClient
 import os.path as op
-
-# Install adb shell if we can, then try the others
-USE_ADB_SHELL = False
-try:
-    from adb_shell.adb_device import AdbDevice, AdbDeviceTcp
-    from adb_shell.auth.sign_pythonrsa import PythonRSASigner
-    from adb_shell.exceptions import InvalidChecksumError
-
-    USE_ADB_SHELL = True
-except Exception as e:
-    print(e)
-
-
-if not USE_ADB_SHELL:
-    from adb import adb_commands
-    from adb.sign_pythonrsa import PythonRSASigner
-    from adb.adb_protocol import InvalidChecksumError
-    from adb_messenger.client import Client as AdbClient
-
-
-Signer = PythonRSASigner.FromRSAKeyPath
 
 if sys.version_info[0] > 2 and sys.version_info[1] > 1:
     LOCK_KWARGS = {'timeout': 3}
@@ -127,7 +107,7 @@ INTENT_HOME = "android.intent.category.HOME"
 class FireTV:
     """Represents an Amazon Fire TV device."""
 
-    def __init__(self, host, adbkey='', adb_server_ip='', adb_server_port=5037):
+    def __init__(self, host, port=5555, adb_server_ip="127.0.0.1", adb_server_port=5037):
         """Initialize FireTV object.
 
         :param host: Host in format <address>:port.
@@ -136,9 +116,9 @@ class FireTV:
         :param adb_server_port: the port for the ADB server
         """
         self.host = host
-        self.adbkey = adbkey
-        self.adb_server_ip = adb_server_ip
+        self.port = port
         self.adb_server_port = adb_server_port
+        self.adb_server_ip = adb_server_ip
 
         # keep track of whether the ADB connection is intact
         self._available = False
@@ -151,19 +131,9 @@ class FireTV:
         self._adb_client = None  # pure-python-adb
         self._adb_device = None  # pure-python-adb && adb_shell
 
-        # the methods used for sending ADB commands
-        if USE_ADB_SHELL:
-            # adb_shell
-            self.adb_shell = self._adb_shell_adb_shell
-            self.adb_streaming_shell = self._adb_shell_adb_shell
-        elif not self.adb_server_ip:
-            # python-adb
-            self.adb_shell = self._adb_shell_python_adb
-            self.adb_streaming_shell = self._adb_streaming_shell_python_adb
-        else:
-            # pure-python-adb
-            self.adb_shell = self._adb_shell_pure_python_adb
-            self.adb_streaming_shell = self._adb_streaming_shell_pure_python_adb
+        # pure-python-adb
+        self.adb_shell = self._adb_shell_pure_python_adb
+        self.adb_streaming_shell = self._adb_streaming_shell_pure_python_adb
 
         # establish the ADB connection
         self.connect()
@@ -323,71 +293,20 @@ class FireTV:
         :returns: True if successful, False otherwise
         """
         self._adb_lock.acquire(**LOCK_KWARGS)
-        signer = None
-        if self.adbkey:
-            signer = Signer(self.adbkey)
         try:
-            if USE_ADB_SHELL:
-                # adb_shell
-                host, _, port = self.host.partition(':')
-                self._adb_device = AdbDeviceTcp(host=host, port=port)
+            # pure-python-adb
+            try:
+                self._adb_client = AdbClient()
+                self._adb_client.remote_connect(self.host, self.port)
+                print(self._adb_client.devices())
+                self._adb_device = self._adb_client.device(f"{self.host}:{self.port}")
+                self._available = bool(self._adb_device)
+            except:
+                traceback.print_exc()
+                self._available = False
 
-                # Connect to the device
-                connected = False
-                from adb_shell.exceptions import DeviceAuthError
-                try:
-                    if signer:
-                        connected = self._adb_device.connect(rsa_keys=[signer])
-                    else:
-                        connected = self._adb_device.connect()
-                except DeviceAuthError as err:
-                    print("DeviceAuthError:", err)
-
-                self._available = connected
-
-            elif not self.adb_server_ip:
-                # python-adb
-                from adb.usb_exceptions import DeviceAuthError
-                try:
-                    if self.adbkey:
-                        signer = Signer(self.adbkey)
-
-                        # Connect to the device
-                        self._adb = adb_commands.AdbCommands().ConnectDevice(serial=self.host, rsa_keys=[signer], default_timeout_ms=9000)
-                    else:
-                        self._adb = adb_commands.AdbCommands().ConnectDevice(serial=self.host, default_timeout_ms=9000)
-
-                    # ADB connection successfully established
-                    self._available = True
-
-                except socket_error as serr:
-                    if self._available or always_log_errors:
-                        if serr.strerror is None:
-                            serr.strerror = "Timed out trying to connect to ADB device."
-                        logging.warning("Couldn't connect to host: %s, error: %s", self.host, serr.strerror)
-
-                    # ADB connection attempt failed
-                    self._adb = None
-                    self._available = False
-
-                except DeviceAuthError as err:
-                    print("DeviceAuthError:", err)
-
-                finally:
-                    return self._available
-
-            else:
-                # pure-python-adb
-                try:
-                    self._adb_client = AdbClient(host=self.adb_server_ip, port=self.adb_server_port)
-                    self._adb_device = self._adb_client.device(self.host)
-                    self._available = bool(self._adb_device)
-
-                except:
-                    self._available = False
-
-                finally:
-                    return self._available
+            finally:
+                return self._available
 
         finally:
             self._adb_lock.release()

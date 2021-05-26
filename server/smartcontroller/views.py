@@ -120,12 +120,11 @@ class DeviceViewSet(viewsets.ModelViewSet):
         ftv = firetvs.get(device.ip, None)
 
         if not ftv:
-            ftv = firetv.FireTV(
-                f"{device.ip}:5555", 
-                adbkey='/home/louis/.android/adbkey'
-            )
+            ftv = firetv.FireTV(device.ip)
 
             firetvs[device.ip] = ftv
+
+        ftv.update()
         
         command = request.data.get('command', None)
         argument = request.data.get('argument', None)
