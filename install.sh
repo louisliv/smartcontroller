@@ -24,6 +24,7 @@ echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 rm -rf $SC
 sudo rm /var/www/smartcontroller
 sudo rm /etc/systemd/system/gunicorn.service
+sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
 
 #####################
