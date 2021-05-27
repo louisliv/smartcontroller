@@ -4,14 +4,12 @@ from buttons import BUTTONS, BUTTON_LINUX
 import keyboard
 import os
 import platform
-import pythoncom
-import win32com.client
 
 BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
 
-app = Flask(__name__)
+client = Flask(__name__)
 
-@app.route("/keyboard", methods = ['POST'])
+@client.route("/keyboard", methods = ['POST'])
 @cross_origin(origin='http://localhost:4200')
 def computer_keyboard():
     data = request.json.get('literal')
@@ -23,6 +21,3 @@ def computer_keyboard():
         keyboard.send(data)
         
     return jsonify("Btn Accepted")
-
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=3000)

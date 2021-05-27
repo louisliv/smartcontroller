@@ -1,4 +1,0 @@
-{"event_type": "down", "scan_code": 166, "name": "unknown", "time": 1621565468.225836, "device": "/dev/input/event3", "is_keypad": false}
-{"event_type": "up", "scan_code": 166, "name": "unknown", "time": 1621565468.234935, "device": "/dev/input/event3", "is_keypad": false}
-{"event_type": "down", "scan_code": 29, "name": "ctrl", "time": 1621565470.739751, "device": "/dev/input/event3", "is_keypad": false}
-{"event_type": "down", "scan_code": 46, "name": "c", "time": 1621565470.953035, "device": "/dev/input/event3", "is_keypad": false}
