@@ -15,7 +15,9 @@ import socket
 
 hostname = socket.gethostname()
 ## getting the IP address using socket.gethostbyname() method
-ip_address = socket.gethostbyname(hostname)
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+ip_address = s.getsockname()[0]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
