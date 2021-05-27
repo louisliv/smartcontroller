@@ -12,3 +12,4 @@ base/*
 node/*
 __pycache__
 release
+*.spec
