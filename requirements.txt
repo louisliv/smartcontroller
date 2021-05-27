@@ -9,6 +9,6 @@ paramiko>=2.7.1
 pure-python-adb
 PyYAML>=3.12
 --pre python-kasa
-python-roku>=3.1.5
+roku>=4.1.0
 pure-python-adb
 python-nmap>=0.6.4
