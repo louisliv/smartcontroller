@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import socket
 
 hostname = socket.gethostname()
 ## getting the IP address using socket.gethostbyname() method
