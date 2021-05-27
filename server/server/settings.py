@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+hostname = socket.gethostname()
+## getting the IP address using socket.gethostbyname() method
+ip_address = socket.gethostbyname(hostname)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CLIENT_DIR = os.path.dirname(BASE_DIR) + '/client'
@@ -147,7 +151,13 @@ REST_FRAMEWORK = {
     ),
 }
 
-ALLOWED_HOSTS = ['10.0.0.216', '127.0.0.1', 'localhost', 'smartcontroller.local']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'localhost', 
+    'smartcontroller.local',
+    ip_address,
+    f"{hostname}.local"
+]
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
