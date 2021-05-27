@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # Adding options to the System Tray
     tray.setContextMenu(menu)
 
-    trayIcon.setTooltip('Smartcontroller Client')
+    tray.setToolTip('Smartcontroller Client')
     
     kwargs = {'host': '0.0.0.0', 'port': 3000, 'threaded': True, 'use_reloader': False, 'debug': False}
     flaskThread = Thread(target=client.run, daemon=True, kwargs=kwargs).start()
