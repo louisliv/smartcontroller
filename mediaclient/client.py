@@ -7,7 +7,16 @@ import platform
 
 BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
 
+config = {
+  'ORIGINS': [
+    'http://localhost:4200',  # React
+    'http://127.0.0.1:4200',  # React
+  ],
+}
+
 client = Flask(__name__)
+
+CORS(client, resources={ r'/*': {'origins': config['ORIGINS']}}, supports_credentials=True)
 
 @client.route("/keyboard", methods = ['POST'])
 @cross_origin(origin='http://localhost:4200')
