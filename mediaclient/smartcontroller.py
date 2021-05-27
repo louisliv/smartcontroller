@@ -11,7 +11,7 @@ if __name__ == "__main__":
     app.setQuitOnLastWindowClosed(False)
     
     # Adding an icon
-    icon = QIcon("icon.png")
+    icon = QIcon("keyboard.png")
     
     # Adding item on the menu bar
     tray = QSystemTrayIcon()

@@ -9,8 +9,8 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private injector: Injector, private router: Router, private cookieService: CookieService) {}
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const csrfToken = this.cookieService.get('csrftoken');
-        
-        if (csrfToken) {
+
+        if (csrfToken && request.url.includes('api')) {
             request = request.clone({
                 withCredentials: true,
                 setHeaders: {

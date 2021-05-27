@@ -4,6 +4,7 @@ from buttons import BUTTONS, BUTTON_LINUX
 import keyboard
 import os
 import platform
+import logging
 
 BTNS = BUTTON_LINUX if platform.system() == 'Linux' else BUTTONS
 
@@ -17,6 +18,8 @@ config = {
 client = Flask(__name__)
 
 CORS(client, resources={ r'/*': {'origins': config['ORIGINS']}}, supports_credentials=True)
+
+logging.basicConfig(filename='smartcontroller.log', level=logging.DEBUG)
 
 @client.route("/keyboard", methods = ['POST'])
 @cross_origin(origin='http://localhost:4200')
