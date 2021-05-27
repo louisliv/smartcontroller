@@ -97,7 +97,8 @@ echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
 npm install
 
 echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm run electron:build
+npm run build:prod
+electron-builder build --armv7l --linux
 
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
 rm -rf $SC/electron-ui/node_modules
