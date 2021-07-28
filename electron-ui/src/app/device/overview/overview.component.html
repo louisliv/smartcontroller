@@ -10,7 +10,6 @@
     </div>
 </div>
 
-
 <div *ngIf="isLoaded">
     <app-computer class="row" *ngIf="isComputer" [device]="device"></app-computer>
     <app-plug class="row" *ngIf="device.device_type === 'PLUG'" [device]="device"></app-plug>

@@ -22,6 +22,9 @@ import { NodeModule } from "./node/node.module";
 import { AppComponent } from './app.component';
 import { DeviceModule } from './device/device.module';
 import { NavbarModule } from "./navbar/navbar.module";
+import { LocalStorageService } from './shared/services/localStorage.service';
+import { SettingsModule } from './settings/settings.module';
+import { WeatherModule } from './weather/weather.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -39,6 +42,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     HomeModule,
     NodeModule,
     DeviceModule,
+    SettingsModule,
+    WeatherModule,
     AppRoutingModule,
     ApiServicesModule,
     NavbarModule,
@@ -52,6 +57,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   ],
   providers: [
     CookieService,
+    LocalStorageService,
+    { provide: "WINDOW", useValue: window },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

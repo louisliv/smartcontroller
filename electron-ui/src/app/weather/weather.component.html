@@ -1,0 +1,20 @@
+<div class="row" *ngIf="!isLoaded && !loadError">
+    <div class="col-12 text-center">
+        <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
+    </div>
+</div>
+
+<div class="row" *ngIf="!isLoaded && loadError">
+    <div class="col-12 text-center">
+        {{loadError}}
+    </div>
+</div>
+
+<div class="row" *ngIf="isLoaded">
+    <div class="col-12 text-center"><h4>{{cityName}}</h4></div>
+    <div class="col-12 text-center">
+        <img [src]="currentWeatherIcon" />
+        <h2>{{currentTemp + "&deg;"}}</h2>
+        <h4>{{currentWeather.description | titlecase}}</h4>
+    </div>
+</div>

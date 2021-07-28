@@ -5,6 +5,8 @@ import { PageNotFoundComponent } from './shared/components';
 import { HomeRoutingModule } from './home/home-routing.module';
 import { NodeRoutingModule } from "./node/node-routing.module";
 import { DeviceRoutingModule } from "./device/device-routing.module";
+import { SettingsRoutingModule } from './settings/settings-routing.module';
+import { WeatherRoutingModule } from "./weather/weather-routing.module";
 
 const routes: Routes = [
   {
@@ -23,7 +25,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     HomeRoutingModule,
     NodeRoutingModule,
-    DeviceRoutingModule
+    DeviceRoutingModule,
+    SettingsRoutingModule,
+    WeatherRoutingModule
   ],
   exports: [RouterModule]
 })

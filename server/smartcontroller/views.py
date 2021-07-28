@@ -157,8 +157,6 @@ class DeviceViewSet(viewsets.ModelViewSet):
         ip_nums = ip.split('.')
         ip_nums[-1] = '0'
 
-        print(ip_nums)
-
         search_ip = '.'.join(ip_nums) + '/24'
 
         found_devices = nm.scan(search_ip, arguments="-sP")

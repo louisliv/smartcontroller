@@ -5,8 +5,7 @@ import subprocess
 from django.core.exceptions import ValidationError
 from .utils import rgb_to_hsv
 
-from paramiko import SSHClient, AutoAddPolicy
-import paramiko, getpass, re, time
+import getpass, re, time
 import asyncio
 import colorsys
 
