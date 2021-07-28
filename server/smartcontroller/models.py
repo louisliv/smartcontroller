@@ -1,20 +1,19 @@
 
-from django.db import models
-import subprocess
-
-from django.core.exceptions import ValidationError
-from .utils import rgb_to_hsv
-
-import getpass, re, time
 import asyncio
 import colorsys
-
-# Create your models here.
-
-from threading import Thread
+import getpass
+import re
+import subprocess
 import time
+
+from django.core.exceptions import ValidationError
+from django.db import models
 from kasa import SmartPlug, SmartBulb
 from roku import Roku
+from threading import Thread
+
+from .utils import rgb_to_hsv, hex_to_rgb
+
 
 class NodePowerOffThread(Thread):
     def __init__(self, node):
@@ -32,16 +31,9 @@ class NodePowerOffThread(Thread):
             if device.device_type in [device.PI]:
                 time.sleep(20)
 
-def hex_to_rgb(hex):
-    hex = hex.lstrip('#')
-    hlen = len(hex)
-    return tuple(int(hex[i:i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
 
 class Node(models.Model):
     name = models.CharField(max_length=144)
-
-    def __str__(self):
-        return self.name
 
     def power_off_all(self):
         power_off_thread = NodePowerOffThread(self)
@@ -54,6 +46,10 @@ class Node(models.Model):
             plug.set_power_state('true')
         else:
             self.power_off_all()
+
+    def __str__(self):
+        return self.name
+
 
 class Device(models.Model):
     PI = 'PI'
@@ -124,7 +120,6 @@ class Device(models.Model):
                 stdin_model, stdout_model, stderr_model = client.exec_command('sudo -S shutdown -h now')
                 stdin_model.write('%s\n' % self.password)
                 stderr_model.flush()
-                # print the results
 
                 if stdin_model.readable():
                     stdin = stdin_model.read()
@@ -139,7 +134,8 @@ class Device(models.Model):
 
         elif self.device_type in [self.ROKU]:
             roku = Roku(self.ip)
-            roku.select()
+            roku.power()
+
         return (None, None, None)
 
     def get_device(self):
@@ -180,6 +176,9 @@ class Device(models.Model):
             asyncio.run(device.update())
             
             return device.is_on
+        if self.device_type in [self.ROKU]:
+            roku = Roku(self.ip)
+            return roku.power_state
 
         return False
 

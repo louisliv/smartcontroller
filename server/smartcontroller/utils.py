@@ -49,3 +49,8 @@ def rgb_to_hsv(r, g, b):
     # compute v 
     v = cmax * 100
     return int(h), int(s), int(v)
+
+def hex_to_rgb(hex):
+    hex = hex.lstrip('#')
+    hlen = len(hex)
+    return tuple(int(hex[i:i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
