@@ -12,7 +12,7 @@ from kasa import SmartPlug, SmartBulb
 from roku import Roku
 from threading import Thread
 
-from smartcontroller.utils import rgb_to_hsv, hex_to_rgb, execute_os_command
+from smartcontroller.utils import rgb_to_hsv, hex_to_rgb
 
 
 class NodePowerOffThread(Thread):
@@ -107,13 +107,11 @@ class Device(models.Model):
         elif self.device_type in [self.PI, self.LINUX]:
             
             if not power:
-                return execute_os_command(self, 'sudo -S shutdown -h now')
+                self.execute_os_command('sudo -S shutdown -h now')
 
         elif self.device_type in [self.ROKU]:
             roku = Roku(self.ip)
             roku.power()
-
-        return (None, None, None)
 
     def get_device(self):
         if self.device_type in [self.PLUG, self.BULB]:
@@ -167,7 +165,35 @@ class Device(models.Model):
     def toggle_power_state(self):
         state = self.get_power_state()
 
-        return self.set_power_state(not state)
+        self.set_power_state(not state)
+
+    def execute_os_command(self, command):
+        stdin = b''
+        stdout = b''
+        stderr = b''
+        client = SSHClient()
+        client.set_missing_host_key_policy(AutoAddPolicy())
+        client.connect(
+            self.ip, 
+            port=22, 
+            username=self.username, 
+            password=self.password
+        )
+        stdin_model, stdout_model, stderr_model = client.exec_command(command)
+        stdin_model.write('%s\n' % self.password)
+        stderr_model.flush()
+
+        if stdin_model.readable():
+            stdin = stdin_model.read()
+        if stdout_model.readable():
+            stdout = stdout_model.read()
+        if stderr_model.readable():
+            stderr = stderr_model.read()
+        
+        client.close()
+
+        if len(stderrencode("utf-8")):
+            raise IOError(stderr.encode("utf-8")) 
 
     def clean(self):
         if self.device_type in [self.PLUG]:
