@@ -1,4 +1,5 @@
 import re
+from paramiko import SSHClient, AutoAddPolicy
 
 def reform_cmd_string(output):
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
@@ -54,3 +55,30 @@ def hex_to_rgb(hex):
     hex = hex.lstrip('#')
     hlen = len(hex)
     return tuple(int(hex[i:i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
+
+def execute_os_command(device, command):
+    stdin = b''
+    stdout = b''
+    stderr = b''
+    client = SSHClient()
+    client.set_missing_host_key_policy(AutoAddPolicy())
+    client.connect(
+        device.ip, 
+        port=22, 
+        username=device.username, 
+        password=device.password
+    )
+    stdin_model, stdout_model, stderr_model = client.exec_command(command)
+    stdin_model.write('%s\n' % device.password)
+    stderr_model.flush()
+
+    if stdin_model.readable():
+        stdin = stdin_model.read()
+    if stdout_model.readable():
+        stdout = stdout_model.read()
+    if stderr_model.readable():
+        stderr = stderr_model.read()
+    
+    client.close()
+
+    return (stdin, stdout, stderr)

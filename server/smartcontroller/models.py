@@ -12,7 +12,7 @@ from kasa import SmartPlug, SmartBulb
 from roku import Roku
 from threading import Thread
 
-from .utils import rgb_to_hsv, hex_to_rgb
+from smartcontroller.utils import rgb_to_hsv, hex_to_rgb, execute_os_command
 
 
 class NodePowerOffThread(Thread):
@@ -105,32 +105,9 @@ class Device(models.Model):
             asyncio.run(device.update())
 
         elif self.device_type in [self.PI, self.LINUX]:
-            stdin = b''
-            stdout = b''
-            stderr = b''
+            
             if not power:
-                client = SSHClient()
-                client.set_missing_host_key_policy(AutoAddPolicy())
-                client.connect(
-                    self.ip, 
-                    port=22, 
-                    username=self.username, 
-                    password=self.password
-                )
-                stdin_model, stdout_model, stderr_model = client.exec_command('sudo -S shutdown -h now')
-                stdin_model.write('%s\n' % self.password)
-                stderr_model.flush()
-
-                if stdin_model.readable():
-                    stdin = stdin_model.read()
-                if stdout_model.readable():
-                    stdout = stdout_model.read()
-                if stderr_model.readable():
-                    stderr = stderr_model.read()
-                
-                client.close()
-
-                return (stdin, stdout, stderr)
+                return execute_os_command(self, 'sudo -S shutdown -h now')
 
         elif self.device_type in [self.ROKU]:
             roku = Roku(self.ip)
@@ -151,7 +128,9 @@ class Device(models.Model):
 
     def change_color(self, color):
         if not self.device_type in [self.BULB]:
-            return
+            raise ValidationError(
+                'This device\'s color cannot be changed.'
+            )
 
         device = self.get_device()
 
@@ -162,7 +141,9 @@ class Device(models.Model):
 
     def change_brightness(self, brightness):
         if not self.device_type in [self.BULB]:
-            return
+            raise ValidationError(
+                'This device\'s brightness cannot be changed.'
+            )
 
         device = self.get_device()
 
@@ -176,6 +157,7 @@ class Device(models.Model):
             asyncio.run(device.update())
             
             return device.is_on
+
         if self.device_type in [self.ROKU]:
             roku = Roku(self.ip)
             return roku.power_state

@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 """
+Taken from : https://github.com/happyleavesaoc/python-firetv/blob/master/firetv/__init__.py
+
+Modified by Louis Livingston
+
 Communicate with an Amazon Fire TV device via ADB over a network.
 
 ADB Debugging must be enabled.
