@@ -170,3 +170,5 @@ CSRF_TRUSTED_ORIGINS = (
     'http://localhost:4200',
     'http://localhost',
 )
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 

@@ -9,6 +9,7 @@ import time
 from django.core.exceptions import ValidationError
 from django.db import models
 from kasa import SmartPlug, SmartBulb
+from paramiko import SSHClient, AutoAddPolicy
 from roku import Roku
 from threading import Thread
 
@@ -192,7 +193,7 @@ class Device(models.Model):
         
         client.close()
 
-        if len(stderrencode("utf-8")):
+        if len(stderr.encode("utf-8")):
             raise IOError(stderr.encode("utf-8")) 
 
     def clean(self):

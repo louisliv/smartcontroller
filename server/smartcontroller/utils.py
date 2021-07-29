@@ -1,5 +1,4 @@
 import re
-from paramiko import SSHClient, AutoAddPolicy
 
 def reform_cmd_string(output):
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
