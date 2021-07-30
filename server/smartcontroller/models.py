@@ -1,9 +1,5 @@
 
 import asyncio
-import colorsys
-import getpass
-import re
-import subprocess
 import time
 
 from django.core.exceptions import ValidationError
@@ -13,7 +9,8 @@ from paramiko import SSHClient, AutoAddPolicy
 from roku import Roku
 from threading import Thread
 
-from smartcontroller.utils import rgb_to_hsv, hex_to_rgb
+from smartcontroller.utils.helpers import (rgb_to_hsv, 
+    hex_to_rgb)
 
 
 class NodePowerOffThread(Thread):
@@ -25,7 +22,8 @@ class NodePowerOffThread(Thread):
         order = [Device.PI, Device.BULB, Device.PLUG]
         devices = self.node.devices.all()
 
-        devices = sorted(devices, key=lambda x: order.index(x.device_type))
+        devices = sorted(devices, 
+            key=lambda x: order.index(x.device_type))
 
         for device in devices:
             device.set_power_state('false')
@@ -43,7 +41,7 @@ class Node(models.Model):
     def toggle_power(self):
         plug = self.devices.filter(device_type=Device.PLUG)[0]
         
-        if not plug.get_power_state():
+        if not plug.power_state:
             plug.set_power_state('true')
         else:
             self.power_off_all()
@@ -79,7 +77,8 @@ class Device(models.Model):
         max_length=100,
         blank=True
     )
-    node = models.ForeignKey(Node, on_delete=models.CASCADE, related_name='devices')
+    node = models.ForeignKey(Node, on_delete=models.CASCADE, 
+        related_name='devices')
     ip = models.GenericIPAddressField()
     username = models.CharField(
         max_length=50,
@@ -91,12 +90,16 @@ class Device(models.Model):
     )
 
     def __str__(self):
-        return '%s: %s' % (self.node.name, self.get_device_type_display())
+        return '%s: %s' % (self.node.name, 
+            self.get_device_type_display())
 
     def set_power_state(self, power):
         if self.device_type in [self.PLUG, self.BULB]:
-            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip))
+            device = (
+                SmartPlug(self.ip) 
+                if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip)
+            )
             
             if power:
                 asyncio.run(device.turn_on()) 
@@ -116,8 +119,11 @@ class Device(models.Model):
 
     def get_device(self):
         if self.device_type in [self.PLUG, self.BULB]:
-            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip))
+            device = (
+                SmartPlug(self.ip) 
+                if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip)
+            )
             asyncio.run(device.update())
             
             return device
@@ -148,10 +154,14 @@ class Device(models.Model):
 
         asyncio.run(device.set_brightness(int(brightness)))
 
-    def get_power_state(self):
+    @property
+    def power_state(self):
         if self.device_type in [self.PLUG, self.BULB]:
-            device = (SmartPlug(self.ip) if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip))
+            device = (
+                SmartPlug(self.ip) 
+                if self.device_type in [self.PLUG]
+                else SmartBulb(self.ip)
+            )
             
             asyncio.run(device.update())
             
@@ -164,7 +174,7 @@ class Device(models.Model):
         return False
 
     def toggle_power_state(self):
-        state = self.get_power_state()
+        state = self.power_state
 
         self.set_power_state(not state)
 
@@ -201,4 +211,6 @@ class Device(models.Model):
             plugs = self.node.devices.filter(device_type=self.PLUG)
 
             if plugs:
-                raise ValidationError('A Node cannot have more than one plug.')
+                raise ValidationError(
+                    'A Node cannot have more than one plug.'
+                )

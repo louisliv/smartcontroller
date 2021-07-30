@@ -1,24 +1,16 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
-from .models import Node, Device
-from .serializers import NodeSerializer, DeviceSerializer
-from smartcontroller.firetv import firetv
+from smartcontroller.models import Node, Device
+from smartcontroller.serializers import (NodeSerializer, 
+    DeviceSerializer)
+from smartcontroller.utils.firetv import FireTV
+from smartcontroller.utils.helpers import (get_ip_address,
+    discover_devices)
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from kasa import Discover
 from roku import Roku
-import asyncio
-import json
-import nmap
-import socket
-import os
 
 firetvs = {}
-
-def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
 
 # Create your views here.
 class NodeViewSet(viewsets.ModelViewSet):
@@ -47,7 +39,11 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def types(self, request):
-        device_types = [{'value': key, 'display': value} for (key, value) in Device.TYPE_CHOICES]
+        device_types = [
+            {'value': key, 'display': value} 
+            for (key, value) 
+            in Device.TYPE_CHOICES
+        ]
 
         return Response(device_types, status=status.HTTP_200_OK)
 
@@ -120,7 +116,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         ftv = firetvs.get(device.ip, None)
 
         if not ftv:
-            ftv = firetv.FireTV(device.ip)
+            ftv = FireTV(device.ip)
 
             firetvs[device.ip] = ftv
 
@@ -149,40 +145,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def discover(self, request):
-        nm = nmap.PortScanner()
-        all_devices = Device.objects.all()
-
-        ip = get_ip_address()
-
-        ip_nums = ip.split('.')
-        ip_nums[-1] = '0'
-
-        search_ip = '.'.join(ip_nums) + '/24'
-
-        found_devices = nm.scan(search_ip, arguments="-sP")
-
-        device_objs = []
-
-        for device in nm.all_hosts():
-            if device != ip:
-                mac = nm[device]['addresses'].get('mac', None)
-                vendor = nm[device]['vendor'].get(mac, None)
-                check_for_existing = all_devices.filter(mac=mac)
-
-                if not check_for_existing:
-                    device_objs.append({
-                        "vendor": vendor,
-                        "ip": device,
-                        "mac": mac
-                    })
-                else:
-                    dev = check_for_existing[0]
-                    device_objs.append({
-                        "id": dev.pk,
-                        "vendor": vendor,
-                        "ip": device,
-                        "mac": mac
-                    })
+        device_objs = discover_devices()
 
         return Response(device_objs, status=status.HTTP_200_OK)
         
