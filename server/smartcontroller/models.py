@@ -203,8 +203,8 @@ class Device(models.Model):
         
         client.close()
 
-        if len(stderr.encode("utf-8")):
-            raise IOError(stderr.encode("utf-8")) 
+        if len(stderr.decode("utf-8")):
+            raise IOError(stderr.decode("utf-8")) 
 
     def clean(self):
         if self.device_type in [self.PLUG]:
