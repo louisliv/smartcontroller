@@ -50,6 +50,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@iplab/ngx-color-picker": "^2.0.6",
     "@ng-bootstrap/ng-bootstrap": "^8.0.4",
+    "@ng-web-apis/common": "^1.12.0",
+    "@ng-web-apis/geolocation": "^1.0.4",
     "@types/lodash": "^4.14.168",
     "bootstrap": "^4.5.0",
     "lodash": "^4.17.21",

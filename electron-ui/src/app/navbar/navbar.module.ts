@@ -4,18 +4,20 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarComponent } from './navbar.component';
+import { NavbarWeatherComponent } from "./weather.component";
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [NavbarComponent],
+  declarations: [NavbarComponent, NavbarWeatherComponent],
   imports: [
-    CommonModule, 
+    CommonModule,
     SharedModule,
     FontAwesomeModule,
     RouterModule
   ],
   exports: [
-    NavbarComponent
+    NavbarComponent,
+    NavbarWeatherComponent
   ],
 })
 export class NavbarModule {}

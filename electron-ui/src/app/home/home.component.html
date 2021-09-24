@@ -13,10 +13,10 @@
 <div class="row margin-bottom" *ngIf="isLoaded">
   	<div class="col-12 col-md-4" *ngFor="let node of nodes">
     	<div class="btn btn-primary card" [routerLink]="['/nodes', node.id]">
-			<div class="card-body">
-				<fa-icon [icon]="faNetworkWired" size="3x"></fa-icon>
-				<div class="card-title">{{node.name}}</div>
-			</div>
-		</div>
+			  <div class="card-body">
+				  <fa-icon [icon]="faNetworkWired" size="3x"></fa-icon>
+				  <div class="card-title">{{node.name}}</div>
+			  </div>
+		  </div>
   	</div>
 </div>

@@ -1,0 +1,43 @@
+.m-r-5 {
+  margin-right: 5px;
+}
+
+.m-b-5 {
+  margin-bottom: 5px;
+}
+
+.m-l-15 {
+  margin-left: 25px;
+}
+
+.m-r-15 {
+  margin-right: 25px;
+}
+
+.hour-container {
+  margin-right: 25px;
+}
+
+.h-scroll-container {
+  max-width: 100%;
+  overflow-x: scroll;
+  display: flex;
+
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.day-row {
+  font-size: larger;
+  margin-bottom: 10px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.clickable {
+  cursor: pointer;
+}
