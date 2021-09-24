@@ -25,6 +25,7 @@ import { NavbarModule } from "./navbar/navbar.module";
 import { LocalStorageService } from './shared/services/localStorage.service';
 import { SettingsModule } from './settings/settings.module';
 import { WeatherModule } from './weather/weather.module';
+import { WeatherService } from './shared/services/weather.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -58,6 +59,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   providers: [
     CookieService,
     LocalStorageService,
+    WeatherService,
     { provide: "WINDOW", useValue: window },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

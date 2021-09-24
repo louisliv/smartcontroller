@@ -1,0 +1,4 @@
+<div class="d-flex" *ngIf="weatherData.current">
+  <div class="m-r-7"><fa-icon [icon]="currentIcon" class="weather-icon"></fa-icon></div>
+  <div>{{ weatherData.current.temp | number: '1.0-0' }}&deg;</div>
+</div>
