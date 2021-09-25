@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceApi } from '../../api/api.device';
 import { KeyboardApi } from '../../api/api.keyboard';
 import { Device } from '../../models/device';
 import Keyboard from "simple-keyboard";
-import { 
-  MediaButtons, 
-  keyboardOptions, 
+import {
+  MediaButtons,
+  keyboardOptions,
   ExtraButtons,
   DButtons
 } from "./keyboard.globals";
@@ -81,11 +81,11 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
   handleShift = (button) => {
     let currentLayout = this.keyboard.options.layoutName;
     let shiftToggle = currentLayout === "default" ? "shift" : "default";
-    
+
     if (button === "{shift}") {
       this.keyboard.options.shiftOn = !this.keyboard.options.shiftOn;
-      this.keyboard.options.shiftOn ? 
-        this.keyboard.addButtonTheme("{shift}", "active"): 
+      this.keyboard.options.shiftOn ?
+        this.keyboard.addButtonTheme("{shift}", "active"):
         this.keyboard.removeButtonTheme("{shift}", "active");
     } else {
       this.keyboard.options.capsOn = !this.keyboard.options.capsOn;
@@ -99,16 +99,16 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
   handleAlt = () => {
     this.keyboard.options.altOn = !this.keyboard.options.altOn;
 
-    this.keyboard.options.altOn ? 
-      this.keyboard.addButtonTheme("{alt}", "active"): 
+    this.keyboard.options.altOn ?
+      this.keyboard.addButtonTheme("{alt}", "active"):
       this.keyboard.removeButtonTheme("{alt}", "active");
   };
 
   handleCtrl = () => {
     this.keyboard.options.ctrlOn = !this.keyboard.options.ctrlOn;
 
-    this.keyboard.options.ctrlOn ? 
-      this.keyboard.addButtonTheme("{ctrl}", "active"): 
+    this.keyboard.options.ctrlOn ?
+      this.keyboard.addButtonTheme("{ctrl}", "active"):
       this.keyboard.removeButtonTheme("{ctrl}", "active");
   };
 
@@ -118,7 +118,7 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
     if (options.shiftOn) {
       this.keyboard.setOptions({
         layoutName: "default"
-      });
+      })
     }
 
     options.ctrlOn = false;
@@ -136,5 +136,11 @@ export class KeyboardComponent implements OnInit, AfterViewInit {
     };
 
     this.keyboardApi.keyboard(this.device, literal).subscribe();
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const keyPressed = event.key;
+    computerKeyboard(this.keyboardApi, keyPressed, this.device, ()=>{});
   }
 }

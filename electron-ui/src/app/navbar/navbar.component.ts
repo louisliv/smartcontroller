@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faHome, faCog } from '@fortawesome/free-solid-svg-icons';
 import { NavbarVars, NavbarService } from "./navbar.service";
 
 @Component({
@@ -11,6 +11,7 @@ export class NavbarComponent implements OnInit {
   vars: NavbarVars;
   faBack = faArrowLeft;
   faHome = faHome;
+  faCog = faCog;
 
   constructor(private navbarService: NavbarService) { }
 

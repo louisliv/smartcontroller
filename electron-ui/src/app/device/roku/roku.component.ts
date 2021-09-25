@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { Device } from '../../models/device';
-import { 
-  RokuButtons, 
-  FireTVButtons, 
-  rokuKeyboard, 
-  firetvKeyboard 
+import {
+  RokuButtons,
+  FireTVButtons,
+  rokuKeyboard,
+  firetvKeyboard
 } from "../device.globals";
 import Keyboard from "simple-keyboard";
 import { DeviceApi } from '../../api/api.device';
@@ -43,7 +43,7 @@ export class RokuComponent implements OnInit, AfterViewInit {
     /**
      * If you want to handle the shift and caps lock buttons
      */
-    
+
     if (button === "{shift}" || button === "{lock}"){
       this.handleShift()
     } else {
@@ -61,4 +61,12 @@ export class RokuComponent implements OnInit, AfterViewInit {
       layoutName: shiftToggle
     });
   };
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const keyPressed = event.key;
+    this.device.device_type === 'ROKU' ?
+        rokuKeyboard(this.deviceApi, keyPressed, this.device) :
+        firetvKeyboard(this.deviceApi, keyPressed, this.device)
+  }
 }

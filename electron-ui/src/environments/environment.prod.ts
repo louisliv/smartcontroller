@@ -6,6 +6,5 @@ export const AppConfig = {
   production: true,
   environment: 'PROD',
   apiUrl: `http://${baseUrlName}/api`,
-  weatherApiUrl: 'https://api.openweathermap.org',
-  weatherApiKey: '5c76af60c610c2921ac7a71883401164'
+  weatherApiUrl: 'https://api.openweathermap.org'
 };
