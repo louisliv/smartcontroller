@@ -5,16 +5,26 @@
                 <form (ngSubmit)="setSettings()" #SettingsForm="ngForm" validate>
                     <div class="form-group" *ngFor="let setting of settings">
                         <label>{{setting.name | unCamelCase }}</label>
-                        <input [(ngModel)]="setting.value" 
-                            name="settingValue" 
+                        <input [(ngModel)]="setting.value"
+                            [attr.name]="setting.name"
+                            name="{{setting.name}}"
                             #settingValueField="ngModel"
-                            class="form-control">
+                            class="form-control"
+                            on-focus="onFocus($event.target)"
+                            on-blur="onBlur($event.target)"
+                        >
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success" [disabled]="!SettingsForm.form.valid">Submit</button> 
+                        <button type="submit" class="btn btn-success" [disabled]="!SettingsForm.form.valid">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
+
+<div class="row margin-bottom">
+  <div class="col-12 text-center">
+      <div class="simple-keyboard"></div>
+  </div>
 </div>

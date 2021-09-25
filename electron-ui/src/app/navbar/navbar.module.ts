@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarComponent } from './navbar.component';
 import { NavbarWeatherComponent } from "./weather.component";
 import { RouterModule } from '@angular/router';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [NavbarComponent, NavbarWeatherComponent],
@@ -13,7 +14,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     SharedModule,
     FontAwesomeModule,
-    RouterModule
+    RouterModule,
+    NgbTooltipModule
   ],
   exports: [
     NavbarComponent,

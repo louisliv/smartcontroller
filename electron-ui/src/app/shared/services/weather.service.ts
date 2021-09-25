@@ -1,10 +1,11 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
 import { take } from 'rxjs/operators';
 import { interval } from "rxjs";
 import { GeolocationService } from '@ng-web-apis/geolocation';
 import { WeatherApi } from '../../api/api.weather';
 import { WeatherIcons } from "./weather-icons";
 import { Injectable } from "@angular/core";
+import { LocalStorageService } from "./localStorage.service";
 
 @Injectable()
 export class WeatherService {
@@ -21,14 +22,31 @@ export class WeatherService {
   private _currentCity: BehaviorSubject<string> = new BehaviorSubject('');
   public readonly currentCity: Observable<string> = this._currentCity.asObservable();
 
+  private _hasApiKey: ReplaySubject<boolean> = new ReplaySubject(0);
+  public readonly hasApiKey: Observable<boolean> = this._hasApiKey.asObservable();
+
+  private _isLoading: ReplaySubject<boolean> = new ReplaySubject(0);
+  public readonly isLoading: Observable<boolean> = this._isLoading.asObservable();
+
   constructor(
     private weatherApi: WeatherApi,
-    private geo: GeolocationService
+    private geo: GeolocationService,
+    private localStorage: LocalStorageService
   ) {
-    this._setGeolocation()
+    this.localStorage.watch('weatherApiKey').subscribe(key => {
+      const hasKey: boolean = key ? true: false;
+      this._hasApiKey.next(hasKey);
+      if (hasKey) {
+        this._setGeolocation()
 
-    this.source = interval(900000).subscribe(() => {
-      this._setGeolocation()
+        this.source = interval(900000).subscribe(() => {
+          this._setGeolocation()
+        })
+      } else {
+        if (this.source) {
+          this.source.unsubscribe()
+        }
+      }
     })
   }
 
@@ -49,10 +67,12 @@ export class WeatherService {
   }
 
   _getWeatherData(): void {
+    this._isLoading.next(true)
     this.weatherApi.get(this.lat, this.lng).subscribe({
       next: res => {
         this._currentIcon.next(WeatherIcons[res.current.weather[0].icon])
         this._weatherData.next(res);
+        this._isLoading.next(false)
       }
     })
   }
