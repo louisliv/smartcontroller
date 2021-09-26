@@ -8,13 +8,17 @@ import { AppConfig } from './../../environments/environment';
 @Injectable()
 export class NodeApi {
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getAll() : Observable<Node[]>{
-        return this.http.get<Node[]>(`${AppConfig.apiUrl}/nodes/`)
-    }
+  getAll() : Observable<Node[]>{
+    return this.http.get<Node[]>(`${AppConfig.apiUrl}/nodes/`)
+  }
 
-    get(id:number) : Observable<Node>{
-        return this.http.get<Node>(`${AppConfig.apiUrl}/nodes/${id}`)
-    }
+  get(id:number) : Observable<Node>{
+    return this.http.get<Node>(`${AppConfig.apiUrl}/nodes/${id}`)
+  }
+
+  add(nodeName:string): Observable<Node>{
+    return this.http.post<Node>(`${AppConfig.apiUrl}/nodes/`, { name: nodeName })
+  }
 }

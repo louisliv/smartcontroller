@@ -1,0 +1,12 @@
+.clickable {
+  cursor: pointer;
+}
+
+.hide-keyboard {
+  height: 0;
+  padding: 0px;
+}
+
+.hide-keyboard > .hg-button {
+  height: 0px;
+}

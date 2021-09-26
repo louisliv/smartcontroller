@@ -6,12 +6,13 @@ import { NodeRoutingModule } from './node-routing.module';
 import { NodeComponent } from './node.component';
 import { SharedModule } from '../shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NodeAddComponent } from './add/add.component';
 
 @NgModule({
-  declarations: [NodeComponent],
+  declarations: [NodeComponent, NodeAddComponent],
   imports: [
-    CommonModule, 
-    SharedModule, 
+    CommonModule,
+    SharedModule,
     NodeRoutingModule,
     FontAwesomeModule
   ]

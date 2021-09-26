@@ -1,42 +1,70 @@
 <div class="row">
-    <div class="col-12 text-center"><h3>Add Device</h3></div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <form (ngSubmit)="submit()" #DeviceForm="ngForm" validate>
-                    <div class="form-group">
-                        <label>IP</label>
-                        <input required 
-                            [(ngModel)]="device.ip" 
-                            name="label" 
-                            #ipField="ngModel"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Device Type*</label>
-                        <select [(ngModel)]="device.device_type" 
-                            class="form-control"
-                            name="device_type" 
-                            #valueType="ngModel"
-                            required>
-                            <option *ngFor="let type of deviceTypes" [ngValue]="type.value">{{type.display}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Node*</label>
-                        <select [(ngModel)]="device.node" 
-                            class="form-control"
-                            name="node" 
-                            #valueType="ngModel"
-                            required>
-                            <option *ngFor="let node of nodes" [ngValue]="node.id">{{node.name}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success" [disabled]="!DeviceForm.form.valid">Submit</button> 
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="col-12 text-center"><h3>Add Device</h3></div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <form (ngSubmit)="submit()" #DeviceForm="ngForm" validate>
+          <div class="form-group">
+            <label>{{manuallyInputting ? "Device IP*": "Device*"}}
+            <fa-icon [icon]="faSpinner" [spin]="true" *ngIf="!devicesRetrieved && !manuallyInputting"></fa-icon>
+            <fa-icon [icon]="faRedo" class="clickable" *ngIf="devicesRetrieved && !manuallyInputting" (click)="retrieveDevices()"></fa-icon>
+            </label>
+            <select
+              class="form-control"
+              [disabled]="!devicesRetrieved"
+              name="selectedDevice"
+              [(ngModel)]="selectedDevice"
+              #valueType="ngModel"
+              *ngIf="!manuallyInputting"
+              [required]="!manuallyInputting"
+            >
+              <option *ngFor="let discoveredDevice of discoveredDevices" [ngValue]="discoveredDevice">{{discoveredDevice.ip}}</option>
+            </select>
+            <input required
+              [(ngModel)]="device.ip"
+              name="label"
+              #ipField="ngModel"
+              class="form-control"
+              *ngIf="manuallyInputting"
+              [required]="manuallyInputting"
+            >
+            <button class="btn btn-info margin-top" *ngIf="!manuallyInputting" (click)="toggleManuallyInputting()">Manual IP Input</button>
+            <button class="btn btn-info margin-top" *ngIf="manuallyInputting" (click)="toggleManuallyInputting()">Select From Connected Devices</button>
+          </div>
+          <div class="form-group">
+            <label>Device Type*</label>
+            <select [(ngModel)]="device.device_type"
+              class="form-control"
+              name="device_type"
+              #valueType="ngModel"
+              required
+            >
+              <option *ngFor="let type of deviceTypes" [ngValue]="type.value">{{type.display}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Node*</label>
+            <select [(ngModel)]="device.node"
+              [disabled]="true"
+              class="form-control"
+              name="node"
+              #valueType="ngModel"
+              required
+            >
+              <option *ngFor="let node of nodes" [ngValue]="node.id">{{node.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-success" [disabled]="!DeviceForm.form.valid">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="row margin-bottom">
+  <div class="col-6 offset-3 text-center">
+    <div class="simple-keyboard"></div>
+  </div>
 </div>
