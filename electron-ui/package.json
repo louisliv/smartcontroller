@@ -54,6 +54,7 @@
     "@ng-web-apis/geolocation": "^1.0.4",
     "@types/lodash": "^4.14.168",
     "bootstrap": "^4.5.0",
+    "c": "^1.1.1",
     "lodash": "^4.17.21",
     "ngx-color": "^7.0.0",
     "ngx-cookie-service": "^12.0.0",
