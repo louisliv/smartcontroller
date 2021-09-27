@@ -1,0 +1,265 @@
+
+<div class="col-12 text-center" *ngIf="!isLoaded && !loadError">
+  <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
+</div>
+
+<div class="col-12" *ngIf="isLoaded && !registered">
+  <div class="card">
+    <div class="card-body text-center">
+      <div>
+        Your device is not registered yet. Please accept the prompt on your TV
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 col-lg-6 text-center" *ngIf="isLoaded && registered">
+  <div class="row">
+    <div class="col-12">
+      <app-roku-button
+        [button]="tvButtons.power"
+        [device]="device"
+        class="w-100">
+        </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.info"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.mute"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.settings"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.reverse"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.play"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.forward"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['1']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['2']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['3']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['4']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['5']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['6']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['7']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['8']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['9']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+  <div class="row margin-top">
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.dash"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons['0']"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+    <div class="col-4">
+      <app-roku-button
+        [button]="tvButtons.cc"
+        [device]="device"
+        class="w-100">
+      </app-roku-button>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 col-lg-6" *ngIf="isLoaded && registered">
+  <div class="row no-row-margin margin-top-mobile d-flex">
+    <app-roku-button
+      [button]="tvButtons.back"
+      [device]="device"
+      class="media-btn flex-fill">
+    </app-roku-button>
+    <app-roku-button
+      [button]="tvButtons.home"
+      [device]="device"
+      class="flex-fill">
+    </app-roku-button>
+  </div>
+
+  <div class="row">
+    <div class="col-3 text-center margin-top">
+      <app-roku-button
+        [button]="tvButtons.volume_up"
+        [device]="device">
+      </app-roku-button>
+    </div>
+
+    <div class="col-6 text-center margin-top">
+      <app-roku-button
+        [button]="tvButtons.up"
+        [device]="device">
+      </app-roku-button>
+    </div>
+
+    <div class="col-3 text-center margin-top">
+      <app-roku-button
+        [button]="tvButtons.channel_up"
+        [device]="device">
+      </app-roku-button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 d-flex align-items-center justify-content-center">Volume</div>
+
+    <div class="col-6 text-center margin-top-sm">
+      <app-roku-button
+          [button]="tvButtons.left"
+          [device]="device"
+          class="sm-space-right">
+      </app-roku-button>
+      <app-roku-button
+        [button]="tvButtons.enter"
+        [device]="device"
+        class="sm-space-right">
+      </app-roku-button>
+      <app-roku-button
+        [button]="tvButtons.right"
+        [device]="device">
+      </app-roku-button>
+    </div>
+
+    <div class="col-3 d-flex align-items-center justify-content-center">Channel</div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 text-center margin-top-sm">
+      <app-roku-button
+        [button]="tvButtons.volume_down"
+        [device]="device">
+      </app-roku-button>
+    </div>
+
+    <div class="col-6 text-center margin-top-sm">
+      <app-roku-button
+        [button]="tvButtons.down"
+        [device]="device">
+      </app-roku-button>
+    </div>
+
+    <div class="col-3 text-center margin-top-sm">
+      <app-roku-button
+        [button]="tvButtons.channel_down"
+        [device]="device">
+      </app-roku-button>
+    </div>
+  </div>
+
+  <div class="row text-center margin-top-lg">
+    <div class="col-12">
+      <div class="form-group">
+        <label>Select Source</label>
+        <select class="form-control"
+          (change)="onChange($event.target.value)"
+          name="selectedSource"
+          [(ngModel)]="selectedSource"
+        >
+          <option *ngFor="let source of sources" [value]="source.id">
+            {{source.label}}{{source.id === selectedSource ? ' (Current)': ''}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

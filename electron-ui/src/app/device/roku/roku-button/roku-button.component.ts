@@ -13,14 +13,16 @@ export class RokuButtonComponent implements OnInit {
     secondaryIcon: any;
     command: string;
     btnClass: string;
+    text: string;
+    type: string;
   };
 
   @Input() device: Device;
   btnClass: string;
 
-  constructor(private deviceApi: DeviceApi) { 
+  constructor(private deviceApi: DeviceApi) {
   }
-  
+
   ngOnInit(): void {
     this.btnClass = this.button.btnClass ? this.button.btnClass : 'secondary';
   }
@@ -29,9 +31,12 @@ export class RokuButtonComponent implements OnInit {
     if (this.device.device_type === 'ROKU') {
       this.deviceApi.roku(this.device.id, this.button.command)
         .subscribe();
-    } else {
+    } else if (this.device.device_type === 'AMZN') {
       this.deviceApi.firetv(this.device.id, this.button.command)
         .subscribe();
+    } else if (this.device.device_type.includes('LG')) {
+      this.deviceApi.lg(this.device.id, this.button.command)
+        .subscribe()
     }
   }
 

@@ -184,6 +184,10 @@ body {
   margin-top: 5px;
 }
 
+.margin-top-lg {
+  margin-top: 30px;
+}
+
 .simple-keyboard.dark-keyboard-purple {
   background-color: #303030;
   border-radius: 5px;
@@ -241,4 +245,15 @@ body {
 
 .sm-space-right {
   margin-right: 5px;
+}
+
+.no-row-margin {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+@media (max-width: 991px) {
+  .margin-top-mobile {
+    margin-top: 15px;
+  }
 }

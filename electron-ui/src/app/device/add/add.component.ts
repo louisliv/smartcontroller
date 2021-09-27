@@ -115,8 +115,11 @@ export class AddComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
-    this.device.ip = this.selectedDevice.ip;
-    this.device.mac = this.selectedDevice.mac;
+    if (this.selectedDevice) {
+      this.device.ip = this.selectedDevice.ip;
+      this.device.mac = this.selectedDevice.mac;
+    }
+
     this.deviceApi.post(this.device).subscribe({
       next: data => {
         this.router.navigate(['/nodes/', data.node])
