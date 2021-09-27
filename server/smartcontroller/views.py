@@ -12,6 +12,8 @@ from roku import Roku
 
 firetvs = {}
 
+lgtvs = {}
+
 # Create your views here.
 class NodeViewSet(viewsets.ModelViewSet):
     queryset = Node.objects.all()
@@ -149,3 +151,122 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
         return Response(device_objs, status=status.HTTP_200_OK)
         
+    @action(detail=True, methods=['get'])
+    def check_registration(self, request, pk=None):
+        device = self.get_object()
+
+        registered = True if device.registered else False
+        return Response({'registered': registered})
+    
+    @action(detail=True, methods=['post'])
+    def register(self, request, pk=None):
+        device = self.get_object()
+
+        device.register()
+
+        return Response({'registered': True})
+
+    @action(detail=True, methods=['post'])
+    def lg(self, request, pk=None):
+        device = self.get_object()
+        lgtv = lgtvs.get(device.ip, None)
+
+        if not lgtv:
+            try:
+                lgtv = device.get_device()
+            except:
+                return Response(
+                    { 'message': 'Device not registered' },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            lgtvs[device.ip] = lgtv
+
+
+        command = request.data.get('command', None)
+        argument = request.data.get('argument', None)
+        command_type = request.data.get('type', None)
+
+        if command:
+            lgtv.execute_command(command, command_type, argument)
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                { 'message': 'Please submit a command' },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    @action(detail=True, methods=['get'])
+    def get_sources(self, request, pk=None):
+        device = self.get_object()
+        lgtv = lgtvs.get(device.ip, None)
+
+        if not lgtv:
+            try:
+                lgtv = device.get_device()
+            except:
+                return Response(
+                    { 'message': 'Device not registered' },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            lgtvs[device.ip] = lgtv
+
+        sources = lgtv.execute_command('list_sources', 'source')
+        current_app_id = lgtv.execute_command('get_current', 'app')
+        current_source = self.get_source_from_list_by_app_id(sources, current_app_id)
+
+        current_source_id = None
+
+        if current_source:
+            current_source_id = current_source.data.get('id', None)
+
+        response = {
+            'sources': [x.data for x in sources],
+            'current_source': current_source_id
+        }
+
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
+    def set_source(self, request, pk=None):
+        device = self.get_object()
+        lgtv = lgtvs.get(device.ip, None)
+
+        source_id = request.data.get('id')
+
+        if not lgtv:
+            try:
+                lgtv = device.get_device()
+            except:
+                return Response(
+                    { 'message': 'Device not registered' },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            lgtvs[device.ip] = lgtv
+
+        sources = lgtv.execute_command('list_sources', 'source')
+        source_to_select = self.get_source_from_list_by_id(sources, source_id)
+
+        if source_to_select:
+            lgtv.execute_command('set_source', 'source', source_to_select)
+        else:
+            return Response(
+                { 'message': 'Source not found' },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        return Response({}, status=status.HTTP_200_OK)
+
+    def get_source_from_list_by_id(self, source_list, id):
+        source_to_select = None
+        match = [x for x in source_list if x.data.get('id') == id]
+        if match:
+            source_to_select = match[0]
+
+        return source_to_select
+
+    def get_source_from_list_by_app_id(self, source_list, app_id):
+        source_to_select = None
+        match = [x for x in source_list if x.data.get('appId') == app_id]
+        if match:
+            source_to_select = match[0]
+
+        return source_to_select

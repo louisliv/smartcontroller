@@ -1,11 +1,13 @@
 
 import asyncio
+from smartcontroller.utils.lg import LGDevice
 import time
 
 from django.core.exceptions import ValidationError
 from django.db import models
 from kasa import SmartPlug, SmartBulb
 from paramiko import SSHClient, AutoAddPolicy
+from pywebostv.connection import WebOSClient
 from roku import Roku
 from threading import Thread
 
@@ -58,6 +60,7 @@ class Device(models.Model):
     PC = 'PC'
     ROKU = 'ROKU'
     AMZN = 'AMZN'
+    LGTV = 'LGTV'
     TYPE_CHOICES = [
         (PI, 'Raspberry Pi'),
         (PLUG, 'Smart Plug'),
@@ -65,7 +68,8 @@ class Device(models.Model):
         (LINUX, 'Linux'),
         (PC, 'PC'),
         (ROKU, 'Roku'),
-        (AMZN, 'Amazon FireTv')
+        (AMZN, 'Amazon FireTv'),
+        (LGTV, 'LG Smart TV')
     ]
 
     device_type=models.CharField(
@@ -127,6 +131,13 @@ class Device(models.Model):
             asyncio.run(device.update())
             
             return device
+
+        if self.device_type in [self.LGTV]:
+            client_key = self.registered
+            if client_key:
+                return LGDevice(self.ip, client_key)
+            else:
+                raise Exception('Device not registered')
 
         else:
             return self
@@ -204,7 +215,37 @@ class Device(models.Model):
         client.close()
 
         if len(stderr.decode("utf-8")):
-            raise IOError(stderr.decode("utf-8")) 
+            raise IOError(stderr.decode("utf-8"))
+
+    @property
+    def registered(self):
+        if self.device_type in [self.LGTV]:
+            try:
+                client_key = ClientKey.objects.get(ip=self.ip)
+                return client_key
+            except ClientKey.DoesNotExist:
+                return False
+        return True
+
+    def register(self):
+        if self.device_type in [self.LGTV]:
+            store = {}
+
+            client_key, created = ClientKey.objects.get_or_create(ip=self.ip)
+            if not created:
+                store['client_key'] = client_key.key
+                
+            client = WebOSClient(self.ip)
+            client.connect()
+            for status in client.register(store):
+                if status == WebOSClient.PROMPTED:
+                    print("Please accept the connect on the TV!")
+                elif status == WebOSClient.REGISTERED:
+                    print("Registration successful!")
+
+            client_key.key = store['client_key']
+            client_key.save()
+        return True
 
     def clean(self):
         if self.device_type in [self.PLUG]:
@@ -214,3 +255,10 @@ class Device(models.Model):
                 raise ValidationError(
                     'A Node cannot have more than one plug.'
                 )
+
+class ClientKey(models.Model):
+    ip = models.GenericIPAddressField(unique=True)
+    key = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.ip

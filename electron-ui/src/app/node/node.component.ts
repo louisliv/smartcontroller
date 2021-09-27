@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { 
-  faSpinner, 
-  faLightbulb, 
-  faPlug, 
+import {
+  faSpinner,
+  faLightbulb,
+  faPlug,
   faKeyboard,
   faDesktop,
   faHdd,
-  faPlus
+  faPlus,
+  faTv
 } from '@fortawesome/free-solid-svg-icons';
 import { faRaspberryPi, faAmazon } from "@fortawesome/free-brands-svg-icons";
 import { NodeApi } from "./../api/api.node";
@@ -31,11 +32,12 @@ export class NodeComponent implements OnInit {
   faHdd = faHdd;
   faAmazon = faAmazon;
   faPlus = faPlus;
+  faTv = faTv;
   isLoaded = false;
   loadError: any;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private nodeApi: NodeApi,
     private router: Router,
     private navbar: NavbarService
@@ -69,6 +71,8 @@ export class NodeComponent implements OnInit {
       return this.faAmazon;
     } else if (device.device_type === "PI") {
       return this.faPi;
+    } else if (device.device_type.includes("TV")) {
+      return this.faTv;
     }
 
     return this.faPlug;

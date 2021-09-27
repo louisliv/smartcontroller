@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Node, Device
+from .models import ClientKey, Node, Device
 from .forms import DeviceForm
 
 class DeviceAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class DeviceAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Node)
 admin.site.register(Device, DeviceAdmin)
+admin.site.register(ClientKey)

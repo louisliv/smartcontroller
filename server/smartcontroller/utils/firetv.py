@@ -267,7 +267,6 @@ class FireTV:
                         result.append(line.strip().rsplit(' ', 1)[-1])
             return result
         except InvalidChecksumError as e:
-            print(e)
             self.connect()
             raise IOError
 
@@ -302,7 +301,6 @@ class FireTV:
             try:
                 self._adb_client = AdbClient()
                 self._adb_client.remote_connect(self.host, self.port)
-                print(self._adb_client.devices())
                 self._adb_device = self._adb_client.device(f"{self.host}:{self.port}")
                 self._available = bool(self._adb_device)
             except:

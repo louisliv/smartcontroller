@@ -22,7 +22,7 @@ export class DeviceApi {
     powerOn(id:number) : Observable<{}>{
         return this.http.get<{}>(`${AppConfig.apiUrl}/devices/${id}/power_on`)
     }
-    
+
     powerOff(id:number) : Observable<{}> {
         return this.http.get<{}>(`${AppConfig.apiUrl}/devices/${id}/power_off`)
     }
@@ -30,25 +30,25 @@ export class DeviceApi {
     power(id:number) : Observable<{}>{
         return this.http.post<{}>(`${AppConfig.apiUrl}/devices/${id}/power/`, {})
     }
-    
+
     discover() : Observable<DiscoverDevice[]>{
         return this.http.get<DiscoverDevice[]>(`${AppConfig.apiUrl}/devices/discover`)
     }
-    
+
     changeColor(id: number, color: string) : Observable<{}>{
         return this.http.post<{}>(
-            `${AppConfig.apiUrl}/devices/${id}/change_color/`, 
+            `${AppConfig.apiUrl}/devices/${id}/change_color/`,
             { color: color }
         )
     }
-    
+
     changeBrightness(id: number, brightness: string) : Observable<{}> {
         return this.http.post<{}>(
-            `${AppConfig.apiUrl}/devices/${id}/change_brightness/`, 
+            `${AppConfig.apiUrl}/devices/${id}/change_brightness/`,
             { brightness: brightness }
         )
     }
-    
+
     getDeviceTypes() : Observable<[]>{
         return this.http.get<[]>(`${AppConfig.apiUrl}/devices/types`)
     }
@@ -67,8 +67,8 @@ export class DeviceApi {
 
     roku(id: number, command: string, argument: string = null) : Observable<{}> {
         return this.http.post<{}>(
-            `${AppConfig.apiUrl}/devices/${id}/roku/`, 
-            { 
+            `${AppConfig.apiUrl}/devices/${id}/roku/`,
+            {
                 command: command,
                 argument: argument
             }
@@ -77,11 +77,38 @@ export class DeviceApi {
 
     firetv(id: number, command: string, argument: string = null) : Observable<{}> {
         return this.http.post<{}>(
-            `${AppConfig.apiUrl}/devices/${id}/firetv/`, 
-            { 
+            `${AppConfig.apiUrl}/devices/${id}/firetv/`,
+            {
                 command: command,
                 argument: argument
             }
         )
+    }
+
+    registered(id: number): Observable<{}> {
+      return this.http.get<{}>(`${AppConfig.apiUrl}/devices/${id}/check_registration/`)
+    }
+
+    register(id: number): Observable<{}> {
+      return this.http.post<{}>(`${AppConfig.apiUrl}/devices/${id}/register/`, {})
+    }
+
+    lg(id: number, command: string, argument: string = null, type='input'): Observable<{}> {
+      return this.http.post<{}>(
+        `${AppConfig.apiUrl}/devices/${id}/lg/`,
+        {
+          command: command,
+          argument: argument,
+          type: type
+        }
+      )
+    }
+
+    sources(id: number): Observable<any[]> {
+      return this.http.get<any[]>(`${AppConfig.apiUrl}/devices/${id}/get_sources/`)
+    }
+
+    setSource(id: number, sourceId: string): Observable<{}> {
+      return this.http.post<{}>(`${AppConfig.apiUrl}/devices/${id}/set_source/`, { id: sourceId })
     }
 }
