@@ -12,3 +12,4 @@ python-kasa
 roku>=4.1.0
 pure-python-adb
 python-nmap>=0.6.4
+tinytuya>=1.2.8
