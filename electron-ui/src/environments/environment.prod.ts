@@ -1,7 +1,7 @@
 import { ElectronService } from '../app/core/services';
 
 let isElectron = !!(window && window.process && window.process.type)
-const baseUrlName = isElectron ? "localhost" : window.location.hostname
+const baseUrlName = isElectron ? "localhost:8000" : window.location.hostname
 export const AppConfig = {
   production: true,
   environment: 'PROD',

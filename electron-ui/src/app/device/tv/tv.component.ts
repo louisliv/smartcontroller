@@ -49,7 +49,8 @@ export class TvComponent implements OnInit {
     })
   }
 
-  onChange(sourceId): void {
+  onChange(event: Event): void {
+    const sourceId: string = (event.target as HTMLInputElement).value
     if (sourceId) {
       this.deviceApi.setSource(this.device.id, sourceId).subscribe()
     }

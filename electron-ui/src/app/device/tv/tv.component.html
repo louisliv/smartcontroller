@@ -1,5 +1,5 @@
 
-<div class="col-12 text-center" *ngIf="!isLoaded && !loadError">
+<div class="col-12 text-center" *ngIf="!isLoaded">
   <fa-icon [icon]="faSpinner" [spin]="true" class="fa-5x margin-top"></fa-icon>
 </div>
 
@@ -251,7 +251,7 @@
       <div class="form-group">
         <label>Select Source</label>
         <select class="form-control"
-          (change)="onChange($event.target.value)"
+          (change)="onChange($event)"
           name="selectedSource"
           [(ngModel)]="selectedSource"
         >

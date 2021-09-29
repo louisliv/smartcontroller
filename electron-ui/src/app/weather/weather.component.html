@@ -34,7 +34,7 @@
             <div class="m-b-5">{{ hourInfo.temp | number: '1.0-0' }}&deg;</div>
             <div class="d-flex">
               <fa-icon [icon]="faTint" class="m-r-5"></fa-icon>
-              <div>{{ hourInfo.pop }}%</div>
+              <div>{{ hourInfo.pop * 100 }}%</div>
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
           <div class="col-3 text-center">
             <div class="d-flex">
               <fa-icon [icon]="faTint" class="m-r-5"></fa-icon>
-              <div>{{ dayInfo.pop | number: '1.0-0' }}%</div>
+              <div>{{ dayInfo.pop * 100 | number: '1.0-0' }}%</div>
             </div>
           </div>
           <div class="col-3 text-center"><fa-icon [icon]="getDayIcon(dayInfo.weather[0].icon)"></fa-icon></div>

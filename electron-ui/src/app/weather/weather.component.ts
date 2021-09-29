@@ -3,6 +3,7 @@ import { faSpinner, faTint, faChevronLeft, faChevronRight } from '@fortawesome/f
 import { NavbarService } from '../navbar/navbar.service';
 import { WeatherService } from "../shared/services/weather.service";
 import { WeatherIcons } from "../shared/services/weather-icons";
+import CurrentWeather from '../models/weather';
 
 @Component({
   selector: 'app-weather',
@@ -10,7 +11,7 @@ import { WeatherIcons } from "../shared/services/weather-icons";
   styleUrls: ['./weather.component.scss']
 })
 export class WeatherComponent implements OnInit {
-  currentWeather: any;
+  currentWeather: CurrentWeather;
   currentWeatherIcon: any;
   currentCity: string;
   isLoaded: boolean;

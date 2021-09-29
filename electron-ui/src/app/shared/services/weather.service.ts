@@ -1,11 +1,17 @@
 import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
 import { take } from 'rxjs/operators';
 import { interval } from "rxjs";
-import { GeolocationService } from '@ng-web-apis/geolocation';
 import { WeatherApi } from '../../api/api.weather';
 import { WeatherIcons } from "./weather-icons";
 import { Injectable } from "@angular/core";
 import { LocalStorageService } from "./localStorage.service";
+import CurrentWeather from "../../models/weather";
+import { HttpClient } from "@angular/common/http";
+
+interface IPLocation {
+  lat: number;
+  lon: number;
+}
 
 @Injectable()
 export class WeatherService {
@@ -17,7 +23,7 @@ export class WeatherService {
   public readonly currentIcon: Observable<any> = this._currentIcon.asObservable();
 
   private _weatherData: BehaviorSubject<any> = new BehaviorSubject({});
-  public readonly weatherData: Observable<any> = this._weatherData.asObservable();
+  public readonly weatherData: Observable<CurrentWeather> = this._weatherData.asObservable();
 
   private _currentCity: BehaviorSubject<string> = new BehaviorSubject('');
   public readonly currentCity: Observable<string> = this._currentCity.asObservable();
@@ -30,7 +36,7 @@ export class WeatherService {
 
   constructor(
     private weatherApi: WeatherApi,
-    private geo: GeolocationService,
+    private http: HttpClient,
     private localStorage: LocalStorageService
   ) {
     this.localStorage.watch('weatherApiKey').subscribe(key => {
@@ -51,25 +57,25 @@ export class WeatherService {
   }
 
   _setGeolocation(): void {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.lat = position.coords.latitude;
-      this.lng = position.coords.longitude;
+    if (!this.lat || !this.lng) {
+      this.http.get<IPLocation>('http://ip-api.com/json').subscribe({
+        next: response => {
+          this.lat = response.lat;
+          this.lng = response.lon;
+          this._getWeatherData();
+          this._getCityData();
+        }
+      })
+    } else {
       this._getWeatherData();
       this._getCityData();
-    }, error => {
-      this.geo.pipe(take(1)).subscribe(position => () => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-        this._getWeatherData();
-        this._getCityData();
-      });
-    })
+    }
   }
 
   _getWeatherData(): void {
     this._isLoading.next(true)
     this.weatherApi.get(this.lat, this.lng).subscribe({
-      next: res => {
+      next: (res: CurrentWeather) => {
         this._currentIcon.next(WeatherIcons[res.current.weather[0].icon])
         this._weatherData.next(res);
         this._isLoading.next(false)

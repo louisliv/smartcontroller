@@ -49,7 +49,6 @@ class AddDevice extends Component {
     componentWillMount() {
         NodeActions.getAll();
         DeviceApi.getDeviceTypes().then((response) => {
-            console.log(response)
             this.setState({'types':response})
         });
         if (this.props.location.state.kasaDevice) {
@@ -85,7 +84,6 @@ class AddDevice extends Component {
     }
 
     handleTypeChange(event, index) {
-        console.log(event)
         let value = event.value
             
         this.setState({
@@ -108,7 +106,6 @@ class AddDevice extends Component {
             node: this.state.device.node.id,
             mac: this.state.device.mac
         }
-        console.log(device)
         DeviceActions.create(device);
     }
 

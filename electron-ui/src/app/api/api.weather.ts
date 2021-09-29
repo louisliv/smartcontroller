@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfig } from './../../environments/environment';
 import { LocalStorageService } from '../shared/services/localStorage.service';
+import CurrentWeather from '../models/weather';
 
 @Injectable()
 export class WeatherApi {
@@ -12,11 +13,11 @@ export class WeatherApi {
     this.localStorage.watch('weatherApiKey').subscribe(key => this.weatherApiKey = key)
   }
 
-  get(lat: number, lng: number) : Observable<any>{
+  get(lat: number, lng: number) : Observable<CurrentWeather>{
     const url = `${AppConfig.weatherApiUrl}/data/2.5/onecall` +
       `?lat=${lat}&lon=${lng}&exclude=minutely&appid=` +
       `${this.weatherApiKey}&units=imperial`;
-    return this.http.get<any>(url)
+    return this.http.get<CurrentWeather>(url)
   }
 
   cityData(lat: number, lng: number) : Observable<any>{

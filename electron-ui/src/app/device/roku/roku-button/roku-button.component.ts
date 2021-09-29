@@ -9,12 +9,12 @@ import { Device } from '../../../models/device';
 })
 export class RokuButtonComponent implements OnInit {
   @Input() button: {
-    icon: any;
-    secondaryIcon: any;
+    icon?: any;
+    secondaryIcon?: any;
     command: string;
     btnClass: string;
-    text: string;
-    type: string;
+    text?: string;
+    type?: string;
   };
 
   @Input() device: Device;
