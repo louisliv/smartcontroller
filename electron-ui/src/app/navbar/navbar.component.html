@@ -13,7 +13,21 @@
     </div>
 
     <div class="col-4 text-center" style="padding-right: 0px;">
-        <div class="navbar-brand">{{vars.title}}</div>
+        <div class="navbar-brand" ngbDropdown *ngIf="vars.node">
+          <div class="clickable" ngbDropdownToggle>{{vars.title}}</div>
+          <div ngbDropdownMenu class="bg-dark" aria-labelledby="quickMenu">
+            <ng-container *ngFor="let device of vars.node.devices">
+              <button ngbDropdownItem
+                class="btn-lg"
+                *ngIf="vars.device.id != device.id"
+                [routerLink]="['/devices', device.id]"
+              >
+                {{device.name}}
+              </button>
+            </ng-container>
+          </div>
+        </div>
+        <div class="navbar-brand" *ngIf="!vars.node">{{vars.title}}</div>
     </div>
 
     <div class="col-4 text-right" style="padding-right: 0px;">
