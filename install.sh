@@ -102,7 +102,6 @@ sleep 1
 ##################################
 echo -e "\n ${LRED}[${NC} ${LGREEN}Installing Electron Builder${NC} ${LRED}]${NC}"
 sleep 1
-sudo npm install -g yarn
 sudo npm install -g electron-builder
 sleep 1
 
@@ -146,10 +145,10 @@ python3 manage.py collectstatic
 cd $SC/electron-ui
 
 echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
-yarn install
+npm install
 
 echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-yarn build:prod
+npm run build:prod
 electron-builder build --armv7l --linux
 
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
