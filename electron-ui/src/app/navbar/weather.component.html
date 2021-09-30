@@ -1,23 +1,29 @@
-<div class="d-flex" *ngIf="weatherData.current && apiKeySet && !weatherLoading">
-  <div class="m-r-7"><fa-icon [icon]="currentIcon" class="weather-icon"></fa-icon></div>
-  <div>{{ weatherData.current.temp | number: '1.0-0' }}&deg;</div>
-</div>
+<a class="nav-link text-white" [routerLink]="['/weather']" *ngIf="weatherData.current && apiKeySet && !weatherLoading">
+  <div class="d-flex">
+    <div class="m-r-7"><fa-icon [icon]="currentIcon" class="weather-icon"></fa-icon></div>
+    <div>{{ weatherData.current.temp | number: '1.0-0' }}&deg;</div>
+  </div>
+</a>
 
-<div class="d-flex" *ngIf="!apiKeySet && !weatherLoading">
-  <fa-icon [icon]="faCloud"
-    size="lg"
-    [styles]="{'color': 'red'}"
-    [autoClose]="'outside'"
-    ngbTooltip="Weather API key not set. Please go to settings."
-  >
-  </fa-icon>
-</div>
+<a class="nav-link text-white" *ngIf="!apiKeySet && !weatherLoading">
+  <div class="d-flex">
+    <fa-icon [icon]="faCloud"
+      size="lg"
+      [styles]="{'color': 'red'}"
+      [autoClose]="'outside'"
+      ngbTooltip="Weather API key not set. Please go to settings."
+    >
+    </fa-icon>
+  </div>
+</a>
 
-<div class="d-flex" *ngIf="weatherLoading">
-  <fa-icon [icon]="faSpinner"
-    size="lg"
-    [spin]="true"
-    ngbTooltip="Weather data loading..."
-  >
-  </fa-icon>
-</div>
+<a class="nav-link text-white" *ngIf="weatherLoading">
+  <div class="d-flex">
+    <fa-icon [icon]="faSpinner"
+      size="lg"
+      [spin]="true"
+      ngbTooltip="Weather data loading..."
+    >
+    </fa-icon>
+  </div>
+</a>
