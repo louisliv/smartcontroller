@@ -72,6 +72,7 @@ echo -e " ${LRED}--${NC}${WHITE} Installing python requirements...${NC}${ORANGE}
 cd $SC
 
 sudo python3 -m pip install -r requirements.txt
+sudo npm install -g yarn
 sleep 1
 
 ##########################
@@ -94,10 +95,10 @@ python3 manage.py collectstatic --noinput
 cd $SC/electron-ui
 
 echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
-npm install
+yarn install
 
 echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm run build:prod
+yarn build:prod
 electron-builder build --armv7l --linux
 
 echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
