@@ -12,6 +12,21 @@ body {
 
 .bg-dark {
   background-color: #222 !important;
+
+  .dropdown-item {
+    color: #fff;
+
+    &:hover {
+      background-color: #444;
+    }
+
+    &:active, &:focus {
+      filter: brightness(70%) !important;
+      color: white;
+    }
+
+    border-radius: 0px !important;
+  }
 }
 
 .main {
@@ -256,4 +271,8 @@ body {
   .margin-top-mobile {
     margin-top: 15px;
   }
+}
+
+.clickable {
+  cursor: pointer;
 }

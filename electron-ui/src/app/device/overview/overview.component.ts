@@ -16,9 +16,9 @@ export class OverviewComponent implements OnInit {
   isLoaded = false;
   isComputer = false;
   loadError: any;
-  
+
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private deviceApi: DeviceApi,
     private navbar: NavbarService
   ) { }
@@ -33,7 +33,7 @@ export class OverviewComponent implements OnInit {
           this.isComputer = ["PC", "LINUX", "PI"].includes(
             this.device.device_type
           );
-          this.navbar.set(['/nodes', this.device.node.toString()], this.device.name)
+          this.navbar.set(['/nodes', this.device.node.toString()], this.device.name, null, this.device)
         },
         error: err => {
           this.isLoaded = false;
