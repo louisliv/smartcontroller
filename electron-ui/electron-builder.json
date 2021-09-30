@@ -38,6 +38,7 @@
   },
   "linux": {
     "icon": "dist/assets/icons",
-    "target": ["AppImage"]
+    "target": ["AppImage"],
+    "category": "AudioVideo"
   }
 }
