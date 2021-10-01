@@ -10,9 +10,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-        fetch-depth: 0
 
     - name: Setup Node
       uses: actions/setup-node@v1
@@ -34,15 +31,18 @@ jobs:
       run: electron-builder build --armv7l --linux
       working-directory: ./electron-ui
 
-    - name: Commit files
-      run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add .
-        git commit -m "Add changes" -a
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+    - uses: papeloto/action-zip@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+        files: ./electron-ui/release/ manifest.json
+        dest: result.zip
+
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SOURCE_DIR: "./release.zip"
