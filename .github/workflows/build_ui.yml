@@ -38,10 +38,13 @@ jobs:
         dest: ./smartcontroller.zip
     
     - name: Deploy to S3
-      uses: swimlane/s3-upload-file-action@master
+      uses: zdurham/s3-upload-github-action@master
       with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-        aws_bucket: ${{ secrets.AWS_S3_BUCKET }}
-        file_path: 'smartcontroller.zip'
-        file_mime_type: 'application/zip'
+        args: --acl public-read
+      env:
+        FILE: ./smartcontroller.zip
+        AWS_REGION: 'us-east-1'
+        S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        S3_KEY: 'smartcontroller.zip'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
