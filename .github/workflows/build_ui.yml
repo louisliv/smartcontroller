@@ -36,6 +36,11 @@ jobs:
         files: ./electron-ui/release/
         dest: ./electron-ui/release.zip
 
+    - uses: actions/upload-artifact@v1
+      with:
+        name: my-artifact
+        path: ${{ github.workspace }}/electron-ui/release.zip
+
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
