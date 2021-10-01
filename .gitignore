@@ -4,13 +4,10 @@ server/media/*
 server/static/*
 server/*/static/*
 node_modules
-build
-dist
 .vscode/*
 base/*
 *.code-workspace
 node/*
 __pycache__
-release
 *.spec
 *.log
