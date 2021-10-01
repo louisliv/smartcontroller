@@ -42,16 +42,14 @@ jobs:
     - uses: papeloto/action-zip@v1
       with:
         files: ./electron-ui/release/
-        dest: ./smartcontroller.zip
+        dest: ./release/smartcontroller.zip
     
     - name: Deploy to S3
-      uses: zdurham/s3-upload-github-action@master
+      uses: jakejarvis/s3-sync-action@master
       with:
-        args: --acl public-read
+        args: --acl public-read --follow-symlinks --delete
       env:
-        FILE: ./smartcontroller.zip
-        AWS_REGION: 'us-east-1'
-        S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        S3_KEY: 'smartcontroller.zip'
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        SOURCE_DIR: 'release'      # optional: defaults to entire repository
