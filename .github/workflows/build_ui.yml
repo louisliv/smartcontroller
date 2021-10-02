@@ -38,7 +38,7 @@ jobs:
 
     - uses: papeloto/action-zip@v1
       with:
-        files: release server update.sh uninstall.sh install.sh gunicorn.service packages.txt requirements.txt smartcontroller_nginx.conf dist
+        files: ./electron-ui/release server update.sh uninstall.sh install.sh gunicorn.service packages.txt requirements.txt smartcontroller_nginx.conf ./electron-ui/dist
         recursive: false
         dest: ./zip/smartcontroller.zip
     
