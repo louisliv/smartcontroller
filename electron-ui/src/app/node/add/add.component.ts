@@ -69,7 +69,7 @@ export class NodeAddComponent implements AfterViewInit {
     } else if (button === '{bksp}') {
       this.nodeName = this.nodeName.slice(0, -1)
     } else if (button === '{space}') {
-      this.nodeName === this.nodeName + ' ';
+      this.nodeName = this.nodeName + ' ';
     }
 
     if (button === "{shift}" || button === "{lock}") this.handleShift();
