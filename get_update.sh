@@ -24,6 +24,9 @@ rm -rf dist
 rm -rf release
 
 cd $HOME
+sudo rm smartcontroller.zip*
+
+cd $HOME
 wget https://smartcontrollerlouisliv.s3.amazonaws.com/smartcontroller.zip
 unzip -o smartcontroller.zip -d smartcontroller
 

@@ -19,9 +19,6 @@ echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 sudo rm /var/www/smartcontroller
 sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
 
-cd $HOME
-sudo rm smartcontroller.zip*
-
 ###############################
 ## Packages and Dependencies ##
 ###############################
