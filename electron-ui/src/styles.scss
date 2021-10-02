@@ -17,6 +17,10 @@ body {
     border-color: #444
   }
 
+  .dropdown-toggle:focus-visible {
+    outline: none !important;
+  }
+
   .dropdown-item {
     color: #fff;
 
