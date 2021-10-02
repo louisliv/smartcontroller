@@ -11,9 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const csrfToken = this.cookieService.get('csrftoken');
         const apiUrl = AppConfig.apiUrl;
-        console.log('sending here: ', request.url)
         if (csrfToken && request.url.includes(apiUrl)) {
-            console.log('in here')
             request = request.clone({
                 withCredentials: true,
                 setHeaders: {

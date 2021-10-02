@@ -7,36 +7,18 @@ NC='\033[0m'
 RUNASROOT="run-as-root"
 NOROOT="no-root"
 
-clear
-echo -e " ${LRED}########################################${NC}"
-echo -e " ${LRED}#${NC}  ${GREEN}Installing SmartController${NC}  ${LRED}#${NC}"
-echo -e " ${LRED}########################################${NC}\n"
-
 SCGITBRANCH="master"
 SC="$HOME/smartcontroller"
 
 SCRIPTPATH=$(realpath $0)
-
-#####################
-##  Download Zip  ##
-#####################
-
-echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
-sleep 1
-
-cd $SC
-rm -rf dist
-rm -rf release
-
-cd $HOME
-wget https://smartcontrollerlouisliv.s3.amazonaws.com/smartcontroller.zip
-unzip -o smartcontroller.zip -d smartcontroller
 
 ########################
 ##  Remove Old Files  ##
 ########################
 echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 sudo rm /var/www/smartcontroller
+cd $HOME
+sudo rm smartcontroller.zip*
 
 ###############################
 ## Packages and Dependencies ##
