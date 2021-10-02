@@ -39,7 +39,7 @@ jobs:
     - uses: papeloto/action-zip@v1
       with:
         files: ./electron-ui/release server update.sh uninstall.sh install.sh gunicorn.service packages.txt requirements.txt smartcontroller_nginx.conf ./electron-ui/dist
-        recursive: true
+        recursive: false
         dest: ./zip/smartcontroller.zip
     
     - name: Deploy to S3
