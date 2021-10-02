@@ -41,9 +41,7 @@ jobs:
       working-directory: ./electron-ui
 
     - name: Zip release
-      uses: montudor/action-zip@v1
-      with:
-        args: zip -r ./zip/smartcontroller.zip ./electron-ui/release server update.sh uninstall.sh install.sh gunicorn.service packages.txt requirements.txt smartcontroller_nginx.conf ./electron-ui/dist
+      run: zip -r ./zip/smartcontroller.zip ./electron-ui/release server update.sh uninstall.sh install.sh gunicorn.service packages.txt requirements.txt smartcontroller_nginx.conf ./electron-ui/dist
     
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
