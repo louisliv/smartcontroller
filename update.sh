@@ -18,11 +18,15 @@ SC="$HOME/smartcontroller"
 SCRIPTPATH=$(realpath $0)
 
 #####################
-##  Download Repo  ##
+##  Download Zip  ##
 #####################
 
 echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
 sleep 1
+
+cd $SC
+rm -rf dist
+rm -rf release
 
 cd $HOME
 wget https://smartcontrollerlouisliv.s3.amazonaws.com/smartcontroller.zip
