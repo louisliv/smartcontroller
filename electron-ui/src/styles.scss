@@ -13,6 +13,10 @@ body {
 .bg-dark {
   background-color: #222 !important;
 
+  &.dropdown-menu {
+    border-color: #444
+  }
+
   .dropdown-item {
     color: #fff;
 
@@ -275,6 +279,10 @@ body {
 
 .clickable {
   cursor: pointer;
+}
+
+.no-caret::after {
+  display:none;
 }
 
 // Scrollbar

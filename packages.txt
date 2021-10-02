@@ -8,3 +8,4 @@ python-dev
 libusb-1.0-0
 android-tools-adb
 nmap
+awscli

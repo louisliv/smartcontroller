@@ -36,11 +36,31 @@
                 <app-navbar-weather></app-navbar-weather>
             </li>
             <li class="nav-item m-r-15">
-              <a class="nav-link text-white"
-                  [routerLink]="['/settings']"
+              <div ngbDropdown container="body" display="dynamic" placement="bottom-right">
+                <a class="nav-link text-white no-caret"
+                  tabindex="0"
+                  ngbDropdownToggle
+                  id="settingsMenu"
+                  role="button"
                 >
                   <fa-icon [icon]="faCog" size="lg"></fa-icon>
-              </a>
+                </a>
+                <div class="bg-dark dropdown-menu" ngbDropdownMenu aria-labelledby="settingsMenu">
+                  <button ngbDropdownItem
+                    class="btn-lg"
+                    [routerLink]="['/settings']"
+                  >
+                    Settings
+                  </button>
+                  <button ngbDropdownItem
+                    class="btn-lg"
+                    *ngIf="showClose"
+                    (click)="closeApp()"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white"

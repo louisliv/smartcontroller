@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
 var url = require("url");
+var electron_2 = require("electron");
 // Initialize remote module
 require('@electron/remote/main').initialize();
 var win = null;
@@ -66,6 +67,10 @@ try {
         if (win === null) {
             createWindow();
         }
+    });
+    electron_2.ipcMain.on('app-close', function () {
+        console.log('here');
+        win.close();
     });
 }
 catch (e) {

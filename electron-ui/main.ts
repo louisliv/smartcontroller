@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import { ipcMain } from 'electron';
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
@@ -79,6 +80,10 @@ try {
       createWindow();
     }
   });
+
+  ipcMain.on('app-close', () => {
+    win.close()
+  })
 
 } catch (e) {
   // Catch Error
