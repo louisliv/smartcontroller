@@ -132,7 +132,7 @@ python3 manage.py collectstatic
 ##################
 
 echo -e "\n ${LRED}-${NC}${WHITE} Make executible...${NC}\n"
-cd $SC/release
+cd $SC/electron-ui/release
 chmod +x *.AppImage
 
 echo -e "\n ${LRED}-${NC}${WHITE} Start server...${NC}\n"
@@ -141,6 +141,7 @@ sudo ln -s $SC /var/www
 sudo ln -s $SC/gunicorn.service /etc/systemd/system/
 sudo ln -s $SC/smartcontroller_nginx.conf /etc/nginx/sites-enabled/
 
+sudo systemctl daemon-reload
 sudo systemctl start gunicorn.service
 sudo systemctl enable gunicorn.service
 sudo systemctl restart nginx.service

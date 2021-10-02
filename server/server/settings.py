@@ -154,6 +154,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1', 
     'localhost', 
     'smartcontroller.local',
+    'raspberrypi.local',
     f"{hostname}.local"
 ]
 

@@ -102,15 +102,16 @@ echo -e "\n ${LRED}-${NC}${WHITE} Making the scripts executable...${NC}\n"
 chmod +x uninstall.sh
 chmod +x update.sh
 
+echo -e "\n ${LRED}-${NC}${WHITE} Make executible...${NC}\n"
+cd $SC/electron-ui/release
+chmod +x *.AppImage
+
 ####################
 ## Restart Server ##
 ####################
 
-echo -e "\n ${LRED}-${NC}${WHITE} Make executible...${NC}\n"
-cd $SC/release
-chmod +x *.AppImage
-
 echo -e "\n ${LRED}-${NC}${WHITE} Restart server...${NC}\n"
 
+sudo systemctl daemon-reload
 sudo systemctl restart gunicorn.service
 sudo systemctl restart nginx.service
