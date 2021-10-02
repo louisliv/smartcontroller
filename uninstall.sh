@@ -9,7 +9,7 @@ NOROOT="no-root"
 
 clear
 echo -e " ${LRED}########################################${NC}"
-echo -e " ${LRED}#${NC}  ${GREEN}Installing SmartController${NC}  ${LRED}#${NC}"
+echo -e " ${LRED}#${NC}  ${GREEN}Uninstalling SmartController${NC}  ${LRED}#${NC}"
 echo -e " ${LRED}########################################${NC}\n"
 
 SCGITBRANCH="master"

@@ -127,21 +127,6 @@ echo -e "\n ${LRED}-${NC}${WHITE} Setting up the static files...${NC}\n"
 cd $SC/server
 python3 manage.py collectstatic
 
-####################
-## Build Frontend ##
-####################
-cd $SC/electron-ui
-
-echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
-npm install
-
-echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm run build:prod
-electron-builder build --armv7l --linux
-
-echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
-rm -rf $SC/electron-ui/node_modules
-
 ##################
 ## Start Server ##
 ##################
