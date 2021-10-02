@@ -35,10 +35,7 @@ echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
 sleep 1
 
 sudo apt-get update
-sudo apt-get install -y git
-
-cd $HOME
-git clone https://github.com/louisliv/smartcontroller.git
+sudo apt-get install
 
 ###############################
 ## Packages and Dependencies ##
@@ -97,14 +94,6 @@ sleep 1
 sudo npm install -g tplink-smarthome-api
 sleep 1
 
-##################################
-## Install Electron Builder     ##
-##################################
-echo -e "\n ${LRED}[${NC} ${LGREEN}Installing Electron Builder${NC} ${LRED}]${NC}"
-sleep 1
-sudo npm install -g electron-builder
-sleep 1
-
 #############################
 ## Install SmartController ##
 #############################
@@ -157,6 +146,10 @@ rm -rf $SC/electron-ui/node_modules
 ##################
 ## Start Server ##
 ##################
+
+echo -e "\n ${LRED}-${NC}${WHITE} Make executible...${NC}\n"
+cd $SC/release
+chmod +x *.AppImage
 
 echo -e "\n ${LRED}-${NC}${WHITE} Start server...${NC}\n"
 cd $SC

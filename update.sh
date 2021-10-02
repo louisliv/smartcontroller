@@ -24,8 +24,9 @@ SCRIPTPATH=$(realpath $0)
 echo -e " ${LRED}--${NC}${WHITE} Downloading system files...${NC}${ORANGE}\n"
 sleep 1
 
-cd $SC
-git fetch && git pull origin master
+cd $HOME
+wget https://smartcontrollerlouisliv.s3.amazonaws.com/smartcontroller.zip
+unzip -o smartcontroller.zip -d smartcontroller
 
 ###############################
 ## Packages and Dependencies ##
@@ -88,21 +89,6 @@ echo -e "\n ${LRED}-${NC}${WHITE} Setting up the static files...${NC}\n"
 cd $SC/server
 python3 manage.py collectstatic --noinput
 
-####################
-## Build Frontend ##
-####################
-cd $SC/electron-ui
-
-echo -e "\n ${LRED}-${NC}${WHITE} Installing NPM Dependancies...${NC}\n"
-npm install
-
-echo -e "\n ${LRED}-${NC}${WHITE} Building the frontend...${NC}\n"
-npm run build:prod
-electron-builder build --armv7l --linux
-
-echo -e "\n ${LRED}-${NC}${WHITE} Remove the dependacies now that it's built...${NC}\n"
-rm -rf $SC/electron-ui/node_modules
-
 ##############################
 ## Update/Uninstall Scripts ##
 ##############################
@@ -115,6 +101,10 @@ chmod +x update.sh
 ####################
 ## Restart Server ##
 ####################
+
+echo -e "\n ${LRED}-${NC}${WHITE} Make executible...${NC}\n"
+cd $SC/release
+chmod +x *.AppImage
 
 echo -e "\n ${LRED}-${NC}${WHITE} Restart server...${NC}\n"
 
