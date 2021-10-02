@@ -32,6 +32,12 @@ cd $HOME
 wget https://smartcontrollerlouisliv.s3.amazonaws.com/smartcontroller.zip
 unzip -o smartcontroller.zip -d smartcontroller
 
+########################
+##  Remove Old Files  ##
+########################
+echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
+sudo rm /var/www/smartcontroller
+
 ###############################
 ## Packages and Dependencies ##
 ###############################
@@ -111,6 +117,8 @@ chmod +x *.AppImage
 ####################
 
 echo -e "\n ${LRED}-${NC}${WHITE} Restart server...${NC}\n"
+cd $SC
+sudo ln -s $SC /var/www
 
 sudo systemctl daemon-reload
 sudo systemctl restart gunicorn.service
