@@ -3,14 +3,16 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { AppConfig } from "../../environments/environment";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
     constructor(private injector: Injector, private router: Router, private cookieService: CookieService) {}
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const csrfToken = this.cookieService.get('csrftoken');
-
-        if (csrfToken && (request.url.includes('api') && !request.url.includes('openweathermap') && !request.url.includes('ip-api'))) {
+        const apiUrl = AppConfig.apiUrl;
+        if (csrfToken && (request.url.includes(apiUrl) && !request.url.includes('openweathermap') && !request.url.includes('ip-api'))) {
+            console.log('sending here: ', request.url)
             request = request.clone({
                 withCredentials: true,
                 setHeaders: {
