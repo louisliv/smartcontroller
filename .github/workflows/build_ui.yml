@@ -38,7 +38,8 @@ jobs:
 
     - uses: papeloto/action-zip@v1
       with:
-        files: electron-ui/release/ server update.sh uninstall.sh
+        files: electron-ui/release/ server update.sh uninstall.sh install.sh
+        recursive: false
         dest: ./release/smartcontroller.zip
     
     - name: Deploy to S3
