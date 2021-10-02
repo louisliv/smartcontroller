@@ -69,7 +69,6 @@ try {
         }
     });
     electron_2.ipcMain.on('app-close', function () {
-        console.log('here');
         win.close();
     });
 }

@@ -11,14 +11,19 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const csrfToken = this.cookieService.get('csrftoken');
         const apiUrl = AppConfig.apiUrl;
-        if (csrfToken && (request.url.includes(apiUrl) && !request.url.includes('openweathermap') && !request.url.includes('ip-api'))) {
-            console.log('sending here: ', request.url)
+        console.log('sending here: ', request.url)
+        if (csrfToken && request.url.includes(apiUrl)) {
+            console.log('in here')
             request = request.clone({
                 withCredentials: true,
                 setHeaders: {
                     'X-CSRFToken': csrfToken
                 }
             })
+        } else {
+          request = request.clone({
+            withCredentials: false
+          })
         }
         return next.handle(request);
     }
