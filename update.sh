@@ -17,6 +17,8 @@ SCRIPTPATH=$(realpath $0)
 ########################
 echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 sudo rm /var/www/smartcontroller
+sudo rm /etc/nginx/sites-enabled/smartcontroller_nginx.conf
+
 cd $HOME
 sudo rm smartcontroller.zip*
 
@@ -101,6 +103,7 @@ chmod +x *.AppImage
 echo -e "\n ${LRED}-${NC}${WHITE} Restart server...${NC}\n"
 cd $SC
 sudo ln -s $SC /var/www
+sudo ln -s $SC/smartcontroller_nginx.conf /etc/nginx/sites-enabled
 
 sudo systemctl daemon-reload
 sudo systemctl restart gunicorn.service
