@@ -38,7 +38,7 @@ jobs:
 
     - uses: papeloto/action-zip@v1
       with:
-        files: electron-ui/release/ server update.sh uninstall.sh install.sh
+        files: release server update.sh uninstall.sh install.sh
         recursive: false
         dest: ./release/smartcontroller.zip
     
