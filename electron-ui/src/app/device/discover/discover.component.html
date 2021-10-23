@@ -25,9 +25,7 @@
                 <tr *ngFor="let device of devices"
                     [routerLink]="['/add-device']" [state]="device"
                     [queryParams]="{ nodeId: nodeId, nodeName: nodeName }">
-                    <td>{{device.vendor}}</td>
                     <td>{{device.ip}}</td>
-                    <td>{{device.mac}}</td>
                 </tr>
             <tbody>
         </table>
