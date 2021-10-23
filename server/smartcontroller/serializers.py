@@ -4,16 +4,16 @@ from .models import Node, Device
 
 class DeviceSerializer(serializers.ModelSerializer):
     device_type_display = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
+    display_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Device
-        fields = ['id', 'device_type_display', 'device_type', 'node', 'ip', 'name']
+        fields = ['id', 'device_type_display', 'device_type', 'node', 'ip', 'name', 'display_name']
 
     def get_device_type_display(self, obj):
         return obj.get_device_type_display()
 
-    def get_name(self, obj):
+    def get_display_name(self, obj):
         return obj.__str__()
 
 

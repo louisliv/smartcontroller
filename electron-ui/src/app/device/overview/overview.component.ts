@@ -33,7 +33,8 @@ export class OverviewComponent implements OnInit {
           this.isComputer = ["PC", "LINUX", "PI"].includes(
             this.device.device_type
           );
-          this.navbar.set(['/nodes', this.device.node.toString()], this.device.name, null, this.device)
+          var title_bar_display = this.device.display_name
+          this.navbar.set(['/nodes', this.device.node.toString()], title_bar_display, null, this.device)
         },
         error: err => {
           this.isLoaded = false;

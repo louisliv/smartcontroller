@@ -15,7 +15,8 @@
         <div class="btn btn-primary card text-center" [routerLink]="['/devices', device.id]">
             <div class="card-body">
                 <fa-icon [icon]="getIcon(device)" size="3x"></fa-icon>
-                <div class="card-title">{{device.device_type_display}}</div>
+                <div class="card-title" *ngIf="device.name">{{device.name}}</div>
+                <div class="card-title" *ngIf="!device.name">{{device.device_type_display}}</div>
             </div>
         </div>
     </div>

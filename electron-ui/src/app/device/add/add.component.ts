@@ -115,9 +115,10 @@ export class AddComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
-    if (this.selectedDevice) {
+    if (!this.manuallyInputting) {
       this.device.ip = this.selectedDevice.ip;
-      this.device.mac = this.selectedDevice.mac;
+      this.device.device_type = this.selectedDevice.type;
+      this.device.name = this.selectedDevice.name
     }
 
     this.deviceApi.post(this.device).subscribe({
@@ -128,7 +129,7 @@ export class AddComponent implements OnInit, AfterViewInit {
   }
 
   toggleManuallyInputting(): void {
-    this.selectedDevice = null
+    this.selectedDevice = new DiscoverDevice()
     this.device.ip = null
     this.manuallyInputting = !this.manuallyInputting;
 

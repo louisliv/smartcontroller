@@ -1,6 +1,5 @@
 export class DiscoverDevice {
-    id: number;
-    vendor: string;
+    type: string;
     ip: string;
-    mac: string;
+    name: string;
 }

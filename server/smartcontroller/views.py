@@ -4,8 +4,7 @@ from smartcontroller.models import Node, Device
 from smartcontroller.serializers import (NodeSerializer, 
     DeviceSerializer)
 from smartcontroller.utils.firetv import FireTV
-from smartcontroller.utils.helpers import (get_ip_address,
-    discover_devices)
+from smartcontroller.utils.discover import discover
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from roku import Roku
@@ -147,7 +146,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def discover(self, request):
-        device_objs = discover_devices()
+        device_objs = discover()
 
         return Response(device_objs, status=status.HTTP_200_OK)
         

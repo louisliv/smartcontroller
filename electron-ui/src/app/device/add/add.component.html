@@ -18,7 +18,7 @@
               *ngIf="!manuallyInputting"
               [required]="!manuallyInputting"
             >
-              <option *ngFor="let discoveredDevice of discoveredDevices" [ngValue]="discoveredDevice">{{discoveredDevice.ip}}</option>
+              <option *ngFor="let discoveredDevice of discoveredDevices" [ngValue]="discoveredDevice">{{discoveredDevice.name}}</option>
             </select>
             <input required
               [(ngModel)]="device.ip"
@@ -31,11 +31,11 @@
             <button class="btn btn-info margin-top" *ngIf="!manuallyInputting" (click)="toggleManuallyInputting()">Manual IP Input</button>
             <button class="btn btn-info margin-top" *ngIf="manuallyInputting" (click)="toggleManuallyInputting()">Select From Connected Devices</button>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="manuallyInputting">
             <label>Device Type*</label>
             <select [(ngModel)]="device.device_type"
               class="form-control"
-              name="device_type"
+              name="type"
               #valueType="ngModel"
               required
             >

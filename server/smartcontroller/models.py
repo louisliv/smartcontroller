@@ -92,10 +92,18 @@ class Device(models.Model):
         max_length=50,
         blank=True
     )
+    name = models.CharField(
+        max_length=50,
+        blank=True
+    )
 
     def __str__(self):
-        return '%s: %s' % (self.node.name, 
-            self.get_device_type_display())
+        display = ''
+        if self.name:
+            display = self.name
+        else:
+            display = self.get_device_type_display()
+        return '%s: %s' % (self.node.name, display)
 
     def set_power_state(self, power):
         if self.device_type in [self.PLUG, self.BULB]:
