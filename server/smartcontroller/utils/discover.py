@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Send out a M-SEARCH request and listening for responses."""
 import asyncio
-import re
+from threading import Thread
 import socket
 from urllib.request import urlopen
 from urllib.parse import unquote
@@ -12,6 +12,28 @@ import ssdp
 from smartcontroller.utils.globals import DEVICE_IDENTIFIERS, KASA_ENUM
 from kasa import Discover
 import xmltodict
+
+class ThreadWithReturnValue(Thread):
+    def __init__(
+        self,
+        group=None,
+        target=None,
+        name=None,
+        args=(),
+        kwargs={},
+        Verbose=None
+    ):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+    def run(self):
+        if self._target is not None:
+            self._return = self._target(
+                *self._args,
+                **self._kwargs
+            )
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
 
 
 class DiscoveredDevice():
@@ -98,6 +120,34 @@ class DiscoverProtocol(ssdp.SimpleServiceDiscoveryProtocol):
 
 def discover():
     discovered_devices = []
+
+    try:
+        ssdp_thread = ThreadWithReturnValue(target=ssdp_discover)
+        kasa_thread = ThreadWithReturnValue(target=kasa_discover)
+    except:
+        print("Error: unable to start thread")
+
+    ssdp_thread.start()
+    kasa_thread.start()
+
+    ssdp_devices = None
+    kasa_devices = None
+
+    while not ssdp_devices and not kasa_devices:
+        if not ssdp_devices:
+            ssdp_devices = ssdp_thread.join()
+
+        if not kasa_devices:
+            kasa_devices = kasa_thread.join()
+
+    discovered_devices.extend(ssdp_devices)
+    discovered_devices.extend(kasa_devices)
+
+    return discovered_devices
+
+
+def ssdp_discover():
+    discovered_devices = []
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     connect = loop.create_datagram_endpoint(DiscoverProtocol, family=socket.AF_INET)
@@ -115,7 +165,7 @@ def discover():
     )
     search_request.sendto(transport, (DiscoverProtocol.MULTICAST_ADDRESS, 1900))
 
-    # Keep on running for 4 seconds.
+    # Keep on running for 5 seconds.
     try:
         loop.run_until_complete(asyncio.sleep(5))
     except KeyboardInterrupt:
@@ -126,9 +176,16 @@ def discover():
 
     discovered_devices.extend(protocol.discovered_devices)
 
+    return discovered_devices
+
+
+def kasa_discover():
+    discovered_devices = []
+
     found_devs = asyncio.run(Discover.discover(timeout=5))
     for ip, dev in found_devs.items():
         device_type = KASA_ENUM[dev.device_type.name]
         new_device = DiscoveredDevice(dev.alias, device_type, ip)
         discovered_devices.append(new_device())
+
     return discovered_devices
