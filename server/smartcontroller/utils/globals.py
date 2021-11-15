@@ -1,4 +1,5 @@
 from smartcontroller.models import Device
+
 DEVICE_IDENTIFIERS = [
     {
         "device_type": Device.ROKU,
@@ -16,5 +17,6 @@ DEVICE_IDENTIFIERS = [
 
 KASA_ENUM = {
     'Plug': Device.PLUG,
-    'Bulb': Device.BULB
+    'Bulb': Device.BULB,
+    'Strip': Device.STRIP
 }

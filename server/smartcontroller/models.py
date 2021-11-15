@@ -5,7 +5,7 @@ import time
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from kasa import SmartPlug, SmartBulb
+from kasa import SmartPlug, SmartBulb, SmartStrip
 from paramiko import SSHClient, AutoAddPolicy
 from pywebostv.connection import WebOSClient
 from roku import Roku
@@ -56,6 +56,7 @@ class Device(models.Model):
     PI = 'PI'
     PLUG = 'PLUG'
     BULB = 'BULB'
+    STRIP = 'STRIP'
     LINUX = 'LINUX'
     PC = 'PC'
     ROKU = 'ROKU'
@@ -65,6 +66,7 @@ class Device(models.Model):
         (PI, 'Raspberry Pi'),
         (PLUG, 'Smart Plug'),
         (BULB, 'Smart Bulb'),
+        (STRIP, 'Smart Strip'),
         (LINUX, 'Linux'),
         (PC, 'PC'),
         (ROKU, 'Roku'),
@@ -106,12 +108,10 @@ class Device(models.Model):
         return '%s: %s' % (self.node.name, display)
 
     def set_power_state(self, power):
-        if self.device_type in [self.PLUG, self.BULB]:
-            device = (
-                SmartPlug(self.ip) 
-                if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip)
-            )
+        if self.device_type in [self.PLUG, self.BULB, self.STRIP]:
+            device_class = self.get_kasa_device_class()
+
+            device = device_class(self.ip)
             
             if power:
                 asyncio.run(device.turn_on()) 
@@ -129,13 +129,21 @@ class Device(models.Model):
             roku = Roku(self.ip)
             roku.power()
 
+    def get_kasa_device_class(self):
+        device_enum = {
+            self.PLUG: SmartPlug,
+            self.BULB: SmartBulb,
+            self.STRIP: SmartStrip
+        }
+
+        return device_enum[self.device_type]
+
     def get_device(self):
-        if self.device_type in [self.PLUG, self.BULB]:
-            device = (
-                SmartPlug(self.ip) 
-                if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip)
-            )
+        if self.device_type in [self.PLUG, self.BULB, self.STRIP]:
+            device_class = self.get_kasa_device_class()
+
+            device = device_class(self.ip)
+
             asyncio.run(device.update())
             
             return device
@@ -175,12 +183,10 @@ class Device(models.Model):
 
     @property
     def power_state(self):
-        if self.device_type in [self.PLUG, self.BULB]:
-            device = (
-                SmartPlug(self.ip) 
-                if self.device_type in [self.PLUG]
-                else SmartBulb(self.ip)
-            )
+        if self.device_type in [self.PLUG, self.BULB, self.STRIP]:
+            device_class = self.get_kasa_device_class()
+
+            device = device_class(self.ip)
             
             asyncio.run(device.update())
             
@@ -191,6 +197,21 @@ class Device(models.Model):
             return roku.power_state
 
         return False
+
+    @property
+    def has_children(self):
+        if self.device_type == self.STRIP:
+            return True
+
+        return False
+
+    def get_children(self):
+        if self.device_type == self.STRIP:
+            device = self.get_device()
+
+            return device.children
+
+        return []
 
     def toggle_power_state(self):
         state = self.power_state
