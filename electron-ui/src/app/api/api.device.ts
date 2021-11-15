@@ -27,7 +27,7 @@ export class DeviceApi {
         return this.http.get<{}>(`${AppConfig.apiUrl}/devices/${id}/power_off`)
     }
 
-    power(id:number, childId: number|null = null) : Observable<{}>{
+    power(id:number, childId: string|null = null) : Observable<{}>{
         return this.http.post<{}>(`${AppConfig.apiUrl}/devices/${id}/power/`, {
           childId:childId
         })

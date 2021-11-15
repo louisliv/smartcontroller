@@ -17,7 +17,7 @@ export class StripComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  powerDevice(childId: number|null=null) {
+  powerDevice(childId: string|null=null) {
     this.deviceApi.power(this.device.id, childId).subscribe({
       next: data => {
       }
