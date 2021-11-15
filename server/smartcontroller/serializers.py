@@ -10,7 +10,6 @@ class SmartStripPlugSerializer(serializers.Serializer):
     device_type = serializers.SerializerMethodField()
 
     def get_device_type(self, obj):
-        print(obj.device_type.value)
         return KASA_ENUM[obj.device_type.name]
 
 class DeviceSerializer(serializers.ModelSerializer):

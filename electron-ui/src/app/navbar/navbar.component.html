@@ -14,8 +14,9 @@
 
     <div class="col-4 text-center" style="padding-right: 0px;">
         <div class="navbar-brand" ngbDropdown *ngIf="vars.node">
-          <div class="clickable" ngbDropdownToggle>{{vars.title}}</div>
-          <div ngbDropdownMenu class="bg-dark" aria-labelledby="quickMenu">
+          <div class="clickable" ngbDropdownToggle *ngIf="vars.node.devices.length > 1">{{vars.title}}</div>
+          <div *ngIf="vars.node.devices.length <= 1">{{vars.title}}</div>
+          <div ngbDropdownMenu class="bg-dark" aria-labelledby="quickMenu" *ngIf="vars.node.devices.length > 1">
             <ng-container *ngFor="let device of vars.node.devices">
               <button ngbDropdownItem
                 class="btn-lg"

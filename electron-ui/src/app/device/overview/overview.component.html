@@ -14,6 +14,7 @@
     <app-computer class="row" *ngIf="isComputer" [device]="device"></app-computer>
     <app-plug class="row" *ngIf="device.device_type === 'PLUG'" [device]="device"></app-plug>
     <app-lightbulb class="row" *ngIf="device.device_type === 'BULB'" [device]="device"></app-lightbulb>
+    <app-strip class="row" *ngIf="device.device_type === 'STRIP'" [device]="device"></app-strip>
     <app-roku class="row" *ngIf="device.device_type === 'ROKU'" [device]="device"></app-roku>
     <app-roku class="row" *ngIf="device.device_type === 'AMZN'" [device]="device"></app-roku>
     <app-tv class="row" *ngIf="device.device_type.includes('TV')" [device]="device"></app-tv>

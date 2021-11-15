@@ -1,3 +1,4 @@
+import asyncio
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from smartcontroller.models import Node, Device
@@ -67,8 +68,26 @@ class DeviceViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def power(self, request, pk=None):
         device = self.get_object()
-       
-        device.toggle_power_state()
+
+        if device.device_type == Device.STRIP:
+            data = request.data
+            child_id = data.get("childId", None)
+
+            if child_id:
+                kasa_device = device.get_device()
+                child = list(filter(
+                    lambda x: x.device_id == child_id,
+                    kasa_device.children
+                ))[0]
+
+                if child.is_on:
+                    asyncio.run(child.turn_off())
+                else:
+                    asyncio.run(child.turn_on())
+            else:
+                device.toggle_power_state()
+        else:
+            device.toggle_power_state()
 
         return Response({}, status=status.HTTP_200_OK)
 
