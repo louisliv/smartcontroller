@@ -1,3 +1,5 @@
+import { DeviceChild } from "./device-child";
+
 export class Device {
     id: number;
     name: string;
@@ -7,4 +9,5 @@ export class Device {
     device_type: string;
     ip: string;
     mac: string;
+    children: DeviceChild[];
 }

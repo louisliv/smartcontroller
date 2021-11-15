@@ -1,0 +1,11 @@
+<div class="col-8 offset-2 margin-bottom">
+  <a class="btn btn-primary w-100" (click)="powerDevice()">
+    <fa-icon [icon]="faPower"></fa-icon>
+  </a>
+</div>
+
+<div class="col-xs-12 col-md-6 margin-bottom" *ngFor="let child of device.children">
+  <a class="btn btn-primary w-100" (click)="powerDevice(child.device_id)">
+    <fa-icon [icon]="faPower"></fa-icon>{{" "}}{{child.alias}}
+  </a>
+</div>

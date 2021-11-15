@@ -19,9 +19,10 @@ import { AddComponent } from './add/add.component';
 import { RokuComponent } from './roku/roku.component';
 import { RokuButtonComponent } from './roku/roku-button/roku-button.component';
 import { TvComponent } from './tv/tv.component';
+import { StripComponent } from './strip/strip.component';
 
 @NgModule({
-  declarations: [DeviceComponent, KeyboardComponent, PlugComponent, LightbulbComponent, ComputerComponent, OverviewComponent, DiscoverComponent, AddComponent, RokuComponent, RokuButtonComponent, TvComponent],
+  declarations: [DeviceComponent, KeyboardComponent, PlugComponent, LightbulbComponent, ComputerComponent, OverviewComponent, DiscoverComponent, AddComponent, RokuComponent, RokuButtonComponent, TvComponent, StripComponent],
   imports: [
     CommonModule, 
     SharedModule, 
